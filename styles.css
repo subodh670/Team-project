@@ -603,6 +603,7 @@ ul li a:active{
     .item{
         min-width: 300px;
     }
+   
 }
 
 /* filters styling */
@@ -666,4 +667,13 @@ ul li a:active{
 }
 .sort #sortby{
     padding: 0.3em;
+}
+@media(max-width: 1000px){
+     .morefilters{
+        width: 100%;
+    }
+    .addfilter{
+        justify-content: center;
+        width: 100%;
+    }
 }

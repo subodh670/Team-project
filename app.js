@@ -1,7 +1,7 @@
 'use strict';
 const bars = document.querySelector(".bars");
 const contact = document.querySelector('.contact');
-const nav = document.querySelector('header ul');
+const cat = document.querySelector('.categories');
 const searchBar = document.querySelector(".search-bar");
 const login = document.querySelector('.login');
 const cart = document.querySelector('.cart');
@@ -11,7 +11,7 @@ const faTimes = document.querySelector(".fa-times");
 
 
 bars.addEventListener("click",(e)=>{
-    nav.classList.toggle("show-nav");
+    cat.classList.toggle("show-cat");
     console.log('hello');
 });
 search.addEventListener("click",()=>{

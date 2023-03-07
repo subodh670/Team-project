@@ -139,7 +139,6 @@ ul li a:active{
 @media(max-width: 1000px){
     ul{
         position: fixed;
-        /* display: none; */
         flex-direction: row;
         padding: 0em;
         height: 80px;
@@ -414,6 +413,7 @@ ul li a:active{
     width: 20%;
 }
 .categories{
+    position: relative;
     padding: 0.4em 0 0 0;
     display: flex;
     justify-content: center;
@@ -422,6 +422,7 @@ ul li a:active{
     gap: 5%;
     color: var(--white);
     background-color: var(--black);
+    transition: 0.4s;
 }
 .categories p{
     width: 80%;
@@ -431,6 +432,14 @@ ul li a:active{
 .categories p:hover{
 
     border-bottom: 4px solid var(--secondary-color);
+}
+.categories .close-cat{
+    position: absolute;
+    font-size: 2.8rem;
+    top:30px;
+    right: 50px;
+    cursor: pointer;
+    display: none;
 }
 /* media queries */
 
@@ -446,16 +455,20 @@ ul li a:active{
     .categories{
         position: absolute;
         width: 100%;
-        height: 70%;
+        height: 100%;
         flex-direction: column;
-        top: 18%;
+        top: 0%;
         left: 0%;
-        padding: 3em;
+        padding:6em 3em 0em 3em;
         background-color: var(--tertiary-color);
         opacity: 0.96;
         z-index: 50;
         border-radius: 8px;
         overflow: scroll;
+        transition: 0.4s;
+    }
+    .categories .close-cat{
+        display: block;
     }
     .categories p{
         width: 100%;
@@ -702,4 +715,9 @@ ul li a:active{
         justify-content: center;
         width: 100%;
     }
+}
+
+/* filters more */
+.filters{
+    color: var(--secondary-color);
 }

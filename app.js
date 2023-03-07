@@ -12,7 +12,6 @@ const faTimes = document.querySelector(".fa-times");
 
 bars.addEventListener("click",(e)=>{
     cat.classList.toggle("show-cat");
-    console.log('hello');
 });
 search.addEventListener("click",()=>{
     searchBar.classList.toggle("show-searchbar");
@@ -119,4 +118,13 @@ prices.forEach((price)=>{
         price.innerHTML = 'Rs: 1000/-';
         price.style.textDecoration = 'none';
     })
+})
+
+
+
+//categories close
+
+const closeCat =  document.querySelector(".close-cat");
+closeCat.addEventListener("click",()=>{
+    cat.classList.toggle("show-cat");
 })

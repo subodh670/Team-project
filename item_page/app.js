@@ -21,3 +21,16 @@ faTimes.addEventListener("click",()=>{
     cart.classList.toggle("show-cart");
     search.classList.toggle("show-search");
 })
+
+
+//main photo of item changer after click
+
+const mainImg = document.querySelector(".main-img img");
+const subimg = document.querySelectorAll(".sub-img img");
+mainImg.src = subimg[1].src;
+
+subimg.forEach((img)=>{
+    img.addEventListener("click",(e)=>{
+        mainImg.src = img.src;
+    })
+})

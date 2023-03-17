@@ -6,21 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website with Login & registaration | Codehal</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../fontawesome-free-6.3.0-web/css/all.min.css">
 </head>
 <body bachround="">
     <header>
-        <h2 class="logo">Logo</h2>
-        <nav class="navigation">
-            <a href="#">categories</a>
-            <a href="#">products</a>
-            <a href="#">services</a>
-            <a href="#">contact us</a>
-            <button class="btnLogin-popup">Login</button>
-        </nav>
+        <div class="logo">
+            <a href="../landing_page/index.html">
+<img src="../landing_page/image1.png" alt="logo">
+
+            </a>
+        </div>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#sale">Sale a product</a></li>
+            <li><a href="#customer_services">Customer Services</a></li>
+            <li><a href="#contact_us">Contact Us</a></li>
+        </ul>
+        <div class="login_cart_search">
+             <div class="login">
+                <a href="/login">Sign In</a>
+             </div>
+             <div class="cart">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+             </div>
+             <div class="search">
+                <i class="fa fa-search"></i>
+             </div>
+                <form method="POST" action="" class="search-bar show-searchbar">
+                    <input type="text" name="search" class="search-item">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    <button class="search-result"><i class="fa fa-search"></i></button>
+                 </form>
+            
+        </div>
     </header>
     <div class="wrapper">
         <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
-        <div class="form-box login">
+        <div class="form-box login1">
             <h2>Signin</h2>
             <form action="#">
                 <div class="input-box">
@@ -48,7 +70,39 @@
             </form>
         </div>
     </div>
-    <script src="script.js"></script>
+    <footer>
+        <div class="container-footer">
+            <div class="footer-item1">
+                <h1>CleckHF mart</h1>
+                <p>Categories</p>
+                <p>Products</p>
+                <p>Customers Service</p>
+                <p>Contact Us</p>
+            </div>
+            <div class="footer-item2">
+                <h1>Privacy Policy</h1>
+                <p>Payment</p>
+                <p>FAQs</p>
+                <p>Map</p>
+                <img src="" alt="">
+            </div>
+            <div class="footer-item3">
+                <h1>Social</h1>
+                <p>Facebook</p>
+                <p>Instagram</p>
+                <p>Twitter</p>
+            </div>
+            <div class="footer-item4">
+                <h1>Contact us</h1>
+                <p>Location: </p>
+                <p>London Uk</p>
+                <p>Email: </p>
+                <p>cleckhfmart@gmail.com</p>
+            </div>
+
+        </div>
+    </footer>
+    <script src="app.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>

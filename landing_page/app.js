@@ -109,13 +109,13 @@ function slider(count){
 const prices = document.querySelectorAll(".price");
 prices.forEach((price)=>{
     price.addEventListener("mouseover",(e)=>{
-        price.innerHTML = 'Rs: 1200/-';
+        price.innerHTML = '£12';
         price.style.textDecoration = 'line-through';
     })
 })
 prices.forEach((price)=>{
     price.addEventListener('mouseout',(e)=>{
-        price.innerHTML = 'Rs: 1000/-';
+        price.innerHTML = '£10';
         price.style.textDecoration = 'none';
     })
 })

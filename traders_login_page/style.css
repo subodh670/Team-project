@@ -1,0 +1,158 @@
+.backdrop{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -9999;
+}
+*{
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    font-family: 'Questrial', sans-serif;
+    font-family: 'Roboto', sans-serif;      
+}
+html{
+    font-size: 16px;
+    scroll-behavior: smooth;
+    max-width: 100%;
+}
+:root{
+    --primary-color: #E93F36;
+    --secondary-color: #3F36E9;
+    --tertiary-color: #228B22;
+    --white: #ffffff;
+    --black: #000000;
+    --selected: #D9D9D9;
+}
+
+/* header trader started */
+.header-trader{
+    width: 100%;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container{
+    width: 90%;
+    margin:0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.container img{
+    width: 15%;
+}
+form{
+    display: flex;
+    justify-content: right;
+    align-items: self-start;
+    width: 60%;
+    gap: 10%;
+    margin-top: 1.2em;
+}
+form div label{
+    background-color: var(--selected);
+    padding: 0.25em;
+}
+form div input{
+    padding: 0.3em;
+}
+form div p{
+    font-size: 0.8rem;
+    margin-top: 0.5em;
+    margin-left: 2em;
+}
+form div p a{
+    text-decoration: none;
+    color: black;
+    color: var(--white);
+}
+form div p a:hover{
+    color: var(--black);
+}
+form button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: var(--white)
+}
+
+/* header trader ends */
+/* hero signup starts */
+
+.hero-signup{
+    max-width: 100%;
+}
+.signup-container{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8em 0em;
+}
+.our-motto{
+    width: 50%;
+    padding: 0em;
+}
+.signup{
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: left;
+    flex-direction: column;
+    gap: 2em;
+    background-color: var(--secondary-color);
+    padding: 2em;
+}
+.our-motto h1{
+    font-size: 3rem;
+    margin-bottom: 2rem;
+}
+.our-motto p{
+    font-size: 1.2rem;
+}
+.signup h1{
+    font-size: 2rem;
+    width: 100%;
+    text-align: left;
+    color: var(--white);
+}
+/* trader hero signup ended */
+/* footer starts */
+
+
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2em 0;
+    background-color: var(--primary-color);
+}
+.container-footer{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(24%, 300px));
+    margin-left: 7%;
+    justify-content: center;
+}
+
+.container-footer > div{
+    width: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2em;
+}
+.container-footer div h1{
+    color: var(--secondary-color);
+}
+
+

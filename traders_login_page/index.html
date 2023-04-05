@@ -9,10 +9,14 @@
     <title>Traders Login page</title>
 </head>
 <body>
+    <div class="backdrop show-back">
+
+    </div>
     <section class="header-trader">
             <div class="container">
                 <a href="../landing_page/index.html"><img src="../landing_page/image1.png" alt=""></a>
-                <form method="POST" action="">
+                <form class="show-form" method="POST" action="">
+                    <h1>Sign In</h1>
                     <div class="mail">
                         <label for="email"><i class="fa-solid fa-envelope"></i></label>
                         <input type="email" id="email" name="email">
@@ -24,20 +28,23 @@
                     </div>
                     <button class="login-btn" name="login">Login</button>
                 </form>
+                <div style="z-index: 4;" class="bars show-bars">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </div>
             </div>
     </section>
     <section class="hero-signup">
         <div class="signup-container">
             <div class="our-motto">
                 <h1>The best #1 platform to sell
-                    goods.</h1>
+                    goods for traders.</h1>
                 <p>create an account in 5 minutes and reach million of customer today</p>
             </div>
             <form class="signup">
                 <h1>Create an account</h1>
                 <div class="phone">
                     <label for="phone">Phone</label>
-                    <input type="number" id="phone" name="phone" >
+                    <input type="text" id="phone" name="phone" >
                 </div>
                 <div class="otp">
                     <button class="otpbtn" name="otpbtn"    >Send me otp</button>
@@ -78,5 +85,6 @@
 
         </div>
     </footer>
+    <script src="app.js"></script>
 </body>
 </html>

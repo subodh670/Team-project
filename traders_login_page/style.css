@@ -1,11 +1,4 @@
-.backdrop{
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    z-index: -9999;
-}
+
 *{
     margin: 0;
     box-sizing: border-box;
@@ -42,10 +35,14 @@ html{
     justify-content: space-between;
     align-items: center;
 }
-.container img{
+.container a{
+    display: block;
     width: 15%;
 }
-form{
+.container img{
+    width: 80%;
+}
+.container form{
     display: flex;
     justify-content: right;
     align-items: self-start;
@@ -53,32 +50,114 @@ form{
     gap: 10%;
     margin-top: 1.2em;
 }
-form div label{
+.container form div label{
     background-color: var(--selected);
     padding: 0.25em;
 }
-form div input{
+.container form div input{
     padding: 0.3em;
 }
-form div p{
+.container form div p{
     font-size: 0.8rem;
     margin-top: 0.5em;
     margin-left: 2em;
 }
-form div p a{
+.container form div p a{
     text-decoration: none;
     color: black;
     color: var(--white);
 }
-form div p a:hover{
+.container form div p a:hover{
     color: var(--black);
 }
-form button{
+.container form button{
     background-color: var(--tertiary-color);
     border-width: 0px;
     padding: 0.5em 1em;
     color: var(--white)
 }
+.pass{
+    width: 30%;
+}
+.pass p{
+    width: 100%;
+}
+.pass p a{
+    display: inline-block;
+    width: 100%;
+}
+.bars{
+    display: none;
+}
+.backdrop{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    backdrop-filter: blur(4px);
+    z-index: 2;
+    top: 0;
+    left: 0;
+}
+
+.show-back{
+    display: none;
+}
+.container form h1{
+    display: none;
+}
+@media(max-width: 1200px){
+    .container form{
+        width: 70%;
+        gap: 10%;
+        justify-content: space-between;
+    }
+}
+@media(max-width: 992px){
+    
+    .container a{
+        width: 25%;
+    }
+    .bars{
+        display: block;
+        color: white;
+        font-size: 1.5rem;
+        z-index: 1;
+    }
+    .container .show-form{
+        display: none;
+        transition: 0.4s;
+    }
+    .container form{
+        display: flex;
+        position: absolute;
+        height: 250px;
+        width: 60%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        flex-direction: column;
+        background-color: var(--tertiary-color);
+        padding: 2em;
+        transition: 0.4s;
+        z-index: 4;
+    }
+    .container form div{
+        width: 100%;
+    }
+    .container form h1{
+        display: block;
+        color: white;
+    }
+    .container form button{
+        background-color: var(--secondary-color);
+    }
+}
+@media(max-width: 600px){
+    .container a{
+        width: 40%; 
+    }
+}
+
 
 /* header trader ends */
 /* hero signup starts */
@@ -111,16 +190,51 @@ form button{
 .our-motto h1{
     font-size: 3rem;
     margin-bottom: 2rem;
+    color: var(--secondary-color);
 }
 .our-motto p{
     font-size: 1.2rem;
 }
 .signup h1{
-    font-size: 2rem;
+    font-size: 1.8rem;
     width: 100%;
     text-align: left;
     color: var(--white);
 }
+.signup .phone label{
+    color: white;
+}
+.signup .phone input{
+    padding: 0.4em 2em;
+}
+.signup .otpbtn{
+    background-color: var(--tertiary-color);
+    padding: 0.7em 1em;
+    border-width: 0em;
+    color: white;
+    transition: 0.4s;
+}
+.otpbtn:hover{
+    background-color: #1c711c;
+}
+@media(max-width: 992px){
+    .signup-container{
+        flex-direction: column;
+    }
+    .our-motto{
+        margin-bottom: 4em;
+        width: 100%;
+    }
+    .signup{
+        width: 80%;
+    }
+    .signup-container{
+        padding: 4em 0;
+    }
+
+}
+
+
 /* trader hero signup ended */
 /* footer starts */
 

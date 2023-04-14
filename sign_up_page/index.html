@@ -4,27 +4,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website with Login & registaration | Codehal</title>
+    <title>Sign up page</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../fontawesome-free-6.3.0-web/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Questrial&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="backdrop">
+
+    </div>
     <header>
         <div class="logo">
-            <a href="../landing_page/index.html">
+            <a href="#">
 <img src="../landing_page/image1.png" alt="logo">
 
             </a>
         </div>
         <ul>
             <li><a href="#home">Home</a></li>
-            <li><a href="#sale">Sale a product</a></li>
+            <li><a href="../traders_login_page/index.html">Sale a product</a></li>
             <li><a href="#customer_services">Customer Services</a></li>
             <li><a href="#contact_us">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
              <div class="login">
-                <a href="/login">Sign In</a>
+                <a href="../sign_in_page/index.html">Sign In</a>
              </div>
              <div class="cart">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -40,36 +44,56 @@
             
         </div>
     </header>
-    <div class="wrapper">
-        <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
-        <div class="form-box login1">
-            <h2>Signin</h2>
-            <form action="#">
-                <div class="input-box">
-                    <spam class="icon"><ion-icon name="person-outline"></ion-icon></spam>
-                    <input type="email" required>
-                    <label>Username</label> 
-                </div>
-                <div class="input-box">
-                    <spam class="icon"><ion-icon name="lock-open-outline"></ion-icon></spam>
-                    <input type="password" required>
-                    <label>Password</label> 
-                </div>
-                <div class="remember-forgot">
-                    <label><input type="checkbox">
-                        Remember me </label>
-                        <a href="#">Forgot Password</a>
-                    
-                </div>
-                
-                <button type="submit" class="btnLogin-popup">Login</button>
-                <div class="login-register">
-                <p>Don't have an account? <a href="../sign_up_page/index.html" class="register-link">Register</a></p>  
 
-                </div>
+
+
+    <section class="wrapper">
+        <div class="container-sign">
+            <div class="signup-img">
+                <i class="fa-solid fa-circle-user"></i>
+                <h1>Sign Up</h1>
+            </div>
+            <form action="" class="signup" method="POST">
+<div class="fullname">
+    <label for="fullname"><i class="fa-regular fa-user"></i></label>
+    <input type="text" id="fullname" placeholder="Full Name" name="fullname">
+    <i class="fa-regular fa-user"></i>
+</div>
+<div class="email">
+    <label for="email"><i class="fa-solid fa-envelope"></i></label>
+    <input type="email" id="email" placeholder="Email" name="email">
+    <i class="fa-solid fa-envelope"></i>
+</div>
+<div class="password">
+    <label for="password"><i class="fa-sharp fa-solid fa-key"></i></label>
+    <input type="password" id="password" placeholder="Password" name="password">
+    <i class="fa-sharp fa-solid fa-key"></i>
+</div>
+<div class="repeatpassword">
+    <label for="rpassword"><i class="fa-sharp fa-solid fa-key"></i></label>
+    <input type="password" id="rpassword" placeholder="Repeat your password" name="rpassword">
+    <i class="fa-sharp fa-solid fa-key"></i>
+</div>
+
+<div class="terms">
+    <input type="radio" id="terms" name="terms" checked="unchecked">
+    <label for="terms" style="color: var(--secondary-color);">I agree all statements in terms and conditions</label>
+</div>
+<div class="member">
+    <label for="" style="color: var(--secondary-color)">Already a member <a href="../sign_in_page/index.html" style="color: var(--primary-color);">Login</a></label>
+</div>
+<div class="btn">
+    <input type="submit" name="signup" value="Register">
+</div>
             </form>
         </div>
-    </div>
+    </section>
+
+
+
+
+
+
     <footer>
         <div class="container-footer">
             <div class="footer-item1">
@@ -102,8 +126,6 @@
 
         </div>
     </footer>
-    <script src="app.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

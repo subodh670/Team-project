@@ -11,7 +11,7 @@
 <body>
     <header>
         <div class="logo">
-            <a href="../landing_page/index.html">
+            <a href="../landing_page/index.php">
 <img src="../landing_page/image1.png" alt="logo">
 
             </a>

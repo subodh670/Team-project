@@ -26,15 +26,16 @@ faTimes.addEventListener("click",()=>{
 
 const label = document.querySelectorAll(".form-box form .input-box label");
 let valueInput = document.querySelectorAll(".form-box form input");
-label.forEach((item,i)=>{
-    let value = valueInput.value;
-    console.log('hello');
-    let arr = [];
-    arr.push(value);
-    item.addEventListener("onfocusout",()=>{
-        value = "";
-    })
-    item.addEventListener("onfocusin",()=>{
-        valueInput.value = arr[i];
-    })
-})
+// label.forEach((item,i)=>{
+//     let value = valueInput.value;
+//     console.log('hello');
+//     let arr = [];
+//     arr.push(value);
+//     item.addEventListener("onfocusout",()=>{
+//         value = "";
+//     })
+//     item.addEventListener("onfocusin",()=>{
+//         valueInput.value = arr[i];
+//     })
+// })
+console.log(valueInput);    

@@ -29,5 +29,5 @@ const errormsg = document.querySelectorAll(".container-sign form p");
 errormsg.forEach((item)=>{
     setTimeout(()=>{
         item.style.display = 'none';
-    }, 5000)
+    }, 10000)
 })

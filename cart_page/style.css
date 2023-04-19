@@ -355,6 +355,9 @@ ul li a:active{
     align-items: center;
     gap: 30%;
 }
+.price--qty .wish_price_del{
+    width: 50%;
+}
 .price--qty .wish_price_del p{
     margin-bottom: 1em;
     width: 100%;

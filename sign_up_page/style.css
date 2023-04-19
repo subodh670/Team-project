@@ -341,7 +341,7 @@ ul li a:active{
 /* php errors */
 @keyframes flashanimate {
     from {
-        top: 0px;
+        top: -20px;
     }
     to{
         top: 10px;

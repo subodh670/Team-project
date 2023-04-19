@@ -78,6 +78,44 @@ selectboxMain();
 
 
 
-// select all items
+//  increasing prices
+
+
+function cartCounter(){
+    const increaseCount = document.querySelectorAll(".price--qty .countitem input");
+const increaseValue = document.querySelectorAll('.price--qty .countitem .increase');
+const decreaseValue = document.querySelectorAll('.price--qty .countitem .decrease');
+const priceIncrease = document.querySelectorAll(".price--qty .wish_price_del p");
+let globalPrice = null;
+    increaseValue.forEach((item,i)=>{
+    globalPrice = Number(priceIncrease[i].textContent.substring(5));
+        item.addEventListener("click",(e)=>{
+            increaseCount[i].value = Number(increaseCount[i].value)+1;
+            let price = Number(priceIncrease[i].textContent.substring(5));
+            price += globalPrice;
+            priceIncrease[i].innerHTML =  `Rs: £${price}`;
+        })
+    })
+    decreaseValue.forEach((item,i)=>{
+    globalPrice = Number(priceIncrease[i].textContent.substring(5));
+        item.addEventListener("click",(e)=>{
+            if(Number(increaseCount[i].value) <= 0){
+                increaseCount[i].value = 0;
+            }
+            else{
+                increaseCount[i].value = `${Number(increaseCount[i].value)-1}`;
+                let price = Number(priceIncrease[i].textContent.substring(5));
+            price -= globalPrice;
+            priceIncrease[i].innerHTML =  `Rs: £${price}`;
+            }
+        })
+    })
+}
+cartCounter();
+
+
+// total cost
+
+
 
 

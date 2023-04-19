@@ -28,7 +28,7 @@
         </ul>
         <div class="login_cart_search">
              <div class="login">
-                <a href="../sign_in_page/index.html">Sign In</a>
+                <a href="../sign_in_page/index.php">Sign In</a>
              </div>
              <div class="cart">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -75,21 +75,29 @@
                         $email = $_POST['email'];
                     }
                     else{
-                        echo("<p>Email is not a valid email address!!</p>");
+                        echo("<p>Error: Email is not a valid email address!!</p>");
+                        $email = null;
                     }
                     if(validatePass($password)){
                         $password = $_POST['password'];
+                        
                     }
                     else{
-                        echo("<p>Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
+                        echo("<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
+                        $password = null;
                     }
                     if($password == $rpassword){
                         $rpassword = $_POST['rpassword'];
                     }
                     else{
-                        echo "<p>Passwords do not match!!</p>";
+                        echo "<p>Error: Passwords do not match!!</p>";
+                        $rpassword = null;
+
                     }
-                    
+                    if($password != null && $rpassword != null && $email != null){
+                        header("location: index2.php");
+                    }
+                     
 
                 }
                 else{
@@ -125,7 +133,7 @@
     <label for="terms" style="color: var(--secondary-color);">I agree all statements in terms and conditions</label>
 </div>
 <div class="member">
-    <label for="" style="color: var(--secondary-color)">Already a member <a href="../sign_in_page/index.html" style="color: var(--primary-color);">Login</a></label>
+    <label for="" style="color: var(--secondary-color)">Already a member <a href="../sign_in_page/index.php" style="color: var(--primary-color);">Login</a></label>
 </div>
 <div class="btn">
     <input type="submit" name="signup" value="Register">

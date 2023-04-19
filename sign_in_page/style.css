@@ -311,7 +311,7 @@ ul li a:active{
     font-weight: 500;
     pointer-events: none;
     transition: .5s;
-
+    
 }
 .input-box input:focus~label,
 .input-box input:valid~label{

@@ -21,3 +21,20 @@ faTimes.addEventListener("click",()=>{
     cart.classList.toggle("show-cart");
     search.classList.toggle("show-search");
 })
+
+// login page 
+
+const label = document.querySelectorAll(".form-box form .input-box label");
+let valueInput = document.querySelectorAll(".form-box form input");
+label.forEach((item,i)=>{
+    let value = valueInput.value;
+    console.log('hello');
+    let arr = [];
+    arr.push(value);
+    item.addEventListener("onfocusout",()=>{
+        value = "";
+    })
+    item.addEventListener("onfocusin",()=>{
+        valueInput.value = arr[i];
+    })
+})

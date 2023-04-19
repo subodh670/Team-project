@@ -339,7 +339,14 @@ ul li a:active{
 
 
 /* php errors */
-
+@keyframes flashanimate {
+    from {
+        top: 0px;
+    }
+    to{
+        top: 10px;
+    }
+}
 .container-sign form p{
     width: 80%;
     background-color: var(--primary-color);
@@ -348,7 +355,11 @@ ul li a:active{
     padding: 0.5em;
     text-align: center;
     opacity: 0.8;
+    position: relative;
+    animation-name: flashanimate;
+    animation-duration: 0.5s;
 }
+
 /* footer below */
 
 footer{

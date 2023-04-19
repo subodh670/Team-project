@@ -44,14 +44,14 @@
         <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
         <div class="form-box login1">
             <h2>Signin</h2>
-            <form action="#">
+            <form action="#" method="POST">
                 <div class="input-box">
-                    <spam class="icon"><ion-icon name="person-outline"></ion-icon></spam>
+                    <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
                     <input type="email" required>
                     <label>Username</label> 
                 </div>
                 <div class="input-box">
-                    <spam class="icon"><ion-icon name="lock-open-outline"></ion-icon></spam>
+                    <span class="icon"><ion-icon name="lock-open-outline"></ion-icon></span>
                     <input type="password" required>
                     <label>Password</label> 
                 </div>

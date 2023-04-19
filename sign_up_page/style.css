@@ -336,6 +336,19 @@ ul li a:active{
         width: 10%;
     }
 }
+
+
+/* php errors */
+
+.container-sign form p{
+    width: 80%;
+    background-color: var(--primary-color);
+    color: var(--white);
+    margin-bottom: 1em;
+    padding: 0.5em;
+    text-align: center;
+    opacity: 0.8;
+}
 /* footer below */
 
 footer{
@@ -367,5 +380,4 @@ footer{
 .container-footer div h1{
     color: var(--secondary-color);
 }
-
 

@@ -32,7 +32,7 @@
         </ul>
         <div class="login_cart_search">
              <div class="login">
-                <a href="../sign_in_page/index.html">Sign In</a>
+                <a href="../sign_in_page/index.php">Sign In</a>
              </div>
              <div class="cart">
             <a href="../cart_page/index.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>

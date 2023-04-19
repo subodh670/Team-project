@@ -15,7 +15,7 @@
     </div>
     <header>
         <div class="logo">
-            <a href="#">
+            <a href="../landing_page/index.php">
 <img src="../landing_page/image1.png" alt="logo">
 
             </a>
@@ -54,6 +54,51 @@
                 <h1>Sign Up</h1>
             </div>
             <form action="" class="signup" method="POST">
+                <?php
+
+            function validatePass($pass){
+                $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
+                if(preg_match($password_regex, $pass)){
+                    return true;
+                }
+                else{
+                    return false;   
+                }
+            }
+            if(isset($_POST['signup'])){
+                if(!empty($_POST['fullname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword'])){
+                    $fullname = $_POST['fullname'];
+                    $email = $_POST['email'];
+                    $password = $_POST['password'];
+                    $rpassword = $_POST['rpassword'];
+                    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                        $email = $_POST['email'];
+                    }
+                    else{
+                        echo("<p>Email is not a valid email address!!</p>");
+                    }
+                    if(validatePass($password)){
+                        $password = $_POST['password'];
+                    }
+                    else{
+                        echo("<p>Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
+                    }
+                    if($password == $rpassword){
+                        $rpassword = $_POST['rpassword'];
+                    }
+                    else{
+                        echo "<p>Passwords do not match!!</p>";
+                    }
+                    
+
+                }
+                else{
+                    echo "<p>Empty fields!!</p>";
+                }
+            }
+
+
+                ?>
 <div class="fullname">
     <label for="fullname"><i class="fa-regular fa-user"></i></label>
     <input type="text" id="fullname" placeholder="Full Name" name="fullname">

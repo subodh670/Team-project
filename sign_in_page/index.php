@@ -64,7 +64,7 @@
                 
                 <button type="submit" class="btnLogin-popup">Login</button>
                 <div class="login-register">
-                <p>Don't have an account? <a href="../sign_up_page/index.html" class="register-link">Register</a></p>  
+                <p>Don't have an account? <a href="../sign_up_page/index.php" class="register-link">Register</a></p>  
 
                 </div>
             </form>

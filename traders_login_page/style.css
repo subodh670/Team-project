@@ -165,8 +165,11 @@ html{
 .hero-signup{
     max-width: 100%;
 }
+.header-trader form button{
+    padding: 10px 15px;
+}
 .signup-container{
-    width: 90%;
+    width: 88%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -178,7 +181,7 @@ html{
     padding: 0em;
 }
 .signup{
-    width: 30%;
+    width: 40%;
     display: flex;
     justify-content: center;
     align-items: left;
@@ -214,24 +217,40 @@ html{
     color: white;
     transition: 0.4s;
 }
+.phone label{
+    margin-right: 2em;
+    font-size: 1rem;
+    font-weight: bold;
+}
 .otpbtn:hover{
     background-color: #1c711c;
+}
+.bars{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 5px;
+    border-radius: 8px;
 }
 @media(max-width: 992px){
     .signup-container{
         flex-direction: column;
+        width: 85%;
     }
     .our-motto{
         margin-bottom: 4em;
         width: 100%;
     }
     .signup{
-        width: 80%;
+        width: 85%;
     }
     .signup-container{
         padding: 4em 0;
     }
-
+    .header-trader form{
+        width: 70%;
+        border-radius: 8px;
+    }
+    
 }
 
 

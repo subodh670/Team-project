@@ -116,6 +116,39 @@ cartCounter();
 
 // total cost
 
+function totalCost(unique){
+    let total = 0;
+    let checkedItem = document.querySelectorAll(".productselect .orderitem");
+    let prices = document.querySelectorAll(".price--qty .wish_price_del p");
+    let finalExpense = document.querySelectorAll(".container-order .total p");
+    checkedItem.forEach((item,i)=>{
+        
+        // item.addEventListener("change",()=>{
+        //     if(item.checked){
+        //         let cost = Number(prices[i].textContent.substring(5));
+        //         total += cost;
+        //     }
+        //     else{
+        //         let cost = Number(prices[i].textContent.substring(5));
+        //         total -= cost;
+        //     }
+        //     finalExpense[1].textContent = `£${total}`;
+    
+        // })
+        if(item.value === 'on' && unique === 'var1'){
+            console.log(item.value);
+            let cost = Number(prices[i].textContent.substring(5));
+            total += cost;
+        }
+        else if(item.value === 'off' && unique === 'var2'){
+            console.log(item.value);
+            let cost = Number(prices[i].textContent.substring(5));
+            total -= cost;
+        }
+        finalExpense[1].textContent = `£${total}`;
+    })
+}
+
 
 
 

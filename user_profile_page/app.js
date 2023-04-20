@@ -1,4 +1,5 @@
 'use strict';
+const bars = document.querySelector(".bars");
 const contact = document.querySelector('.contact');
 const cat = document.querySelector('.categories');
 const searchBar = document.querySelector(".search-bar");
@@ -21,11 +22,3 @@ faTimes.addEventListener("click",()=>{
     cart.classList.toggle("show-cart");
     search.classList.toggle("show-search");
 })
-
-// login flash erro page 
-
-const errormsg = document.querySelector(".form-box form .flasherror");
-setTimeout(()=>{
-    errormsg.style.display = 'none';
-}, 10000);
-   

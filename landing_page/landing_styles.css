@@ -197,7 +197,7 @@ ul li a:active{
         padding: 0.5em 1.5em;
     }
     .login a {
-        font-size: 16px;
+        font-size: 1rem;
     }
     .logo{
         width: 60%;
@@ -808,6 +808,63 @@ hr{
 .loader{
     margin-top: 2em;
 }
+
+
+/* session userprofile starts */
+
+header .custprofile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 2px solid white;
+    object-fit: cover;
+    object-position: center;
+}
+header .custprofile{
+    width: 20%;
+    background-color: transparent;
+}
+@media (max-width: 500px) {
+    header .custprofile{
+        width: 30%;
+    }
+}
+/* session userprofile ends */
+
+/* session flash message starts */
+
+@keyframes flashanimate {
+    from {
+        top: -30px;
+    }
+    to{
+        top: 30px;
+    }
+}
+
+.flashlogin{
+    width: 100%;
+    margin: 2em auto;
+    position: relative;
+    background-color: var(--white);
+    padding: 1em;
+    animation-name: flashanimate;
+    animation-duration: 0.5s;
+}
+.flashlogin p{
+    width: 50%;
+    text-align: center;
+    color: white;
+    position: absolute;
+    padding: 0.4em;
+    margin: 0 auto;
+    transform: translate(-50%,-50%);
+    left: 55%;
+    top: 90%;
+    background-color: var(--secondary-color);
+    font-size: 1.2rem;
+}
+
 
 /* footer */
 

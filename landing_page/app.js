@@ -128,3 +128,10 @@ const closeCat =  document.querySelector(".close-cat");
 closeCat.addEventListener("click",()=>{
     cat.classList.toggle("show-cat");
 })
+
+
+// flash login page
+const flashlogin = document.querySelector(".flashlogin");
+setTimeout(()=>{
+    flashlogin.style.display = 'none';
+}, 5000);

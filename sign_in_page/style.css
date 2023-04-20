@@ -391,6 +391,28 @@ ul li a:active{
 .login-register p a:hover {
     text-decoration: underline;
 }
+/* error flash messages */
+@keyframes flashanimate {
+    from {
+        top: -20px;
+    }
+    to{
+        top: 20px;
+    }
+}
+.form-box form .flasherror{
+    width: 80%;
+    background-color: var(--primary-color);
+    color: var(--white);
+    margin: 1em auto;
+    padding: 0.5em;
+    text-align: center;
+    opacity: 0.8;
+    position: relative;
+    animation-name: flashanimate;
+    animation-duration: 0.5s;
+    margin-bottom: 0em;
+}
 
 
 /* footer  */

@@ -60,14 +60,15 @@ ul{
 .login_cart_search div{
     margin: 0 0.5em;
 }
-.login{
-    background-color: var(--tertiary-color);
+.login_cart_search .login{
     padding: 0.35em 0.75em;
     border-radius: 8px;
 }
-.login a{
-    text-decoration: none;
+.login_cart_search .login button{
+    background-color: var(--tertiary-color);
     color: var(--white); 
+    padding: 0.35em 0.75em;
+    border-radius: 8px;
 }
 ul li{
     margin: 0 1em;
@@ -245,123 +246,35 @@ ul li a:active{
     }
 }
 /* header finished */
-/* signup form begins */
 
-.wrapper{
-    max-width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 3em;
-}
-.container-sign{
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 1px solid var(--primary-color);
-    padding: 2em;
-    background-color: var(--selected);
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.signup-img{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 2em;
-}
-.signup-img i{
-    font-size: 3em;
-    color: var(--secondary-color);
-}
-.signup-img h1{
-    color: var(--secondary-color);
-}
-.container-sign form{
+.userInfo{
+    width: 90%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-direction: column;
-    width: 100%;
+    margin: 2em auto;
 }
-.container-sign form div{
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    gap: 5%;
-    margin-bottom: 1.5em;
-}
-.container-sign form div i{
-    right: 12%;
-    position: relative;
-}
-.container-sign form div input{
-    width: 60%;
-    height: 40px;
-    font-weight: bolder;
-    color: var(--black);
-}
-.container-sign form .terms input{
-    width: 4%;
-}
-.container-sign form div label i{
-    font-size: 1.5em;
+.userInfo p{
+    font-size: 1.3rem;
     color: var(--secondary-color);
+    width: 30%;
+    text-align: left;
 }
-.container-sign form .btn input{
-    width: 25%;
-    color: black;
-    background-color: var(--white);
-}
-.container-sign form .btn input:hover{
-    border-width: 1px;
-    background-color: var(--tertiary-color);
-    color: white;
-    transition: 0.4s;
-    border-color: var(--black);
-}
-@media(max-width: 500px){
-    .container-sign{
-        min-width: 300px;
-        padding: 0.2em;
-        align-items: center;
-    }
-    .container-sign form div input{
-        width: 70%;
-    }
-    .container-sign form .terms input{
-        width: 10%;
-    }
+.userInfo h1{
+    width: 60%;
+    text-align: left;
 }
 
 
-/* php errors */
-@keyframes flashanimate {
-    from {
-        top: -20px;
-    }
-    to{
-        top: 10px;
-    }
-}
-.container-sign form p{
-    width: 80%;
-    background-color: var(--primary-color);
-    color: var(--white);
-    margin-bottom: 1em;
-    padding: 0.5em;
-    text-align: center;
-    opacity: 0.8;
-    position: relative;
-    animation-name: flashanimate;
-    animation-duration: 0.5s;
-    font-weight: bold;
-}
 
-/* footer below */
+
+
+
+
+
+
+
+/* footer */
 
 footer{
     display: flex;
@@ -392,4 +305,5 @@ footer{
 .container-footer div h1{
     color: var(--secondary-color);
 }
+
 

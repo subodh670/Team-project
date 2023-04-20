@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,24 +50,47 @@
         <div class="form-box login1">
             <h2>Signin</h2>
             <form action="#" method="POST">
+                <?php
+
+                if(isset($_POST['submitlogin'])){
+                    if(!empty($_POST['username']) && !empty($_POST['password'])){
+                        $username = $_POST['username'];
+                        $pass = $_POST['password'];
+                        include("../connectionPHP/connect.php");
+                        $sql = "SELECT CUSERNAME, CPASSWORD FROM customer";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        while($row = oci_fetch_array($array)){
+                            if($username == $row[0] && $pass == $row[1]){
+                                $_SESSION['username'] = $username;
+                                $_SESSION['password'] = $pass;
+                                $_SESSION['guest'] = false;
+                                header("location: ../landing_page/index.php");
+                            }
+                        }
+                        echo "<p class='flasherror'>Login unsuccessfull !!  </p>";
+                    }
+                }
+
+                ?>
                 <div class="input-box">
                     <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-                    <input type="email" required>
+                    <input type="text" name="username" required value="<?php if(isset($_POST['username'])) echo $_POST['username']; ?>">
                     <label>Username</label> 
                 </div>
                 <div class="input-box">
                     <span class="icon"><ion-icon name="lock-open-outline"></ion-icon></span>
-                    <input type="password" required>
+                    <input type="password" name="password" required >
                     <label>Password</label> 
                 </div>
                 <div class="remember-forgot">
-                    <label><input type="checkbox">
+                    <label><input type="checkbox" name="checkremember">
                         Remember me </label>
                         <a href="#">Forgot Password</a>
                     
                 </div>
                 
-                <button type="submit" class="btnLogin-popup">Login</button>
+                <button type="submit" class="btnLogin-popup" name="submitlogin">Login</button>
                 <div class="login-register">
                 <p>Don't have an account? <a href="../sign_up_page/index.php" class="register-link">Register</a></p>  
 

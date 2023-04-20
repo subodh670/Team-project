@@ -31,11 +31,31 @@
             <li><a href="../contact_us/index.html">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
-             <div class="login">
+            <?php
+        session_start();
+        
+        if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+            ?>
+            <div class="custprofile">
+                <a href="../user_profile_page/index.php">
+                    <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg" alt="customer">
+                </a> 
+            </div>
+            <?php
+        }
+        else{
+            ?>
+            <div class="login">
                 <a href="../sign_in_page/index.php">Sign In</a>
              </div>
+            <?php
+        }
+
+
+            ?>
+             
              <div class="cart">
-            <a href="../cart_page/index.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+            <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
              </div>
              <div class="search">
                 <i class="fa fa-search"></i>
@@ -48,6 +68,36 @@
             
         </div>
     </header>
+    <?php
+    if(!isset($_SESSION['guest'])){
+        ?>
+    <div class="flashlogin">
+        <p>Welcome to cleckhfmart Group Website!!</p>
+    </div>
+        <?php
+    }
+    else if(!isset($_SESSION['username']) && !isset($_SESSION['password']) && $_SESSION['guest']==false){
+        ?>
+    <div class="flashlogin">
+        <p style="background-color: var(--primary-color);" >You are not logged in, please sign in !! </p>
+    </div>
+        
+    <?php
+    $_SESSION['guest'] = true;
+
+    }
+    else if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+        ?>
+
+        <div class="flashlogin">
+        <p>Yay! you are logged in as <?php echo $_SESSION['username']; ?></p>
+    </div> 
+        
+        <?php
+    }
+    
+
+    ?>
     <section class="contact show-contact">
         <div class="bars show-bars">
             <i class="fa fa-bars" aria-hidden="true"></i>

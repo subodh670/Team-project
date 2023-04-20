@@ -239,7 +239,6 @@
 
 
 <section class="ordersummary">
-
     <div class="container-order">
 
         <p class="summary-head">Order summary</p>

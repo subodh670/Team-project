@@ -66,8 +66,9 @@
                 }
             }
             if(isset($_POST['signup'])){
-                if(!empty($_POST['fullname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword'])){
-                    $fullname = $_POST['fullname'];
+                if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword'])){
+                    $firstname = $_POST['firstname'];
+                    $lastname = $_POST['secondname'];
                     $email = $_POST['email'];
                     $password = $_POST['password'];
                     $rpassword = $_POST['rpassword'];
@@ -78,14 +79,6 @@
                         echo("<p>Error: Email is not a valid email address!!</p>");
                         $email = null;
                     }
-                    if(validatePass($password)){
-                        $password = $_POST['password'];
-                        
-                    }
-                    else{
-                        echo("<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
-                        $password = null;
-                    }
                     if($password == $rpassword){
                         $rpassword = $_POST['rpassword'];
                     }
@@ -94,11 +87,25 @@
                         $rpassword = null;
 
                     }
+                    if(validatePass($password)){
+                        $password = $_POST['password'];
+                        
+                    }
+                    else{
+                        echo("<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
+                        $password = null;
+                    }
+                    
                     if($password != null && $rpassword != null && $email != null){
+                        include("../connectionPHP/connect.php");
+                        $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD) VALUES('rabin21', 9840987662, 'male', 'jadibuti','$firstname', '$lastname', '$email', '$password')";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        oci_close($conn);
                         header("location: index2.php");
                     }
-                     
-
+                    
+                    
                 }
                 else{
                     echo "<p>Empty fields!!</p>";
@@ -107,9 +114,14 @@
 
 
                 ?>
-<div class="fullname">
-    <label for="fullname"><i class="fa-regular fa-user"></i></label>
-    <input type="text" id="fullname" placeholder="Full Name" name="fullname">
+<div class="fistname">
+    <label for="fistname"><i class="fa-regular fa-user"></i></label>
+    <input type="text" id="firstname" placeholder="First Name" name="firstname">
+    <i class="fa-regular fa-user"></i>
+</div>
+<div class="secondname">
+    <label for="secondname"><i class="fa-regular fa-user"></i></label>
+    <input type="text" id="secondname" placeholder="Second Name" name="secondname">
     <i class="fa-regular fa-user"></i>
 </div>
 <div class="email">
@@ -141,11 +153,6 @@
             </form>
         </div>
     </section>
-
-
-
-
-
 
     <footer>
         <div class="container-footer">

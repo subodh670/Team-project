@@ -57,7 +57,7 @@ session_start();
                         $username = $_POST['username'];
                         $pass = $_POST['password'];
                         include("../connectionPHP/connect.php");
-                        $sql = "SELECT CUSERNAME, CPASSWORD FROM customer";
+                        $sql = "SELECT C_USERNAME, C_PASSWORD FROM CUSTOMER";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         while($row = oci_fetch_array($array)){

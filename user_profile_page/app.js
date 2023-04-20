@@ -22,12 +22,3 @@ faTimes.addEventListener("click",()=>{
     cart.classList.toggle("show-cart");
     search.classList.toggle("show-search");
 })
-
-// flash messages
-
-const errormsg = document.querySelectorAll(".container-sign form p");
-errormsg.forEach((item)=>{
-    setTimeout(()=>{
-        item.style.display = 'none';
-    }, 10000)
-})

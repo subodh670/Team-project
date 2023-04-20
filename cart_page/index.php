@@ -15,20 +15,20 @@
     </div>
     <header>
         <div class="logo">
-            <a href="../landing_page/index.html">
+            <a href="../landing_page/index.php">
 <img src="../landing_page/image1.png" alt="logo">
 
             </a>
         </div>
         <ul>
             <li><a href="#home">Home</a></li>
-            <li><a href="../traders_login_page/index.html">Sale a product</a></li>
+            <li><a href="../traders_login_page/index.php">Sale a product</a></li>
             <li><a href="">Customer Services</a></li>
             <li><a href="../contact_us/index.html">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
              <div class="login">
-                <a href="../sign_in_page/index.html">Sign In</a>
+                <a href="../sign_in_page/index.php">Sign In</a>
              </div>
              <div class="cart">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -88,9 +88,9 @@
                 </div>
             </div>
             <div class="countitem">
-                <button>-</button>
+                <button class="decrease">-</button>
               <input type="text" value="1">
-              <button>+</button>
+              <button class="increase">+</button>
             </div>
         </div>
     </div>
@@ -128,9 +128,9 @@
                 </div>
             </div>
             <div class="countitem">
-                <button>-</button>
+                <button class="decrease">-</button>
                 <input type="text" value="1">
-                <button>+</button>
+                <button class="increase">+</button>
             </div>
         </div>
     </div>
@@ -158,9 +158,9 @@
                 </div>
             </div>
             <div class="countitem">
-                <button>-</button>
+                <button class="decrease">-</button>
               <input type="text" value="1">
-              <button>+</button>
+              <button class="increase">+</button>
             </div>
         </div>
     </div>
@@ -198,9 +198,9 @@
                 </div>
             </div>
             <div class="countitem">
-                <button>-</button>
+                <button class="decrease">-</button>
                 <input type="text" value="1">
-                <button>+</button>
+                <button class="increase">+</button>
             </div>
         </div>
     </div>
@@ -228,9 +228,9 @@
                 </div>
             </div>
             <div class="countitem">
-                <button>-</button>
+                <button class="decrease">-</button>
               <input type="text" value="1">
-              <button>+</button>
+              <button class="increase">+</button>
             </div>
         </div>
     </div>
@@ -239,7 +239,6 @@
 
 
 <section class="ordersummary">
-
     <div class="container-order">
 
         <p class="summary-head">Order summary</p>

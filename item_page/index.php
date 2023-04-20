@@ -17,20 +17,40 @@
     <div class="backdrop"></div>
     <header>
       <div class="logo">
-        <a href="../landing_page/index.html">
+        <a href="../landing_page/index.php">
           <img src="../landing_page/image1.png" alt="logo" />
         </a>
       </div>
       <ul>
-        <li><a href="../landing_page/index.html">Home</a></li>
-        <li><a href="../traders_login_page/index.html">Sale a product</a></li>
+        <li><a href="../landing_page/index.php">Home</a></li>
+        <li><a href="../traders_login_page/index.php">Sale a product</a></li>
         <li><a href="#customer_services">Customer Services</a></li>
         <li><a href="#contact_us">Contact Us</a></li>
       </ul>
       <div class="login_cart_search">
-        <div class="login">
-          <a href="../sign_in_page/index.html">Sign In</a>
-        </div>
+      <?php
+        session_start();
+        
+        if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+            ?>
+            <div class="custprofile">
+                <a href="../user_profile_page/index.php">
+                    <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg" alt="customer">
+                </a> 
+            </div>
+            <?php
+        }
+        else{
+            ?>
+            <div class="login">
+                <a href="../sign_in_page/index.php">Sign In</a>
+             </div>
+            <?php
+        }
+
+
+            ?>
+             
         <div class="cart">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </div>

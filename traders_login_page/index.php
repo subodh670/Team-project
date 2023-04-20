@@ -14,7 +14,7 @@
     </div>
     <section class="header-trader">
             <div class="container">
-                <a href="../landing_page/index.html"><img src="../landing_page/image1.png" alt=""></a>
+                <a href="../landing_page/index.php"><img src="../landing_page/image1.png" alt=""></a>
                 <form class="show-form" method="POST" action="">
                     <h1>Sign In</h1>
                     <div class="mail">

@@ -78,6 +78,77 @@ selectboxMain();
 
 
 
-// select all items
+//  increasing prices
+
+
+function cartCounter(){
+    const increaseCount = document.querySelectorAll(".price--qty .countitem input");
+const increaseValue = document.querySelectorAll('.price--qty .countitem .increase');
+const decreaseValue = document.querySelectorAll('.price--qty .countitem .decrease');
+const priceIncrease = document.querySelectorAll(".price--qty .wish_price_del p");
+let globalPrice = null;
+    increaseValue.forEach((item,i)=>{
+    globalPrice = Number(priceIncrease[i].textContent.substring(5));
+        item.addEventListener("click",(e)=>{
+            increaseCount[i].value = Number(increaseCount[i].value)+1;
+            let price = Number(priceIncrease[i].textContent.substring(5));
+            price += globalPrice;
+            priceIncrease[i].innerHTML =  `Rs: £${price}`;
+        })
+    })
+    decreaseValue.forEach((item,i)=>{
+    globalPrice = Number(priceIncrease[i].textContent.substring(5));
+        item.addEventListener("click",(e)=>{
+            if(Number(increaseCount[i].value) <= 0){
+                increaseCount[i].value = 0;
+            }
+            else{
+                increaseCount[i].value = `${Number(increaseCount[i].value)-1}`;
+                let price = Number(priceIncrease[i].textContent.substring(5));
+            price -= globalPrice;
+            priceIncrease[i].innerHTML =  `Rs: £${price}`;
+            }
+        })
+    })
+}
+cartCounter();
+
+
+// total cost
+
+function totalCost(unique){
+    let total = 0;
+    let checkedItem = document.querySelectorAll(".productselect .orderitem");
+    let prices = document.querySelectorAll(".price--qty .wish_price_del p");
+    let finalExpense = document.querySelectorAll(".container-order .total p");
+    checkedItem.forEach((item,i)=>{
+        
+        // item.addEventListener("change",()=>{
+        //     if(item.checked){
+        //         let cost = Number(prices[i].textContent.substring(5));
+        //         total += cost;
+        //     }
+        //     else{
+        //         let cost = Number(prices[i].textContent.substring(5));
+        //         total -= cost;
+        //     }
+        //     finalExpense[1].textContent = `£${total}`;
+    
+        // })
+        if(item.value === 'on' && unique === 'var1'){
+            console.log(item.value);
+            let cost = Number(prices[i].textContent.substring(5));
+            total += cost;
+        }
+        else if(item.value === 'off' && unique === 'var2'){
+            console.log(item.value);
+            let cost = Number(prices[i].textContent.substring(5));
+            total -= cost;
+        }
+        finalExpense[1].textContent = `£${total}`;
+    })
+}
+
+
 
 

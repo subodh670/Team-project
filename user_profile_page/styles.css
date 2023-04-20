@@ -67,7 +67,7 @@ ul{
 .login_cart_search .login button{
     background-color: var(--tertiary-color);
     color: var(--white); 
-    padding: 0.35em 0.75em;
+    padding: 0.5em 0.75em;
     border-radius: 8px;
 }
 ul li{

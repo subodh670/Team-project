@@ -633,8 +633,29 @@ ul li a:active{
         width: 100%;
     }
 }
-
 /* product description ends */
+
+/* session userprofile starts */
+
+header .custprofile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 2px solid white;
+    object-fit: cover;
+    object-position: center;
+}
+header .custprofile{
+    width: 20%;
+    background-color: transparent;
+}
+@media (max-width: 500px) {
+    header .custprofile{
+        width: 30%;
+    }
+}
+
+
 /* product footer starts */
 
 footer{

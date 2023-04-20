@@ -26,7 +26,7 @@
         </div>
         <ul>
             <li><a href="#home">Home</a></li>
-            <li><a href="../traders_login_page/index.html">Sale a product</a></li>
+            <li><a href="../traders_login_page/index.php">Sale a product</a></li>
             <li><a href="">Customer Services</a></li>
             <li><a href="../contact_us/index.html">Contact Us</a></li>
         </ul>
@@ -81,7 +81,7 @@
     else if(!isset($_SESSION['username']) && !isset($_SESSION['password']) && $_SESSION['guest']==false){
         ?>
     <div class="flashlogin">
-        <p style="background-color: var(--primary-color);" >You are not logged in, please sign in !! </p>
+        <p style="background-color: var(--primary-color);" >You are logged out, please sign in !! </p>
     </div>
         
     <?php

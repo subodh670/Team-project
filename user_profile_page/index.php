@@ -36,7 +36,7 @@ include("../connectionPHP/inc_session.php");
                 <button name='logout'>Log out</button>
              </form>
              <div class="cart">
-            <a href="../cart_page/index.html"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+            <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
              </div>
              <div class="search">
                 <i class="fa fa-search"></i>
@@ -60,7 +60,7 @@ if(isset($_POST['logout'])){
 ?>
 
     <section class="userInfo">
-        <p>Hello, Subodh Acharya</p>
+        <p>Hello, <?php echo $_SESSION['username']; ?></p>
         <h1>Manage my Account</h1>
         <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg" alt="">
     </section>

@@ -28,9 +28,29 @@
         <li><a href="#contact_us">Contact Us</a></li>
       </ul>
       <div class="login_cart_search">
-        <div class="login">
-          <a href="../sign_in_page/index.php">Sign In</a>
-        </div>
+      <?php
+        session_start();
+        
+        if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+            ?>
+            <div class="custprofile">
+                <a href="../user_profile_page/index.php">
+                    <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg" alt="customer">
+                </a> 
+            </div>
+            <?php
+        }
+        else{
+            ?>
+            <div class="login">
+                <a href="../sign_in_page/index.php">Sign In</a>
+             </div>
+            <?php
+        }
+
+
+            ?>
+             
         <div class="cart">
           <i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </div>

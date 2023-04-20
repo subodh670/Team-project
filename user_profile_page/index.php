@@ -54,6 +54,7 @@ if(isset($_POST['logout'])){
     session_destroy();
     session_start();
     $_SESSION['guest'] = false;
+    header("location: ../landing_page/index.php");
 }
 
 ?>
@@ -61,6 +62,7 @@ if(isset($_POST['logout'])){
     <section class="userInfo">
         <p>Hello, Subodh Acharya</p>
         <h1>Manage my Account</h1>
+        <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg" alt="">
     </section>
 
     <section class="profiledash">

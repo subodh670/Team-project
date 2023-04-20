@@ -264,7 +264,12 @@ ul li a:active{
     width: 60%;
     text-align: left;
 }
-
+.userInfo img{
+    width: 15%;
+    height: 15%;
+    border-radius: 10%;
+    border: 2px solid black;
+}
 
 
 

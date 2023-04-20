@@ -64,7 +64,7 @@ session_start();
                             if($username == $row[0] && $pass == $row[1]){
                                 $_SESSION['username'] = $username;
                                 $_SESSION['password'] = $pass;
-                                $_SESSION['guest'] = false;
+                                $_SESSION['guest'] = true;
                                 header("location: ../landing_page/index.php");
                             }
                         }

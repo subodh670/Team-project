@@ -72,9 +72,11 @@
     if(!isset($_SESSION['guest'])){
         ?>
     <div class="flashlogin">
-        <p>Welcome to cleckhfmart Group Website!!</p>
+        <p>Welcome to cleckhfmart Group Ecommerse Website!!</p>
     </div>
+
         <?php
+        $_SESSION['guest'] = 'set';
     }
     else if(!isset($_SESSION['username']) && !isset($_SESSION['password']) && $_SESSION['guest']==false){
         ?>
@@ -86,7 +88,7 @@
     $_SESSION['guest'] = true;
 
     }
-    else if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+    else if(isset($_SESSION['username']) && isset($_SESSION['password']) && $_SESSION['guest'] == true){
         ?>
 
         <div class="flashlogin">
@@ -94,6 +96,7 @@
     </div> 
         
         <?php
+        $_SESSION['guest'] = false;
     }
     
 
@@ -127,7 +130,7 @@
                     <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="">
                     <div class="info-img show-info-img">
                         <h1>Mobile</h1>
-                        <p><a href="../item_page/index.html">View more</a></p>
+                        <p><a href="../item_page/index.php">View more</a></p>
                     </div>
                 </div>
                 <div>

@@ -245,7 +245,44 @@
         <div class="items">
             <h1>Our Products</h1>
             <div class="items-container">
-                <div class="item">
+                <?php
+        include("../connectionPHP/connect.php");
+        $sql = "SELECT * FROM PRODUCT";
+        $array = oci_parse($conn, $sql);
+        oci_execute($array);
+        while($row = oci_fetch_array($array)){
+            $pId = $row[0];
+            $pName = $row[1];
+            $pPrice = $row[2];
+            $pQuantity = $row[3];
+            $pDesc = $row[4];
+            $pCategory = $row[5];
+            $pDiscount = $row[6];
+            $pAllergy = $row[7];
+            $pImage1 = $row[8];
+            $pImage2 = $row[9];
+            $pImage3 = $row[10];
+            ?>
+            <div class="item">
+                    <img src="<?php echo "../productsImage/".$pImage2; ?>" alt="">
+                    <div>
+                        <h1><?php echo $pName; ?></h1>
+                        <p><?php echo $pDesc; ?></p>
+                        <div class="btn_rate">
+                            <div class="btn"><a href="<?php echo "../item_page/index.php/$pId"; ?>">View More</a></div>
+                            <p class="price"><?php echo "£".$pPrice; ?></p>
+
+                        </div>
+                    </div>
+                </div>
+            <?php
+            
+        }
+
+
+
+?>
+                <!-- <div class="item"> 
                     <img src="https://images.unsplash.com/photo-1577401239170-897942555fb3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1828&q=80" alt="">
                     <div>
                         <h1>Noteworthy flagship phone</h1>
@@ -356,7 +393,7 @@
                         </div>
                     </div>
                 </div>
-                
+                -->
 
             </div>
             <div class="loader">

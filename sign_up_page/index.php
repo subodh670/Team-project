@@ -66,7 +66,7 @@ function validatePass($pass){
     }
 }
 if(isset($_POST['signup'])){
-    if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword']) && !empty($_POST['mobile']) && !empty($_POST['address']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['terms'])){
+    if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword']) && !empty($_POST['mobile']) && !empty($_POST['address']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['terms']) &&!empty($_POST['imagetoupload'])){
         $firstname = $_POST['firstname'];
         $lastname = $_POST['secondname'];
         $email = $_POST['email'];
@@ -115,7 +115,7 @@ if(isset($_POST['signup'])){
             $array = oci_parse($conn, $sql);
             oci_execute($array);
             oci_close($conn);
-            header("location: index2.php");
+            header("location: ../sign_in_page/index.php");
         }
         
         

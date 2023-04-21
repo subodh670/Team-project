@@ -38,7 +38,7 @@
             ?>
             <div class="custprofile">
                 <a href="../user_profile_page/index.php">
-                    <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg" alt="customer">
+                    <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="customer">
                 </a> 
             </div>
             <?php

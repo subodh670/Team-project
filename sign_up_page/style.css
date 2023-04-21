@@ -253,10 +253,11 @@ ul li a:active{
     justify-content: center;
     align-items: center;
     padding: 3em;
+    transition: 0.4s;
 }
 .container-sign{
-    width: 100%;
-    max-width: 600px;
+    /* width: 100%; */
+    width: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -279,14 +280,14 @@ ul li a:active{
 .signup-img h1{
     color: var(--secondary-color);
 }
-.container-sign form{
+.container-sign .signup{
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
     width: 100%;
 }
-.container-sign form div{
+.container-sign .signup div{
     display: flex;
     width: 100%;
     justify-content: center;
@@ -294,34 +295,125 @@ ul li a:active{
     gap: 5%;
     margin-bottom: 1.5em;
 }
-.container-sign form div i{
+.container-sign .signup div i{
     right: 12%;
     position: relative;
 }
-.container-sign form div input{
+.container-sign .signup div input{
     width: 60%;
     height: 40px;
     font-weight: bolder;
     color: var(--black);
 }
-.container-sign form .terms input{
+.container-sign .signup .terms input{
     width: 4%;
 }
-.container-sign form div label i{
+.container-sign .signup div label i{
     font-size: 1.5em;
     color: var(--secondary-color);
 }
-.container-sign form .btn input{
+.container-sign .signup .btn input{
     width: 25%;
     color: black;
     background-color: var(--white);
 }
-.container-sign form .btn input:hover{
+.container-sign .signup .btn input:hover{
     border-width: 1px;
     background-color: var(--tertiary-color);
     color: white;
     transition: 0.4s;
     border-color: var(--black);
+}
+.container-sign .signup .btn p{
+    width: 25%;
+    color: black;
+    background-color: var(--white);
+    text-align: center;
+    padding: 0.7em;
+    cursor: pointer;
+
+}
+.container-sign .signup .btn p:hover{
+    border-width: 1px;
+    background-color: var(--tertiary-color);
+    color: white;
+    transition: 0.4s;
+    border-color: var(--black);
+}
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 80%;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+}
+@keyframes animateform2 {
+    from{
+        left: 100%;
+    }
+    to{
+        left: 50%;
+    }
+}
+@keyframes lastanimation2 {
+    from{
+        left: 100%;
+    }
+    to{
+        left: 50%;
+    }
+}
+form .wrapper:nth-child(2){
+    display: none;
+    position: relative;
+    right: -100%;
+    animation-name: animateform2;
+    animation-duration: 0.6s;
+}
+@keyframes animateform1 {
+    from{
+        right: 0%;
+    }
+    to{
+        right: 100%;
+    }
+}
+@keyframes animateform1first {
+    from{
+        right: 100%;
+    }
+    to{
+        right: 0%;
+    }
+}
+@keyframes lastanimation {
+    from{
+        right: 100%;
+    }
+    to{
+        right: 0%;
+    }
+}
+form .animateme{
+    animation-name: lastanimation;
+    animation-duration: 0.6s;
+}
+form .animateme2{
+    animation-name: lastanimation2;
+    animation-duration: 0.6s;
+}
+form .showwrap{
+    position: relative;
+    right: -100%;
+    animation-name: animateform1;
+    animation-duration: 0.6s;
+}
+form .wrapper:nth-child(1){
+    position: relative;
+    /* animation-name: animateform1first; */
+    animation-duration: 0.6s;
 }
 @media(max-width: 500px){
     .container-sign{
@@ -329,10 +421,10 @@ ul li a:active{
         padding: 0.2em;
         align-items: center;
     }
-    .container-sign form div input{
+    .container-sign .signup div input{
         width: 70%;
     }
-    .container-sign form .terms input{
+    .container-sign .signup .terms input{
         width: 10%;
     }
 }
@@ -359,6 +451,27 @@ ul li a:active{
     animation-name: flashanimate;
     animation-duration: 0.5s;
     font-weight: bold;
+}
+.gender select{
+    width: 60%;
+    height: 40px;
+    font-weight: bolder;
+    color: var(--black);
+}
+.gender{
+    width: 100%;
+    margin-right: 2.7em;
+}
+.image1 input{
+    width: 60%;
+    height: 40px;
+    font-weight: bolder;
+    color: var(--black);
+    margin-top: 1.5em;
+
+}
+.image1{
+    width: 100%;
 }
 
 /* footer below */

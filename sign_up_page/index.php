@@ -46,14 +46,61 @@
     </header>
 
 
-
+    <form action="" method="POST" enctype="multipart/form-data">
     <section class="wrapper">
         <div class="container-sign">
             <div class="signup-img">
                 <i class="fa-solid fa-circle-user"></i>
                 <h1>Sign Up</h1>
             </div>
-            <form action="" class="signup" method="POST">
+            <div class="signup">
+                
+<div class="fistname">
+    <label for="fistname"><i class="fa-regular fa-user"></i></label>
+    <input type="text" id="firstname" placeholder="First Name" name="firstname">
+    <i class="fa-regular fa-user"></i>
+</div>
+<div class="secondname">
+    <label for="secondname"><i class="fa-regular fa-user"></i></label>
+    <input type="text" id="secondname" placeholder="Second Name" name="secondname">
+    <i class="fa-regular fa-user"></i>
+</div>
+
+<div class="email">
+    <label for="email"><i class="fa-solid fa-envelope"></i></label>
+    <input type="email" id="email" placeholder="Email" name="email">
+    <i class="fa-solid fa-envelope"></i>
+</div>
+<div class="mobile">
+    <label for="mobile"><i class="fa-regular fa-user"></i></label>
+    <input type="number" id="mobile" placeholder="Mobile Number" name="mobile">
+    <i class="fa-regular fa-user"></i>
+</div>
+<div class="address">
+    <label for="address"><i class="fa-regular fa-user"></i></label>
+    <input type="text" id="address" placeholder="Address" name="address">
+    <i class="fa-regular fa-user"></i>
+</div>
+<div class="gender">
+    <label for="gender"><i class="fa-regular fa-user"></i></label>
+    <select name="gender" id="gender">
+        <option value="male">male</option>
+        <option value="female">female</option>
+    </select>
+</div>
+<div class="btn">
+    <p class="nextpage">Next-></p>
+</div>
+            </div>
+        </div>
+    </section>
+    <section class="wrapper">
+        <div class="container-sign">
+            <div class="signup-img">
+                <i class="fa-solid fa-circle-user"></i>
+                <h1>Sign Up</h1>
+            </div>
+            <div class="signup">
                 <?php
 
             function validatePass($pass){
@@ -66,12 +113,17 @@
                 }
             }
             if(isset($_POST['signup'])){
-                if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword'])){
+                if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword']) && !empty($_POST['mobile']) && !empty($_POST['address']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['terms'])){
                     $firstname = $_POST['firstname'];
                     $lastname = $_POST['secondname'];
                     $email = $_POST['email'];
                     $password = $_POST['password'];
                     $rpassword = $_POST['rpassword'];
+                    $mobile = $_POST['mobile'];
+                    $address = $_POST['address'];
+                    $gender = $_POST['gender'];
+                    $username = $_POST['username'];
+
                     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                         $email = $_POST['email'];
                     }
@@ -95,10 +147,18 @@
                         echo("<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
                         $password = null;
                     }
-                    
-                    if($password != null && $rpassword != null && $email != null){
+                    $target_dir = "../images/";
+                    $target_file = $target_dir . basename($_FILES["imagetoupload"]["name"]);
+                    $image = basename($_FILES["imagetoupload"]["name"]);
+                    if (move_uploaded_file($_FILES["imagetoupload"]["tmp_name"], $target_file)) {
+                        echo "The file ". htmlspecialchars( basename( $_FILES["imagetoupload"]["name"])). " has been uploaded.";
+                      } else {
+                        echo "<p>Error: Sorry, there was an error uploading your file.</p>";
+                        $image = null;
+                      }
+                    if($password != null && $rpassword != null && $email != null && $image != null ){
                         include("../connectionPHP/connect.php");
-                        $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD) VALUES('rabin21', 9840987662, 'male', 'jadibuti','$firstname', '$lastname', '$email', '$password')";
+                        $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD, C_IMAGE) VALUES('$username', '$mobile', '$gender', '$address','$firstname', '$lastname', '$email', '$password', '$image')";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         oci_close($conn);
@@ -114,20 +174,15 @@
 
 
                 ?>
-<div class="fistname">
-    <label for="fistname"><i class="fa-regular fa-user"></i></label>
-    <input type="text" id="firstname" placeholder="First Name" name="firstname">
+<div class="username">
+    <label for="username"><i class="fa-regular fa-user"></i></label>
+    <input type="text" id="username" placeholder="Username" name="username">
     <i class="fa-regular fa-user"></i>
 </div>
-<div class="secondname">
-    <label for="secondname"><i class="fa-regular fa-user"></i></label>
-    <input type="text" id="secondname" placeholder="Second Name" name="secondname">
+<div class="image1">
+    <label for="image"><i class="fa-regular fa-user"></i></label>
+    <input type="file" id="image" name="imagetoupload">
     <i class="fa-regular fa-user"></i>
-</div>
-<div class="email">
-    <label for="email"><i class="fa-solid fa-envelope"></i></label>
-    <input type="email" id="email" placeholder="Email" name="email">
-    <i class="fa-solid fa-envelope"></i>
 </div>
 <div class="password">
     <label for="password"><i class="fa-sharp fa-solid fa-key"></i></label>
@@ -141,18 +196,20 @@
 </div>
 
 <div class="terms">
-    <input type="radio" id="terms" name="terms" checked="unchecked">
+    <input type="radio" id="terms" name="terms">
     <label for="terms" style="color: var(--secondary-color);">I agree all statements in terms and conditions</label>
 </div>
 <div class="member">
     <label for="" style="color: var(--secondary-color)">Already a member <a href="../sign_in_page/index.php" style="color: var(--primary-color);">Login</a></label>
 </div>
 <div class="btn">
+    <p class="nextpage">Previous-></p>
     <input type="submit" name="signup" value="Register">
 </div>
-            </form>
+            </div>
         </div>
     </section>
+    </form>
 
     <footer>
         <div class="container-footer">

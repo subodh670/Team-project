@@ -62,7 +62,7 @@ if(isset($_POST['logout'])){
     <section class="userInfo">
         <p>Hello, <?php echo $_SESSION['username']; ?></p>
         <h1>Manage my Account</h1>
-        <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg" alt="">
+        <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="">
     </section>
 
     <section class="profiledash">

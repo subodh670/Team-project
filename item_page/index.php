@@ -35,7 +35,7 @@
             ?>
             <div class="custprofile">
                 <a href="../user_profile_page/index.php">
-                    <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg" alt="customer">
+                    <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="customer">
                 </a> 
             </div>
             <?php
@@ -66,7 +66,7 @@
     </header>
 
     <section class="breadcrumb">
-            <div> <a href="../landing_page/index.html">Home</a> </div>
+            <div> <a href="../landing_page/index.php">Home</a> </div>
             <i class="fa-solid fa-angle-right"></i>
             <div> <a href="category">Category</a> </div>
             <i class="fa-solid fa-angle-right"></i>

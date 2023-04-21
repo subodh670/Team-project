@@ -111,17 +111,17 @@
     <section class="hero-section">
 <div class="container">
             <div class="categories show-cat">
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.html"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
+                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
                 
                 <div class="close-cat">&times;</div>
             </div>

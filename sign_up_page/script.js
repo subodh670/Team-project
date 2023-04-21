@@ -25,7 +25,7 @@ faTimes.addEventListener("click",()=>{
 
 // flash messages
 
-const errormsg = document.querySelectorAll(".container-sign form p");
+const errormsg = document.querySelectorAll(".container-sign .signup p");
 errormsg.forEach((item)=>{
     setTimeout(()=>{
         item.style.display = 'none';
@@ -35,8 +35,8 @@ errormsg.forEach((item)=>{
 
 // two forms in one
 
-const nextBtn = document.querySelectorAll(".btn p")[0];
-const prevBtn = document.querySelectorAll(".btn p")[1];
+const nextBtn = document.querySelectorAll(".btn h4")[0];
+const prevBtn = document.querySelectorAll(".btn h4")[1];
 const form1 = document.querySelector("form .wrapper:nth-child(1)");
 const form2 = document.querySelector("form .wrapper:nth-child(2)");
 nextBtn.addEventListener("click",()=>{

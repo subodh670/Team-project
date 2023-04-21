@@ -60,7 +60,7 @@ if(isset($_POST['logout'])){
 ?>
 
     <section class="userInfo">
-        <p>Hello, <?php echo $_SESSION['username']; ?></p>
+        <p>Hello, <?php echo $_SESSION['firstname']." ".$_SESSION['lastname']; ?></p>
         <h1>Manage my Account</h1>
         <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="">
     </section>

@@ -57,7 +57,7 @@ session_start();
                         $username = $_POST['username'];
                         $pass = $_POST['password'];
                         include("../connectionPHP/connect.php");
-                        $sql = "SELECT C_USERNAME, C_PASSWORD, C_IMAGE FROM CUSTOMER";
+                        $sql = "SELECT C_USERNAME, C_PASSWORD, C_IMAGE, C_FIRSTNAME, C_LASTNAME FROM CUSTOMER";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         while($row = oci_fetch_array($array)){
@@ -65,6 +65,8 @@ session_start();
                                 $_SESSION['username'] = $username;
                                 $_SESSION['password'] = $pass;
                                 $_SESSION['image'] = $row[2];
+                                $_SESSION['firstname'] = $row[3];
+                                $_SESSION['lastname'] = $row[4];
                                 $_SESSION['guest'] = true;
                                 header("location: ../landing_page/index.php");
                             }

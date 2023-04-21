@@ -54,7 +54,79 @@
                 <h1>Sign Up</h1>
             </div>
             <div class="signup">
-                
+            <?php
+
+function validatePass($pass){
+    $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
+    if(preg_match($password_regex, $pass)){
+        return true;
+    }
+    else{
+        return false;   
+    }
+}
+if(isset($_POST['signup'])){
+    if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword']) && !empty($_POST['mobile']) && !empty($_POST['address']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['terms'])){
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['secondname'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $rpassword = $_POST['rpassword'];
+        $mobile = $_POST['mobile'];
+        $address = $_POST['address'];
+        $gender = $_POST['gender'];
+        $username = $_POST['username'];
+
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $email = $_POST['email'];
+        }
+        else{
+            echo("<p>Error: Email is not a valid email address!!</p>");
+            $email = null;
+        }
+        if($password == $rpassword){
+            $rpassword = $_POST['rpassword'];
+        }
+        else{
+            echo "<p>Error: Passwords do not match!!</p>";
+            $rpassword = null;
+
+        }
+        if(validatePass($password)){
+            $password = $_POST['password'];
+            
+        }
+        else{
+            echo("<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
+            $password = null;
+        }
+        $target_dir = "../images/";
+        $target_file = $target_dir . basename($_FILES["imagetoupload"]["name"]);
+        $image = basename($_FILES["imagetoupload"]["name"]);
+        if (move_uploaded_file($_FILES["imagetoupload"]["tmp_name"], $target_file)) {
+            echo "The file ". htmlspecialchars( basename( $_FILES["imagetoupload"]["name"])). " has been uploaded.";
+          } else {
+            echo "<p>Error: Sorry, there was an error uploading your file.</p>";
+            $image = null;
+          }
+        if($password != null && $rpassword != null && $email != null && $image != null ){
+            include("../connectionPHP/connect.php");
+            $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD, C_IMAGE) VALUES('$username', '$mobile', '$gender', '$address','$firstname', '$lastname', '$email', '$password', '$image')";
+            $array = oci_parse($conn, $sql);
+            oci_execute($array);
+            oci_close($conn);
+            header("location: index2.php");
+        }
+        
+        
+    }
+    else{
+        echo "<p>Empty fields are not allowed!!</p>";
+    }
+}
+
+
+    ?>
 <div class="fistname">
     <label for="fistname"><i class="fa-regular fa-user"></i></label>
     <input type="text" id="firstname" placeholder="First Name" name="firstname">
@@ -89,7 +161,7 @@
     </select>
 </div>
 <div class="btn">
-    <p class="nextpage">Next-></p>
+    <h4 class="nextpage">Next-></h4>
 </div>
             </div>
         </div>
@@ -101,79 +173,7 @@
                 <h1>Sign Up</h1>
             </div>
             <div class="signup">
-                <?php
-
-            function validatePass($pass){
-                $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
-                if(preg_match($password_regex, $pass)){
-                    return true;
-                }
-                else{
-                    return false;   
-                }
-            }
-            if(isset($_POST['signup'])){
-                if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword']) && !empty($_POST['mobile']) && !empty($_POST['address']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['terms'])){
-                    $firstname = $_POST['firstname'];
-                    $lastname = $_POST['secondname'];
-                    $email = $_POST['email'];
-                    $password = $_POST['password'];
-                    $rpassword = $_POST['rpassword'];
-                    $mobile = $_POST['mobile'];
-                    $address = $_POST['address'];
-                    $gender = $_POST['gender'];
-                    $username = $_POST['username'];
-
-                    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                        $email = $_POST['email'];
-                    }
-                    else{
-                        echo("<p>Error: Email is not a valid email address!!</p>");
-                        $email = null;
-                    }
-                    if($password == $rpassword){
-                        $rpassword = $_POST['rpassword'];
-                    }
-                    else{
-                        echo "<p>Error: Passwords do not match!!</p>";
-                        $rpassword = null;
-
-                    }
-                    if(validatePass($password)){
-                        $password = $_POST['password'];
-                        
-                    }
-                    else{
-                        echo("<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
-                        $password = null;
-                    }
-                    $target_dir = "../images/";
-                    $target_file = $target_dir . basename($_FILES["imagetoupload"]["name"]);
-                    $image = basename($_FILES["imagetoupload"]["name"]);
-                    if (move_uploaded_file($_FILES["imagetoupload"]["tmp_name"], $target_file)) {
-                        echo "The file ". htmlspecialchars( basename( $_FILES["imagetoupload"]["name"])). " has been uploaded.";
-                      } else {
-                        echo "<p>Error: Sorry, there was an error uploading your file.</p>";
-                        $image = null;
-                      }
-                    if($password != null && $rpassword != null && $email != null && $image != null ){
-                        include("../connectionPHP/connect.php");
-                        $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD, C_IMAGE) VALUES('$username', '$mobile', '$gender', '$address','$firstname', '$lastname', '$email', '$password', '$image')";
-                        $array = oci_parse($conn, $sql);
-                        oci_execute($array);
-                        oci_close($conn);
-                        header("location: index2.php");
-                    }
-                    
-                    
-                }
-                else{
-                    echo "<p>Empty fields!!</p>";
-                }
-            }
-
-
-                ?>
+                
 <div class="username">
     <label for="username"><i class="fa-regular fa-user"></i></label>
     <input type="text" id="username" placeholder="Username" name="username">
@@ -203,7 +203,7 @@
     <label for="" style="color: var(--secondary-color)">Already a member <a href="../sign_in_page/index.php" style="color: var(--primary-color);">Login</a></label>
 </div>
 <div class="btn">
-    <p class="nextpage">Previous-></p>
+    <h4 class="nextpage"><-Previous</h4>
     <input type="submit" name="signup" value="Register">
 </div>
             </div>

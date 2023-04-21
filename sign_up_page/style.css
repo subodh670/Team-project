@@ -324,22 +324,45 @@ ul li a:active{
     transition: 0.4s;
     border-color: var(--black);
 }
-.container-sign .signup .btn p{
+.container-sign .signup .btn h4{
     width: 25%;
     color: black;
     background-color: var(--white);
     text-align: center;
     padding: 0.7em;
     cursor: pointer;
-
+    font-size: 1rem;
 }
-.container-sign .signup .btn p:hover{
+.container-sign .signup .btn h4:hover{
     border-width: 1px;
     background-color: var(--tertiary-color);
     color: white;
     transition: 0.4s;
     border-color: var(--black);
+    font-size: 1rem;
 }
+.gender select{
+    width: 60%;
+    height: 40px;
+    font-weight: bolder;
+    color: var(--black);
+}
+.gender{
+    width: 100%;
+    margin-right: 2.7em;
+}
+.image1 input{
+    width: 60%;
+    height: 40px;
+    font-weight: bolder;
+    color: var(--black);
+    margin-top: 1.5em;
+
+}
+.image1{
+    width: 100%;
+}
+
 form{
     display: flex;
     justify-content: center;
@@ -349,6 +372,9 @@ form{
     margin: 0 auto;
     position: relative;
 }
+
+/* animate forms begin */
+
 @keyframes animateform2 {
     from{
         left: 100%;
@@ -412,7 +438,6 @@ form .showwrap{
 }
 form .wrapper:nth-child(1){
     position: relative;
-    /* animation-name: animateform1first; */
     animation-duration: 0.6s;
 }
 @media(max-width: 500px){
@@ -430,7 +455,7 @@ form .wrapper:nth-child(1){
 }
 
 
-/* php errors */
+/* php flash errors */
 @keyframes flashanimate {
     from {
         top: -20px;
@@ -439,7 +464,7 @@ form .wrapper:nth-child(1){
         top: 10px;
     }
 }
-.container-sign form p{
+.container-sign .signup p{
     width: 80%;
     background-color: var(--primary-color);
     color: var(--white);
@@ -452,27 +477,7 @@ form .wrapper:nth-child(1){
     animation-duration: 0.5s;
     font-weight: bold;
 }
-.gender select{
-    width: 60%;
-    height: 40px;
-    font-weight: bolder;
-    color: var(--black);
-}
-.gender{
-    width: 100%;
-    margin-right: 2.7em;
-}
-.image1 input{
-    width: 60%;
-    height: 40px;
-    font-weight: bolder;
-    color: var(--black);
-    margin-top: 1.5em;
 
-}
-.image1{
-    width: 100%;
-}
 
 /* footer below */
 

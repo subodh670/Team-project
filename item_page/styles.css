@@ -1,3 +1,4 @@
+@import url(../colors_font/color_font.css);
 .backdrop{
     position: fixed;
     width: 100%;
@@ -16,15 +17,7 @@ html{
     scroll-behavior: smooth;
     max-width: 100%;
 }
-:root{
-    --primary-color: #E93F36;
-    /* --secondary-color: #3F36E9; */
-    --secondary-color: #0C6980;
-    --tertiary-color: #228B22;
-    --white: #ffffff;
-    --black: #000000;
-    --selected: #D9D9D9;
-}
+
 header{
     display: flex;
     background-color: var(--primary-color);
@@ -246,7 +239,7 @@ ul li a:active{
 
 /* breadcrumb */
 .breadcrumb{
-    width: 30%;
+    width: 40%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -257,7 +250,11 @@ ul li a:active{
 .breadcrumb div a{
     text-decoration: none;
 }
-
+@media(max-width:500px){
+    .breadcrumb{
+        width: 80%;
+    }
+}
 
 /* item section */
 /* item main photo section */

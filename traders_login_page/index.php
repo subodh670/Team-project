@@ -20,12 +20,16 @@
                 <form class="show-form" method="POST" action="">
                     <h1>Sign In</h1>
                     <div class="mail">
+                    <div style="display: flex; justify-content: center; align-items:center; gap: 0.2em;">
                         <label for="email"><i class="fa-solid fa-envelope"></i></label>
                         <input type="email" id="email" name="email">
                     </div>
+                    </div>
                     <div class="pass">
+                        <div style="display: flex; justify-content: center; align-items:center; gap: 0.2em;">
                         <label for="password"><i class="fa-solid fa-lock"></i></label>
                         <input type="password" id="password" name="password">
+                        </div>
                             <p><a href="/forgot">Forgot your password</a> </p>
                     </div>
                     <button class="login-btn" name="login">Login</button>
@@ -40,13 +44,13 @@
             <div class="our-motto">
                 <h1>The best #1 platform to sell
                     goods for traders.</h1>
-                <p>create an account in 5 minutes and reach million of customer today</p>
+                <p>create an account in 5 minutes and reach million of customers today</p>
             </div>
             <form class="signup">
                 <h1>Create an account</h1>
-                <div class="phone">
-                    <label for="phone">Phone</label>
-                    <input type="text" id="phone" name="phone" >
+                <div class="email">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" >
                 </div>
                 <div class="otp">
                     <button class="otpbtn" name="otpbtn"    >Send me an otp</button>

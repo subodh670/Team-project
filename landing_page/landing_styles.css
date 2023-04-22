@@ -1,3 +1,4 @@
+@import url(../colors_font/color_font.css);
 .backdrop{
     position: fixed;
     width: 100%;
@@ -19,15 +20,7 @@ html{
     scroll-behavior: smooth;
     max-width: 100%;
 }
-:root{
-    --primary-color: #E93F36;
-    /* --secondary-color: #3F36E9; */
-    --secondary-color: #0C6980;
-    --tertiary-color: #18A558;
-    --white: #ffffff;
-    --black: #000000;
-    --selected: #D9D9D9;
-}
+
 header{
     display: flex;
     background-color: var(--primary-color);
@@ -602,6 +595,9 @@ ul li a:active{
     transition: 0.4s;
 
 }
+.item>div{
+    width: 100%;
+}
 .item img{
     object-fit: cover;
     object-position: center;
@@ -610,6 +606,8 @@ ul li a:active{
 .item div h1{
     font-size: 1.2rem;
     margin-top: 0.4em;
+    width: 100%;
+    text-align: left;
 }
 .item div p{
     font-size: 1rem;

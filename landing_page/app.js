@@ -106,19 +106,9 @@ function slider(count){
 
 //mouse over price
 
-const prices = document.querySelectorAll(".price");
-prices.forEach((price)=>{
-    price.addEventListener("mouseover",(e)=>{
-        price.innerHTML = '£12';
-        price.style.textDecoration = 'line-through';
-    })
-})
-prices.forEach((price)=>{
-    price.addEventListener('mouseout',(e)=>{
-        price.innerHTML = '£10';
-        price.style.textDecoration = 'none';
-    })
-})
+
+
+
 
 
 
@@ -135,3 +125,74 @@ const flashlogin = document.querySelector(".flashlogin");
 setTimeout(()=>{
     flashlogin.style.display = 'none';
 }, 5000);
+
+
+
+// ajax for landing page items
+
+function gettingProduct(sort){
+    let itemsContainer = document.querySelector(".items-container");
+    const xmlhttp = new XMLHttpRequest();
+    let content = itemsContainer.innerHTML;
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            const item = JSON.parse(this.responseText);
+            let pId = item['PRODUCT_ID'];
+            let pName = item['PRODUCT_NAME'];
+            var pPrice = item["PRODUCT_PRICE"];
+            let pQuantity = item['PRODUCT_QUANTITY'];
+            let pDesc = item['PRODUCT_DESCRIPTION'];
+            let pCategory = item['PRODUCT_CATEGORY'];
+            var pDiscount = item['PRODUCT_DISCOUNT'];
+            let pAllergy = item['PRODUCT_ALLERGY_INFORMATION'];
+            let pImage1 = item['PRODUCT_IMAGE1'];
+            let pImage2 = item['PRODUCT_IMAGE2'];
+            let pImage3 = item['PRODUCT_IMAGE3'];
+            let prevPrice = [];    
+            itemsContainer.innerHTML = ""
+            pId.forEach((item,i)=>{
+                prevPrice.push(parseInt(Number(pPrice[i]) + (Number(pDiscount[i])*Number(pPrice[i]))/100));
+                if(sort === null){
+                    console.log("hello");
+                    itemsContainer.innerHTML = content;
+                }
+                else{
+                    itemsContainer.innerHTML += `<div class="item">
+                    <img src="../productsImage/${pImage2[i]}" alt="productImage">
+                    <div>
+                        <h1>${pName[i]}</h1>
+                        <p>${pDesc[i]}</p>
+                        <div class="btn_rate">
+                            <div class="btn"><a href="../item_page/index.php?id=${item}">View More</a></div>
+                            <p class="price">£${pPrice[i]}</p>
+    
+                        </div>
+                    </div>
+                </div>`;
+                }
+            
+            });
+            const prices = document.querySelectorAll(".price");
+            prices.forEach((price,i)=>{
+                price.addEventListener("mouseover",(e)=>{
+                    price.innerHTML = "£"+prevPrice[i];
+                    price.style.textDecoration = 'line-through';
+                })
+            })
+            prices.forEach((price,i)=>{
+                price.addEventListener('mouseout',(e)=>{
+                    price.innerHTML = "£"+pPrice[i];
+                    price.style.textDecoration = 'none';
+                })
+            })
+            
+        }
+    };
+    xmlhttp.open("POST", "product.php", true);
+    xmlhttp.send();
+}
+gettingProduct(null);
+
+
+// price cut discount
+

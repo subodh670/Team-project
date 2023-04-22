@@ -246,6 +246,7 @@
             <h1>Our Products</h1>
             <div class="items-container">
                 <?php
+                
         include("../connectionPHP/connect.php");
         $sql = "SELECT * FROM PRODUCT";
         $array = oci_parse($conn, $sql);
@@ -264,12 +265,12 @@
             $pImage3 = $row[10];
             ?>
             <div class="item">
-                    <img src="<?php echo "../productsImage/".$pImage2; ?>" alt="">
+                    <img src="<?php echo "../productsImage/".$pImage2; ?>" alt="productImage">
                     <div>
                         <h1><?php echo $pName; ?></h1>
                         <p><?php echo $pDesc; ?></p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="<?php echo "../item_page/index.php/$pId"; ?>">View More</a></div>
+                            <div class="btn"><a href="<?php echo "../item_page/index.php?id=$pId"; ?>">View More</a></div>
                             <p class="price"><?php echo "£".$pPrice; ?></p>
 
                         </div>

@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter&family=Questrial&family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
   </head>
   <body>
     <div class="backdrop"></div>
@@ -65,15 +66,7 @@
       </div>
     </header>
 
-    <section class="breadcrumb">
-            <div> <a href="../landing_page/index.php">Home</a> </div>
-            <i class="fa-solid fa-angle-right"></i>
-            <div> <a href="category">Category</a> </div>
-            <i class="fa-solid fa-angle-right"></i>
-            <div> Item</div>
-    </section>
-
-    <section class="main-item">
+    
       <?php
       $id = $_GET['id'];
       include("../connectionPHP/connect.php");
@@ -95,6 +88,15 @@
           $pShop = $row[11];
           $pTrader = $row[12];
           ?>
+          <section class="breadcrumb">
+            <div> <a href="../landing_page/index.php">Home</a> </div>
+            <i class="fa-solid fa-angle-right"></i>
+            <div> <a href=" <?php echo "../category_page/index.php?cat=$pCategory"; ?>" ><?php echo $pCategory; ?></a> </div>
+            <i class="fa-solid fa-angle-right"></i>
+            <div> <?php echo $pName; ?></div>
+    </section>
+
+    <section class="main-item">
 <div class="item-photo">
             <div class="main-img">
                 <img src="<?php echo "../productsImage/".$pImage2;  ?>" alt="">

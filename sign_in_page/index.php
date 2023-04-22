@@ -12,6 +12,8 @@ session_start();
     <title>Website with Login & registaration | Codehal</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../fontawesome-free-6.3.0-web/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <header>

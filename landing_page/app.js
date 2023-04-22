@@ -46,11 +46,11 @@ photos.forEach((item, i)=>{
 })
 
 circle.forEach((item,i)=>{
-    circle[0].style.backgroundColor = '#3F36E9';
+    circle[0].style.backgroundColor = 'var(--secondary-color)';
     item.addEventListener("click",()=>{
         for(let j=0; j<3; j++){
             if(j===i){
-                circle[j].style.backgroundColor = '#3F36E9';
+                circle[j].style.backgroundColor = 'var(--secondary-color)';
             }
             else{
                 circle[j].style.backgroundColor = 'gray';
@@ -205,9 +205,12 @@ viewItemsList.addEventListener("click",()=>{
     viewItemsList.style.color = 'black';
     viewItemsGrid.style.color = 'white';
     itemsContainer.style.flexDirection = 'column';
-    itemSingle.forEach((item1)=>{
-        item1.style.display = 'block';
-    })
+})
+
+
+itemSingle.forEach((item1)=>{
+    item1.style.flexDirection = '';
+    console.log(item1);
 })
 viewItemsGrid.addEventListener("click",()=>{
     itemsContainer.style.flexDirection = 'row';

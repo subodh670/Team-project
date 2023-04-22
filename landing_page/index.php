@@ -11,6 +11,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter&family=Questrial&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -111,18 +117,19 @@
     <section class="hero-section">
 <div class="container">
             <div class="categories show-cat">
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                <a href="../category_page/index.php"><p>lorem ipsum</p></a>
-                
+                <?php
+                include("../connectionPHP/connect.php");
+                $sql = "SELECT * FROM PRODUCT";
+                $array = oci_parse($conn, $sql);
+                oci_execute($array);
+                while($row = oci_fetch_array($array)){
+                    $category = $row[5];
+                    ?>
+                        <a href="<?php  echo "../category_page/index.php?cat=$category" ?>"><p><?php echo $category ?></p></a>
+                    <?php
+                }
+
+                ?>
                 <div class="close-cat">&times;</div>
             </div>
             <div class="slider">
@@ -186,32 +193,32 @@
             <hr>
             <h1>Shops</h1>
             <form class="radio-select" method="POST" action="">
+                <?php
+        $sql = "SELECT * FROM SHOP";
+        $array = oci_parse($conn, $sql);
+        oci_execute($array);
+        while($row = oci_fetch_array($array)){
+            $S_ID = $row[0];
+            $S_Cat = $row[1];
+            $S_Name = $row[2];
+            $Trader_ID = $row[3];
+            ?>
                 <div>
-                    <input type="radio" id="label1" value="label1" name="brand">
-                    <label for="label1">label1</label>
+                    <input type="radio" id="label1" value="<?php echo $S_Name; ?>" name="brand">
+                    <label for="label1"><?php echo $S_Name; ?></label>
                 </div>
-                <div>
-                    <input type="radio" id="label2" value="label2" name="brand">
-                    <label for="label2">label2</label>
-                </div>
-                <div>
-                    <input type="radio" id="label3" value="label3" name="brand">
-                    <label for="label3">label3</label>
-                </div>
-                <div>
-                    <input type="radio" id="label4" value="label4" name="brand">
-                    <label for="label4">label4</label>
-                </div>
-            </form>
-            <hr>
+
+
+            <?php
+        }
+                ?>
+                
             <h1>Date</h1>
-            
-            <form action="">
                 <p>From</p>
                 <input type="date" class="datefrom">
                 <p>To</p>
                 <input type="date" class="dateto">
-                <button>Submit</button>
+                <button name='radiosubmit'>Submit</button>
             </form>
         </div>
         <div class="addfilter">
@@ -243,11 +250,9 @@
 
 
         <div class="items">
-            <h1>Our Products</h1>
+            <h1>Flash Sale </h1>
             <div class="items-container">
                 <?php
-                
-        include("../connectionPHP/connect.php");
         $sql = "SELECT * FROM PRODUCT";
         $array = oci_parse($conn, $sql);
         oci_execute($array);

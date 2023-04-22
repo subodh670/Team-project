@@ -10,7 +10,7 @@ include("../connectionPHP/inc_session.php");
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../fontawesome-free-6.3.0-web/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Questrial&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <title>User profile page</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -26,10 +26,10 @@ include("../connectionPHP/inc_session.php");
             </a>
         </div>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="../traders_login_page/index.html">Sale a product</a></li>
+            <li><a href="../landing_page/index.php">Home</a></li>
+            <li><a href="../traders_login_page/index.php">Sale a product</a></li>
             <li><a href="">Customer Services</a></li>
-            <li><a href="../contact_us/index.html">Contact Us</a></li>
+            <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
              <form class="login" method="POST" action="">

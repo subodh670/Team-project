@@ -184,7 +184,7 @@
                 <p>filter</p>
             </div>
             <hr>
-            <h1>Brands</h1>
+            <h1>Shops</h1>
             <form class="radio-select" method="POST" action="">
                 <div>
                     <input type="radio" id="label1" value="label1" name="brand">
@@ -272,7 +272,6 @@
                         <div class="btn_rate">
                             <div class="btn"><a href="<?php echo "../item_page/index.php?id=$pId"; ?>">View More</a></div>
                             <p class="price"><?php echo "£".$pPrice; ?></p>
-
                         </div>
                     </div>
                 </div>

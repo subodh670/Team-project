@@ -153,7 +153,6 @@ function gettingProduct(sort){
             pId.forEach((item,i)=>{
                 prevPrice.push(parseInt(Number(pPrice[i]) + (Number(pDiscount[i])*Number(pPrice[i]))/100));
                 if(sort === null){
-                    console.log("hello");
                     itemsContainer.innerHTML = content;
                 }
                 else{
@@ -196,3 +195,27 @@ gettingProduct(null);
 
 // price cut discount
 
+const itemsContainer = document.querySelector(".items-container");
+const viewItemsGrid = document.querySelectorAll(".pricefilter .view-range i")[0];
+const viewItemsList = document.querySelectorAll(".pricefilter .view-range i")[1];
+let itemSingle = document.querySelectorAll(".items-container>div");
+
+viewItemsGrid.style.color = 'black';
+viewItemsList.addEventListener("click",()=>{
+    viewItemsList.style.color = 'black';
+    viewItemsGrid.style.color = 'white';
+    itemsContainer.style.flexDirection = 'column';
+    itemSingle.forEach((item1)=>{
+        item1.style.display = 'block';
+    })
+})
+viewItemsGrid.addEventListener("click",()=>{
+    itemsContainer.style.flexDirection = 'row';
+    viewItemsList.style.color = 'white';
+    viewItemsGrid.style.color = 'black';
+    itemSingle.forEach((item)=>{
+        item.style.flexDirection = 'column';
+        item.style.width = '28%';
+        item.style.margin = '0px 0px';
+    })
+})

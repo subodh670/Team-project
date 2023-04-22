@@ -66,7 +66,21 @@ function validatePass($pass){
     }
 }
 if(isset($_POST['signup'])){
-    if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword']) && !empty($_POST['mobile']) && !empty($_POST['address']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['terms']) &&!empty($_POST['imagetoupload'])){
+    echo $_POST['firstname'];
+    echo $_POST['secondname'];
+    echo $_POST['email'];
+    echo $_POST['password'];
+    echo $_POST['rpassword'];
+    echo $_POST['mobile'];
+    echo $_POST['address'];
+    echo $_POST['gender'];
+    echo $_POST['username'];
+    echo $_POST['terms'];
+    echo $_POST['imagetoupload'];
+
+
+    
+    if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword']) && !empty($_POST['mobile']) && !empty($_POST['address']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['terms'])){
         $firstname = $_POST['firstname'];
         $lastname = $_POST['secondname'];
         $email = $_POST['email'];
@@ -140,7 +154,7 @@ if(isset($_POST['signup'])){
 
 <div class="email">
     <label for="email"><i class="fa-solid fa-envelope"></i></label>
-    <input type="email" id="email" placeholder="Email" name="email">
+    <input type="text" id="email" placeholder="Email" name="email">
     <i class="fa-solid fa-envelope"></i>
 </div>
 <div class="mobile">

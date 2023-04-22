@@ -239,18 +239,22 @@ ul li a:active{
 }
 /* header finished */
 /* signup form begins */
-
-.wrapper{
+body>form{
     max-width: 100%;
+}
+.wrapper{
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 3em;
     transition: 0.4s;
+    min-width: 450px;
+    max-width: 700px;
 }
 .container-sign{
-    /* width: 100%; */
-    width: 600px;
+    width: 100%;
+    /* width: 600px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -360,10 +364,15 @@ form{
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 80%;
+    max-width: 100%;
     overflow: hidden;
     margin: 0 auto;
     position: relative;
+}
+@media(max-width: 400px){
+    .wrapper{
+        min-width: 400px;
+    }
 }
 
 /* animate forms begin */

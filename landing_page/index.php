@@ -34,7 +34,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="../traders_login_page/index.php">Sale a product</a></li>
             <li><a href="">Customer Services</a></li>
-            <li><a href="../contact_us/index.html">Contact Us</a></li>
+            <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
             <?php

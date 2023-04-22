@@ -11,7 +11,7 @@
 </head>
 <body>
     <div class="backdrop">
-
+ 
     </div>
     <header>
         <div class="logo">
@@ -46,7 +46,7 @@
     </header>
 
 
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="" method="POST" enctype="multipart/form-data" class='form-signup'>
     <section class="wrapper">
         <div class="container-sign">
             <div class="signup-img">

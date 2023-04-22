@@ -454,6 +454,7 @@ ul li a:active{
     width: 80%;
     justify-content: space-between;
     align-items: center;
+    gap: 2em;
 }
 .pricefilter label{
     color:var(--white);

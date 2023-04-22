@@ -384,6 +384,14 @@ ul li a:active{
 .login-register p a:hover {
     text-decoration: underline;
 }
+@media(max-width: 500px){
+    .wrapper{
+        width: 350px;
+        top: 300px;
+    }
+}
+
+
 /* error flash messages */
 @keyframes flashanimate {
     from {
@@ -444,9 +452,14 @@ footer{
 }
 
 /* media query */
+@media(max-width: 1400px){
+    footer{
+        bottom: -250px;
+    }
+}
 @media(max-width: 1300px){
     footer{
-        bottom: -400px;
+        bottom: -600px;
     }
 }
 
@@ -457,7 +470,7 @@ footer{
 }
 @media(max-width: 900px){
     footer{
-        bottom: -650px;
+        bottom: -750px;
     }
 }
 @media(max-width: 800px){
@@ -470,4 +483,10 @@ footer{
     footer{
         bottom: -800px;
     }
+}
+@media(max-width: 400px){
+    footer{
+        bottom: -950px;
+    }
+
 }

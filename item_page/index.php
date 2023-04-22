@@ -74,21 +74,42 @@
     </section>
 
     <section class="main-item">
-        <div class="item-photo">
+      <?php
+      $id = $_GET['id'];
+      include("../connectionPHP/connect.php");
+      $sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = $id";
+      $array = oci_parse($conn, $sql);
+      oci_execute($array);
+      while($row = oci_fetch_array($array)){
+          $pId = $row[0];
+          $pName = $row[1];
+          $pPrice = $row[2];
+          $pQuantity = $row[3];
+          $pDesc = $row[4];
+          $pCategory = $row[5];
+          $pDiscount = $row[6];
+          $pAllergy = $row[7];
+          $pImage1 = $row[8];
+          $pImage2 = $row[9];
+          $pImage3 = $row[10];
+          $pShop = $row[11];
+          $pTrader = $row[12];
+          ?>
+<div class="item-photo">
             <div class="main-img">
-                <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="">
+                <img src="<?php echo "../productsImage/".$pImage2;  ?>" alt="">
             </div>
             <div class="sub-img">
-                <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="">
+                <img src="<?php echo "../productsImage/".$pImage1;  ?>" alt="">
 
-                <img src="https://images.pexels.com/photos/4909457/pexels-photo-4909457.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="">
+                <img src="<?php echo "../productsImage/".$pImage2;  ?>" alt="">
 
-                <img src="https://images.pexels.com/photos/8804990/pexels-photo-8804990.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="">
+                <img src="<?php echo "../productsImage/".$pImage3;  ?>" alt="">
 
             </div>
         </div>
         <div class="item-cart">
-            <h1>Himalaya Total Care Baby Diapers (Xl) - 74 Counts</h1>
+            <h1><?php echo $pName.",".$pQuantity." counts";  ?></h1>
             <div class="ratings-sec">
                 <div class="ratings">
                     <p><i class="fa-solid fa-star"></i></p>
@@ -100,22 +121,22 @@
                 <p style="margin-right: 2em;">77 ratings</p>
                 <i style="font-size: 1.5rem;" class="fa-regular fa-heart"></i>
             </div>
-            <div class="brand">
-                <p>Brand</p>
-                <p>Himalaya</p>
+            <div class="category">
+                <p>Category</p>
+                <p><?php echo $pCategory;  ?></p>
             </div>
             <hr>
             <div class="cost">
-                 <p>Price £22</p>
+                 <p>Price <?php echo "  £".$pPrice;  ?></p>
                  <div>
-                    <p>£25</p>
-                    <p>-34%</p>
+                    <p><?php $prevPrice = (int)((float)$pPrice + ((float)$pPrice*(float)$pDiscount)/100); echo "£".$prevPrice; ?></p>
+                    <p>offer: <?php echo $pDiscount."%";  ?></p>
                  </div>
             </div>
             <h1>Quantity</h1>
             <div class="quantity">
               <button>-</button>
-              <input type="text" placeholder="1">
+              <input type="text" placeholder="<?php echo $pQuantity;  ?>">
               <button>+</button>
             </div>
             <div class="place-order">
@@ -130,22 +151,48 @@
               <p>Hudderfileds, UK</p>
             </div>
         </div>
+          <?php
+            
+      }
+  
+
+
+
+?>
+        
     </section>
     <section class="productspecification">
       <div class="product_specifyandrating">
         <div class="onlyspecify">
           <h1>Product specification</h1>
           <div class="specification">
-            <p class="specify">specification</p>
-            <p class="specify-info">Brand, Recommended Weight, SKU</p>
+            <p class="specify">Allergy</p>
+            <p class="specify-info"><?php echo $pAllergy;  ?></p>
           </div>
-          <div class="brand-type">
-            <p class="cat-type">Brand</p>
-            <p class="cat-info">Himalaya</p>
+          <div class="shop-type">
+            <?php
+                $sql = "SELECT * FROM SHOP WHERE SHOP_ID = $pShop";
+                $res = oci_parse($conn, $sql);
+                oci_execute($res);
+                $name = oci_fetch_array($res)[2];
+                ?>
+                <p class="cat-type">Shop</p>
+                <p class="cat-info"><?php echo $name;  ?></p>
+                <?php
+            ?>
+           
           </div>
           <div class="trader">
-            <p class="trader-type">Trader</p>
-            <p class="trader-inro">Butchers</p>
+          <?php
+                $sql = "SELECT * FROM TRADER WHERE TRADER_ID = $pTrader";
+                $res = oci_parse($conn, $sql);
+                oci_execute($res);
+                $name1 = oci_fetch_array($res)[8];
+                ?>
+                <p class="trader-type">Trader</p>
+                <p class="trader-inro"><?php echo $name1;  ?></p>
+                <?php
+            ?>
           </div>
         </div>
         <div class="onlyrating">
@@ -186,7 +233,18 @@
       <h1>
         Product Description
       </h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus delectus optio ullam nisi quasi animi ipsum quaerat veniam sequi! Dolorem cupiditate possimus hic ipsa eum? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, eaque dolor neque, harum consequuntur aliquid fugiat nam in sed quis omnis officiis nostrum repellat ullam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui magni facilis repudiandae aspernatur! Voluptatem ullam odio autem rem ipsum nihil illum, consequatur officia dolor id!</p>
+      <?php
+      $sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = $id";
+      $array = oci_parse($conn, $sql);
+      oci_execute($array);
+      while($row = oci_fetch_array($array)){
+          $pDesc = $row[4];
+          ?>
+          <p><?php echo $pDesc; ?></p>
+          <?php
+      }
+        ?>
+
     </section>
     <footer>
       <div class="container-footer">

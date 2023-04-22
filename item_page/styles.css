@@ -342,14 +342,14 @@ ul li a:active{
     align-items: center;
 }
 
-.brand{
+.category{
     display: flex;
     justify-content: left;
     align-items: center;
     gap: 5%;
     margin-bottom: 1.5em;
 }
-.brand p{
+.category p{
     font-size: 1.2em;
 }
 .cost{
@@ -493,14 +493,14 @@ ul li a:active{
 .onlyreview h1{
     font-size: 1.4rem;
 }
-.specification, .brand-type,.trader{
+.specification, .shop-type,.trader{
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5em;
 }
-.specification p:nth-child(1), .brand-type p:nth-child(1), .trader p:nth-child(1){
+.specification p:nth-child(1), .shop-type p:nth-child(1), .trader p:nth-child(1){
     font-weight: bolder;
 }
 .onlyrating{

@@ -1,3 +1,7 @@
+<?php
+session_start();
+$otpvalue = rand(100000,999999);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,21 +69,9 @@ function validatePass($pass){
         return false;   
     }
 }
+
+
 if(isset($_POST['signup'])){
-    echo $_POST['firstname'];
-    echo $_POST['secondname'];
-    echo $_POST['email'];
-    echo $_POST['password'];
-    echo $_POST['rpassword'];
-    echo $_POST['mobile'];
-    echo $_POST['address'];
-    echo $_POST['gender'];
-    echo $_POST['username'];
-    echo $_POST['terms'];
-    echo $_POST['imagetoupload'];
-
-
-    
     if(!empty($_POST['firstname']) && !empty($_POST['secondname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['rpassword']) && !empty($_POST['mobile']) && !empty($_POST['address']) && !empty($_POST['gender']) && !empty($_POST['username']) && !empty($_POST['terms'])){
         $firstname = $_POST['firstname'];
         $lastname = $_POST['secondname'];
@@ -107,8 +99,8 @@ if(isset($_POST['signup'])){
 
         }
         if(validatePass($password)){
-            $password = $_POST['password'];
-            
+            $password = sha1($_POST['password']);
+            echo $password;
         }
         else{
             echo("<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
@@ -123,24 +115,33 @@ if(isset($_POST['signup'])){
             echo "<p>Error: Sorry, there was an error uploading your file.</p>";
             $image = null;
           }
+          
         if($password != null && $rpassword != null && $email != null && $image != null ){
             include("../connectionPHP/connect.php");
-            $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD, C_IMAGE) VALUES('$username', '$mobile', '$gender', '$address','$firstname', '$lastname', '$email', '$password', '$image')";
+            $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD, C_IMAGE, C_REGISTEREDEMAIL,C_OTP) VALUES('$username', '$mobile', '$gender', '$address','$firstname', '$lastname', '$email', '$password', '$image','no', '$otpvalue')";
             $array = oci_parse($conn, $sql);
             oci_execute($array);
             oci_close($conn);
-            header("location: ../sign_in_page/index.php");
+            $_SESSION['email'] = $email;
+            $message = "$firstname, your otp code is ". $otpvalue. " Thanks for joining our website. <br> Please do not share this code with anyone!!";
+
+            if(mail("$email", "OTP code for cleckhfmart", $message)){
+                echo "mail sent";
+            }
+            else{
+                echo "unable to connect";
+            }
+            header("location: ../otp_page/index.php");
+                      
+            }
+            }
+        else{
+            echo "<p>Empty fields are not allowed!!</p>";
         }
-        
-        
     }
-    else{
-        echo "<p>Empty fields are not allowed!!</p>";
-    }
-}
 
 
-    ?>
+                ?>
 <div class="fistname">
     <label for="fistname"><i class="fa-regular fa-user"></i></label>
     <input type="text" id="firstname" placeholder="First Name" name="firstname">
@@ -148,7 +149,7 @@ if(isset($_POST['signup'])){
 </div>
 <div class="secondname">
     <label for="secondname"><i class="fa-regular fa-user"></i></label>
-    <input type="text" id="secondname" placeholder="Second Name" name="secondname">
+    <input type="text" id="secondname" placeholder="Last Name" name="secondname">
     <i class="fa-regular fa-user"></i>
 </div>
 
@@ -158,14 +159,14 @@ if(isset($_POST['signup'])){
     <i class="fa-solid fa-envelope"></i>
 </div>
 <div class="mobile">
-    <label for="mobile"><i class="fa-regular fa-user"></i></label>
+    <label for="mobile"><i class="fa-solid fa-phone"></i></label>
     <input type="number" id="mobile" placeholder="Mobile Number" name="mobile">
-    <i class="fa-regular fa-user"></i>
+    <i class="fa-solid fa-phone"></i>
 </div>
 <div class="address">
-    <label for="address"><i class="fa-regular fa-user"></i></label>
+    <label for="address"><i class="fa-solid fa-house"></i></label>
     <input type="text" id="address" placeholder="Address" name="address">
-    <i class="fa-regular fa-user"></i>
+    <i class="fa-solid fa-house"></i>
 </div>
 <div class="gender">
     <label for="gender"><i class="fa-regular fa-user"></i></label>
@@ -174,6 +175,7 @@ if(isset($_POST['signup'])){
         <option value="female">female</option>
     </select>
 </div>
+
 <div class="btn">
     <h4 class="nextpage">Next-></h4>
 </div>

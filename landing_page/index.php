@@ -42,7 +42,7 @@
         
         if(isset($_SESSION['username']) && isset($_SESSION['password'])){
             ?>
-            <div class="custprofile">
+            <div class="login custprofile">
                 <a href="../user_profile_page/index.php">
                     <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="customer">
                 </a> 

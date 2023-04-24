@@ -16,6 +16,18 @@ session_start();
 
 </head>
 <body>
+<?php
+    if(isset($_POST['verify'])){
+        include("../connectionPHP/connect.php");
+        $email = $_SESSION['email'];
+        $sql = "UPDATE CUSTOMER SET C_REGISTEREDEMAIL = 'yes' WHERE C_EMAILADDRESS = '$email'";
+        $array = oci_parse($conn, $sql);
+        oci_execute($array);
+        session_destroy();
+        session_start();
+    }
+    
+            ?>
     <header>
         <div class="logo">
             <a href="../landing_page/index.php">
@@ -57,20 +69,43 @@ session_start();
                 if(isset($_POST['submitlogin'])){
                     if(!empty($_POST['username']) && !empty($_POST['password'])){
                         $username = $_POST['username'];
-                        $pass = $_POST['password'];
+                        $pass = sha1($_POST['password']);
                         include("../connectionPHP/connect.php");
-                        $sql = "SELECT C_USERNAME, C_PASSWORD, C_IMAGE, C_FIRSTNAME, C_LASTNAME FROM CUSTOMER";
+                        $sql = "SELECT C_USERNAME, C_PASSWORD, C_IMAGE, C_FIRSTNAME, C_LASTNAME, C_REGISTEREDEMAIL, C_EMAILADDRESS FROM CUSTOMER";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         while($row = oci_fetch_array($array)){
                             if($username == $row[0] && $pass == $row[1]){
-                                $_SESSION['username'] = $username;
-                                $_SESSION['password'] = $pass;
-                                $_SESSION['image'] = $row[2];
-                                $_SESSION['firstname'] = $row[3];
-                                $_SESSION['lastname'] = $row[4];
-                                $_SESSION['guest'] = true;
-                                header("location: ../landing_page/index.php");
+                                $status = $row[5];
+                                if($status == 'yes'){
+                                    $_SESSION['username'] = $username;
+                                    $_SESSION['password'] = $pass;
+                                    $_SESSION['image'] = $row[2];
+                                    $_SESSION['firstname'] = $row[3];
+                                    $_SESSION['lastname'] = $row[4];
+                                    $_SESSION['guest'] = true;
+                                    header("location: ../landing_page/index.php");
+                                }
+                                else{
+                                    $otpvalue = rand(100000,999999);
+                                    $_SESSION['email'] = $row[6];
+                                    include("../connectionPHP/connect.php");
+                                    $sql = "UPDATE CUSTOMER SET C_OTP = '$otpvalue' WHERE C_EMAILADDRESS = '$row[6]'";
+                                    $array = oci_parse($conn, $sql);
+                                    oci_execute($array);
+                                    oci_close($conn);
+                                    // $message = "Your otp code is ". $otpvalue;
+                                     $message = "$row[3], your otp is ". $otpvalue. " Thanks for joining our ecommerce website. <br> Please do not share this code with anyone!!";
+
+
+                                    if(mail("$row[6]", "OTP for cleckhfmart", $message)){
+                                        echo "mail sent";
+                                    }
+                                    else{
+                                        echo "unable to connect";
+                                    }
+                                    header("location: ../otp_page/index.php");
+                                }
                             }
                         }
                         echo "<p class='flasherror'>Login unsuccessfull !!  </p>";

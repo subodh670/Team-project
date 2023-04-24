@@ -46,7 +46,7 @@
     <section class="breadcrumb">
             <div> <a href="../landing_page/index.php">Home</a> </div>
             <i class="fa-solid fa-angle-right"></i>
-            <div> <a href="category"><?php echo $_GET['cat']; ?></a> </div>
+            <div> <a href="#"><?php echo $_GET['cat']; ?></a> </div>
     </section>
     <section class="filters-items">
         <div class="filters">

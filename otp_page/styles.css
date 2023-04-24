@@ -1,0 +1,62 @@
+@import url(../colors_font/color_font.css);
+.backdrop{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -9999;
+}
+*{
+    margin: 0;
+    box-sizing: border-box;
+    /* font-family: 'Inter', sans-serif;
+    font-family: 'Questrial', sans-serif;
+    font-family: 'Roboto', sans-serif;       */
+    font-family: 'Montserrat', sans-serif;
+}
+html{
+    font-size: 16px;
+    scroll-behavior: smooth;
+    max-width: 100%;
+} 
+.otp{
+    background-color: var(--selected);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    height: 100vh;
+} 
+.otp form{
+    border: 1px solid black;
+    padding: 0em 3em 3em 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    gap: 1.5em;
+}
+form p{
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+.inputotp{
+    width: 100%;
+}
+.inputotp label{
+    margin-right: 2em;
+}
+.inputotp input{
+    height: 30px;
+    width: 40%;
+}
+.btn button{
+    padding: 0.4em 2em;
+    background-color: var(--secondary-color);
+
+}
+.btn button:hover{
+    background-color: var(--tertiary-color);
+}

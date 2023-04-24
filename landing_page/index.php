@@ -253,7 +253,7 @@
             <h1>Flash Sale </h1>
             <div class="items-container">
                 <?php
-        $sql = "SELECT * FROM PRODUCT";
+        $sql = "SELECT * FROM PRODUCT WHERE ROWNUM <= 9";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
         while($row = oci_fetch_array($array)){

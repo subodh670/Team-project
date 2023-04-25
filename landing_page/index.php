@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team project</title>
+    <title>CleckHFmart homepage</title>
     <link rel="stylesheet" href="../fontawesome-free-6.3.0-web/css/all.min.css">
     <link rel="stylesheet" href="landing_styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -134,23 +134,23 @@
             </div>
             <div class="slider">
                 <div>
-                    <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="">
+                    <img src="../productsimage/cheesecake1.jpg" alt="">
                     <div class="info-img show-info-img">
-                        <h1>Mobile</h1>
+                        <h1>Cheesecake</h1>
                         <p><a href="../item_page/index.php">View more</a></p>
                     </div>
                 </div>
                 <div>
-                    <img src="https://plus.unsplash.com/premium_photo-1674389878114-6a5479a7b86c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" alt="">
+                    <img src="../productsimage/mutton1.jpg" alt="">
                     <div class="info-img show-info-img">
-                        <h1>Camera</h1>
+                        <h1>mutton</h1>
                         <p><a href="">View more</a></p>
                     </div>
                 </div>
                 <div>
-                    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80" alt=""> 
+                    <img src="../productsimage/rockscookies1.jpg" alt=""> 
                     <div class="info-img show-info-img">
-                        <h1>Laptop</h1>
+                        <h1>rockscookies</h1>
                         <p><a href="">View more</a></p>
                     </div>
                 </div>

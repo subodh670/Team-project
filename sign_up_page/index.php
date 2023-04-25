@@ -90,6 +90,24 @@ if(isset($_POST['signup'])){
             echo("<p>Error: Email is not a valid email address!!</p>");
             $email = null;
         }
+        include("../connectionPHP/connect.php");
+        $query = "SELECT C_EMAILADDRESS, C_MOBILE, C_USERNAME FROM CUSTOMER";
+        $arr = oci_parse($conn, $query);
+        oci_execute($arr);
+        while($row = oci_fetch_array($arr)){
+            if($row[0] == $email){
+                echo "<p>An account with the same email address is found!!</p>";
+                $email =  null;
+            }
+            else if($row[1] == $mobile){
+                echo "<p>An account with the same mobile number is found!!</p>";
+                $mobile = null;
+            }
+            else if($row[2] == $username){
+                echo "<p>Your chosen username is not allowed!!</p>";
+                $username = null;
+            }
+        }
         if($password == $rpassword){
             $rpassword = $_POST['rpassword'];
         }
@@ -100,7 +118,6 @@ if(isset($_POST['signup'])){
         }
         if(validatePass($password)){
             $password = sha1($_POST['password']);
-            echo $password;
         }
         else{
             echo("<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>");
@@ -109,15 +126,15 @@ if(isset($_POST['signup'])){
         $target_dir = "../images/";
         $target_file = $target_dir . basename($_FILES["imagetoupload"]["name"]);
         $image = basename($_FILES["imagetoupload"]["name"]);
-        if (move_uploaded_file($_FILES["imagetoupload"]["tmp_name"], $target_file)) {
-            echo "The file ". htmlspecialchars( basename( $_FILES["imagetoupload"]["name"])). " has been uploaded.";
-          } else {
-            echo "<p>Error: Sorry, there was an error uploading your file.</p>";
-            $image = null;
-          }
           
-        if($password != null && $rpassword != null && $email != null && $image != null ){
-            include("../connectionPHP/connect.php");
+        if($password != null && $rpassword != null && $email != null && $image != null && $mobile != null && $username != null){
+           
+            if (move_uploaded_file($_FILES["imagetoupload"]["tmp_name"], $target_file)) {
+                echo "The file ". htmlspecialchars( basename( $_FILES["imagetoupload"]["name"])). " has been uploaded.";
+            } else {
+                echo "<p>Error: Sorry, there was an error uploading your file.</p>";
+                $image = null;
+            }
             $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD, C_IMAGE, C_REGISTEREDEMAIL,C_OTP) VALUES('$username', '$mobile', '$gender', '$address','$firstname', '$lastname', '$email', '$password', '$image','no', '$otpvalue')";
             $array = oci_parse($conn, $sql);
             oci_execute($array);
@@ -125,7 +142,7 @@ if(isset($_POST['signup'])){
             $_SESSION['email'] = $email;
             $message = "$firstname, your otp code is ". $otpvalue. " Thanks for joining our website. <br> Please do not share this code with anyone!!";
 
-            if(mail("$email", "OTP code for cleckhfmart", $message)){
+            if(mail("$email", "OTP code for cleckHFmart", $message)){
                 echo "mail sent";
             }
             else{

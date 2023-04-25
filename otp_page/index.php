@@ -15,7 +15,7 @@ session_start();
     <section class='otp'>
         <form action="../sign_in_page/index.php" method='POST'>
             
-            <p>Check an otp into your email and type here: </p>
+            <p>Check an otp from your mail box and type here: </p>
             <div class='inputotp'>
                 <label for="otp">OTP</label>
                 <input type="text" id='otp' name='otp'>

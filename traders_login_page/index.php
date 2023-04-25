@@ -22,13 +22,13 @@
                     <div class="mail">
                     <div style="display: flex; justify-content: center; align-items:center; gap: 0.2em;">
                         <label for="email"><i class="fa-solid fa-envelope"></i></label>
-                        <input type="email" id="email" name="email">
+                        <input type="email" id="email" name="email" placeholder="email">
                     </div>
                     </div>
                     <div class="pass">
                         <div style="display: flex; justify-content: center; align-items:center; gap: 0.2em;">
                         <label for="password"><i class="fa-solid fa-lock"></i></label>
-                        <input type="password" id="password" name="password">
+                        <input type="password" id="password" name="password" placeholder="password">
                         </div>
                             <p><a href="/forgot">Forgot your password</a> </p>
                     </div>

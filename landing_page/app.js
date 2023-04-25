@@ -99,7 +99,7 @@ function slider(count){
         })
         count++;
         slider(count);
-    },1200 )
+    },5000)
 }
 // slider(count);
 
@@ -196,7 +196,7 @@ function gettingProduct(type, items){
 }
 gettingProduct(null, 9);
 
-// price cut discount
+// price cut discount and viewing items in columnn and rows
 
 const itemsContainer = document.querySelector(".items-container");
 const viewItemsGrid = document.querySelectorAll(".pricefilter .view-range i")[0];

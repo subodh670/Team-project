@@ -9,7 +9,7 @@ let intervalOutput = setInterval(()=>{
     if(count === -1){
         clearInterval(intervalOutput);
     }
-},180000);
+},1000);
 // console.log(count);
 
 

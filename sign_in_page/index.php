@@ -98,7 +98,7 @@ session_start();
                                      $message = "$row[3], your otp is ". $otpvalue. " Thanks for joining our ecommerce website. <br> Please do not share this code with anyone!!";
 
 
-                                    if(mail("$row[6]", "OTP for cleckhfmart", $message)){
+                                    if(mail("$row[6]", "OTP for cleckHFmart", $message)){
                                         echo "mail sent";
                                     }
                                     else{

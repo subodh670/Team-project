@@ -34,3 +34,76 @@ subimg.forEach((img)=>{
         mainImg.src = img.src;
     })
 })
+
+
+
+//Displaying reviews
+
+const ratingsReview = document.querySelector(".ratingsreviews");
+let idPro = document.querySelectorAll(".cust-review input")[0].value;
+let username = document.querySelectorAll(".cust-review input")[1].value;
+
+
+
+function displayReview(){
+    ratingsReview.innerHTML = '<h1>Ratings and Reviews</h1>';
+    let httpXml = new XMLHttpRequest();
+    httpXml.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status==200){
+            let response = JSON.parse(this.responseText);
+            for(let i=0; i<response.length; i++){
+                let username = response[i][0];
+                let image = response[i][1];
+                let review = response[i][2];
+                ratingsReview.innerHTML += `
+                <div class="personandrating">
+                  <div class="person">
+                    <img src="../images/${image}" alt="profileimage">
+                    <p class="username">${username}</p>
+                    <div class="rate_product">
+                      <p><i class="fa-solid fa-star"></i></p>
+                      <p><i class="fa-solid fa-star"></i></p>
+                      <p><i class="fa-solid fa-star"></i></p>
+                      <p><i class="fa-solid fa-star"></i></p>
+                      <p><i class="fa-regular fa-star"></i></p>
+                    </div>
+                  </div>
+          
+                </div>
+                <div class="message">
+                  <p>${review}</p>
+                </div>`;
+            }
+            // console.log(this.responseText);
+        }
+    }
+    httpXml.open("POST", `display_comment.php?pid=${idPro}`, true);
+    httpXml.send();
+
+}
+
+displayReview();
+
+
+// add reviews
+
+const commentBox = document.querySelector(".cust-review textarea");
+const butReview = document.querySelector(".cust-review button");
+
+
+if(butReview != null){
+    butReview.addEventListener("click",()=>{
+        let comment = commentBox.value;
+        let json1 = new XMLHttpRequest();
+        json1.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                comment = "";
+                displayReview();
+            }
+        }
+        json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}`,true);
+        json1.send();
+    })
+}
+
+

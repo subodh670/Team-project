@@ -562,6 +562,11 @@ ul li a:active{
     justify-content: space-between;
     align-items: center;
 }
+.person > img{
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+}
 .person >.username{
     font-weight: bolder;
 }
@@ -605,6 +610,43 @@ ul li a:active{
     }
 }
 /* reviews and ratings ended */
+
+
+
+/* add review in text area */
+.addreview{
+    width: 90%;
+    margin: 0 auto;
+}
+.addreview h1{
+    margin-bottom: 1em;
+}
+.addreview p{
+    margin-bottom: 1em;
+}
+.cust-review{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1em;
+}
+.cust-review button{
+    padding: 0.5em 1em;
+    background-color: var(--tertiary-color);
+    margin-bottom: 1em;
+    transition: 0.4s;
+    color: white;
+}
+.cust-review button:hover{
+    background-color: var(--secondary-color);
+}
+@media(max-width: 600px) {
+    .cust-review textarea{
+        width: 100%;
+    }
+    
+}
 /* product description starts */
 .pro-description{
     width: 90%;

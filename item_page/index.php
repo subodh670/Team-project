@@ -226,11 +226,39 @@
           </div>
         </div>
 
-      </div>
+      </div>  
       <div class="message">
         <p>I like this product so much!!</p>
       </div>
     </section>
+
+    <section class="addreview">
+      <h1>Add review about this product</h1>
+      <div class="cust-review">
+            <input type="hidden" value="<?php echo $_GET['id'];  ?>">
+            <input type="hidden" value="<?php if(isset($_SESSION['username'])) echo $_SESSION['username']; ?>">
+      </div>
+      <?php
+        if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+          ?>
+          <div class='cust-review'>
+            <textarea name="product_review" cols="30" rows="10">Add review</textarea>
+            <input type="hidden" value="<?php echo $_GET['id'];  ?>">
+            <input type="hidden" value="<?php echo $_SESSION['username']; ?>">
+            <button>ADD REVIEW</button>
+          </div>
+
+          <?php
+        }
+        else{
+          ?>
+          <p>Please <a href="../sign_in_page/index.php">login</a> or <a href="../sign_up_page/index.php">signup</a> if you have not registered yet to add review.</p>
+          <?php
+        }
+      ?>
+      
+    </section>
+      
     <section class="pro-description">
       <h1>
         Product Description

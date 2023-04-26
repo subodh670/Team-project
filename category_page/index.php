@@ -55,7 +55,7 @@
                 <p>filter</p>
             </div>
             <hr>
-            <h1>Brands</h1>
+            <h1>Categories</h1>
             <form class="radio-select" method="POST" action="">
             <?php
             include("../connectionPHP/connect.php");

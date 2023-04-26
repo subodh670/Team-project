@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Item Page</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="../fontawesome-free-6.3.0-web/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,7 +111,7 @@
             </div>
         </div>
         <div class="item-cart">
-            <h1><?php echo $pName.",".$pQuantity." counts";  ?></h1>
+            <h1><?php echo $pName.", ".$pQuantity." counts";  ?></h1>
             <div class="ratings-sec">
                 <div class="ratings">
                     <p><i class="fa-solid fa-star"></i></p>
@@ -231,13 +231,13 @@
         <p>I like this product so much!!</p>
       </div>
     </section>
-
-    <section class="addreview">
-      <h1>Add review about this product</h1>
-      <div class="cust-review">
+    <div class="cust-review">
             <input type="hidden" value="<?php echo $_GET['id'];  ?>">
             <input type="hidden" value="<?php if(isset($_SESSION['username'])) echo $_SESSION['username']; ?>">
       </div>
+    <section class="addreview">
+      <h1>Add review about this product</h1>
+      
       <?php
         if(isset($_SESSION['username']) && isset($_SESSION['password'])){
           ?>

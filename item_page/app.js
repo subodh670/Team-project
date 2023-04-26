@@ -52,28 +52,68 @@ function displayReview(){
         if(this.readyState == 4 && this.status==200){
             let response = JSON.parse(this.responseText);
             for(let i=0; i<response.length; i++){
-                let username = response[i][0];
+                let usernameLocal = response[i][0];
                 let image = response[i][1];
                 let review = response[i][2];
-                ratingsReview.innerHTML += `
-                <div class="personandrating">
-                  <div class="person">
-                    <img src="../images/${image}" alt="profileimage">
-                    <p class="username">${username}</p>
-                    <div class="rate_product">
-                      <p><i class="fa-solid fa-star"></i></p>
-                      <p><i class="fa-solid fa-star"></i></p>
-                      <p><i class="fa-solid fa-star"></i></p>
-                      <p><i class="fa-solid fa-star"></i></p>
-                      <p><i class="fa-regular fa-star"></i></p>
+                let reviewID = response[i][3];
+                if(username === usernameLocal){
+                    ratingsReview.innerHTML += ` <div class="personandrating">
+                    <div class="person">
+                      <img src="../images/${image}" alt="profileimage">
+                      <p class="username">${usernameLocal}</p>
+                      <div class="rate_product">
+                        <p><i class="fa-solid fa-star"></i></p>
+                        <p><i class="fa-solid fa-star"></i></p>
+                        <p><i class="fa-solid fa-star"></i></p>
+                        <p><i class="fa-solid fa-star"></i></p>
+                        <p><i class="fa-regular fa-star"></i></p>
+                      </div>
                     </div>
+            
                   </div>
-          
-                </div>
-                <div class="message">
-                  <p>${review}</p>
-                </div>`;
+                  <div class="message">
+                    <p>${review}</p>
+                    <button value="${reviewID}" class="deletereview">Delete</button>
+                  </div>`;
+                }
+                else{
+                    ratingsReview.innerHTML += `
+                    <div class="personandrating">
+                      <div class="person">
+                        <img src="../images/${image}" alt="profileimage">
+                        <p class="username">${usernameLocal}</p>
+                        <div class="rate_product">
+                          <p><i class="fa-solid fa-star"></i></p>
+                          <p><i class="fa-solid fa-star"></i></p>
+                          <p><i class="fa-solid fa-star"></i></p>
+                          <p><i class="fa-solid fa-star"></i></p>
+                          <p><i class="fa-regular fa-star"></i></p>
+                        </div>
+                      </div>
+              
+                    </div>
+                    <div class="message">
+                      <p>${review}</p>
+                    </div>`;
+                }
+                
             }
+            function deleteReview(){
+                const deleteReview = document.querySelectorAll(".message button");
+                deleteReview.forEach((dr)=>{
+                        dr.addEventListener("click",()=>{
+                        let xml = new XMLHttpRequest();
+                        xml.onreadystatechange = function(){
+                            if(this.readyState == 4 && this.status == 200){
+                                displayReview();
+                            }
+                        }
+                        xml.open("POST",`deletereview.php?commentid=${dr.value}`, true);
+                        xml.send();
+                    })
+                })
+            }
+            deleteReview();
             // console.log(this.responseText);
         }
     }
@@ -91,7 +131,7 @@ const commentBox = document.querySelector(".cust-review textarea");
 const butReview = document.querySelector(".cust-review button");
 
 
-if(butReview != null && commentBox.value != null){
+if(butReview != null){
     butReview.addEventListener("click",()=>{
         let comment = commentBox.value;
         let json1 = new XMLHttpRequest();
@@ -101,9 +141,12 @@ if(butReview != null && commentBox.value != null){
                 displayReview();
             }
         }
-        json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}`,true);
+        json1.open("POST", `comment.php?commentid=${comment}&idPro=${idPro}&c_username=${username}`,true);
         json1.send();
     })
 }
 
+
+
+// delete review or comment
 

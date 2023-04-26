@@ -91,7 +91,7 @@ const commentBox = document.querySelector(".cust-review textarea");
 const butReview = document.querySelector(".cust-review button");
 
 
-if(butReview != null){
+if(butReview != null && commentBox.value != null){
     butReview.addEventListener("click",()=>{
         let comment = commentBox.value;
         let json1 = new XMLHttpRequest();

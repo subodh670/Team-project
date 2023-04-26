@@ -620,6 +620,7 @@ ul li a:active{
 }
 .addreview h1{
     margin-bottom: 1em;
+    color: var(--secondary-color);
 }
 .addreview p{
     margin-bottom: 1em;

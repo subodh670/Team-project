@@ -104,6 +104,12 @@ ul li a:active{
 .show-cart, .show-login{
     display: none;
 }
+.cart span{
+    font-size: 1.1rem;
+    position: relative;
+    top: 0.4em;
+    color: white;
+}
 .show-search{
     display: none;
 }

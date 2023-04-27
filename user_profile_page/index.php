@@ -36,7 +36,27 @@ include("../connectionPHP/inc_session.php");
                 <button name='logout'>Log out</button>
              </form>
              <div class="cart">
-            <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+             <?php
+                    include("../connectionPHP/connect.php");
+                    if(isset($_SESSION['username'])){
+                        $username = $_SESSION['username'];
+                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        $totalnum = 0;
+                        while($numbers = oci_fetch_array($array)){
+                            $totalnum += $numbers[0];
+                        }
+                    
+                    }
+                    ?>
+                    <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
+                    <?php
+                    
+                    
+                    
+
+                ?>
              </div>
              <div class="search">
                 <i class="fa fa-search"></i>

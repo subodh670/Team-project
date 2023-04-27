@@ -52,6 +52,12 @@ ul{
 .login_cart_search div{
     margin: 0 0.5em;
 }
+.cart span{
+    font-size: 1.1rem;
+    position: relative;
+    top: 0.4em;
+    color: white;
+}
 .login{
     background-color: var(--tertiary-color);
     padding: 0.35em 0.75em;
@@ -661,6 +667,7 @@ ul li a:active{
 }
 /* product description starts */
 .pro-description{
+    margin-top: 1em;
     width: 90%;
     margin: 0 auto 2em auto;
 }
@@ -736,4 +743,68 @@ footer{
 }
 .container-footer div h1{
     color: var(--secondary-color);
+}
+
+
+
+
+
+/* signin modal open */
+.modal-login{
+    display: flex;
+    position: fixed;
+    height: 60vh;
+    width: 50%;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    z-index: 5;
+    color: white;
+}
+.modal-login>div{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+}
+.modal-login .close-signin{
+    font-size: 5rem;
+    width: 90%;
+    text-align: right;
+    cursor: pointer;
+}
+.modal-login>div div{
+    display: flex;
+    gap: 1em;
+}
+.modal-login>div img{
+    width: 40%;
+    margin-bottom: 0px;
+}
+.modal-login div div button{
+    background-color: transparent;
+    border-width: 0px;
+    font-size: 1.3rem;
+    color: white;
+}
+.modal-login div div button:hover{
+    color: black;
+    text-decoration: underline;
+}
+.modal-login> div div p{
+    font-size: 1.3rem;
+}
+.backdrop{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    backdrop-filter: blur(10px);
+    z-index: 3;
+    display: none;
 }

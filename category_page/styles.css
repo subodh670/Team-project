@@ -57,6 +57,12 @@ ul{
     padding: 0.35em 0.75em;
     border-radius: 8px;
 }
+.cart span{
+    font-size: 1.1rem;
+    position: relative;
+    top: 0.4em;
+    color: white;
+}
 .login a{
     text-decoration: none;
     color: var(--white); 
@@ -238,6 +244,26 @@ ul li a:active{
 }
 /* header below */
 
+/* session userprofile starts */
+
+header .custprofile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 2px solid white;
+    object-fit: cover;
+    object-position: center;
+}
+header .custprofile{
+    width: 20%;
+    background-color: transparent;
+}
+@media (max-width: 500px) {
+    header .custprofile{
+        width: 30%;
+    }
+}
+/* session userprofile ends */
 .contact{
     width: 100%;
     display: flex;

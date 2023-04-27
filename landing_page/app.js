@@ -233,3 +233,4 @@ seeMore.addEventListener("click",()=>{
     noItems += 6;
     gettingProduct("sort", noItems);
 })
+

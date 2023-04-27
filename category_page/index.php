@@ -26,11 +26,50 @@
             <li><a href="#contact_us">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
-             <div class="login">
+        <?php
+        session_start();
+        
+        if(isset($_SESSION['username']) && isset($_SESSION['password'])){
+            ?>
+            <div class="login custprofile">
+                <a href="../user_profile_page/index.php">
+                    <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="customer">
+                </a> 
+            </div>
+            <?php
+        }
+        else{
+            ?>
+            <div class="login">
                 <a href="../sign_in_page/index.php">Sign In</a>
              </div>
+            <?php
+        }
+
+
+            ?>
              <div class="cart">
-            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+             <?php
+                    include("../connectionPHP/connect.php");
+                    if(isset($_SESSION['username'])){
+                        $username = $_SESSION['username'];
+                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        $totalnum = 0;
+                        while($numbers = oci_fetch_array($array)){
+                            $totalnum += $numbers[0];
+                        }
+                    
+                    }
+                    ?>
+                    <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
+                    <?php
+                    
+                    
+                    
+
+                ?>
              </div>
              <div class="search">
                 <i class="fa fa-search"></i>

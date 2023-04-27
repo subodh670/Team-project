@@ -63,6 +63,12 @@ ul{
     padding: 0.5em 0.75em;
     border-radius: 8px;
 }
+.cart span{
+    font-size: 1.1rem;
+    position: relative;
+    top: 0.4em;
+    color: white;
+}
 ul li{
     margin: 0 1em;
     color: var(--white);

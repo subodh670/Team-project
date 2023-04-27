@@ -15,7 +15,35 @@
 
   </head>
   <body>
-    <div class="backdrop"></div>
+    <?php
+    session_start();
+    if(!isset($_SESSION['username'])){
+      ?>
+      <form class='modal-login'>
+        <?php
+          if(isset($_POST['login-redirect'])){
+            header("location: ../sign_in_page/index.php");
+          }
+          else if(isset($_POST['login-redirect'])){
+            header("location: ../sign_up_page/index.php");
+          }
+        ?>
+        <div>
+          <p class="close-signin">&times;</p>
+          <img src="../landing_page/image1.png" alt="">
+          <div>
+            <p>Please</p>
+            <button name="login-redirect">Login</button>
+            <p>or</p>
+            <button name="register-redirect">Register</button>
+            <p>to add products to cart.</p>
+          </div>
+        </div>
+      </form>
+    <div class="backdrop" style="display: block"></div>
+    <?php
+    }
+    ?>
     <header>
       <div class="logo">
         <a href="../landing_page/index.php">
@@ -30,7 +58,7 @@
       </ul>
       <div class="login_cart_search">
       <?php
-        session_start();
+        // session_start();
         
         if(isset($_SESSION['username']) && isset($_SESSION['password'])){
             ?>
@@ -53,7 +81,28 @@
             ?>
              
         <div class="cart">
-          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        <?php
+                    include("../connectionPHP/connect.php");
+                    if(isset($_SESSION['username'])){
+                        $username = $_SESSION['username'];
+                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        $totalnum = 0;
+                        while($numbers = oci_fetch_array($array)){
+                            $totalnum += $numbers[0];
+                        }
+                    
+                    }
+                    ?>
+                    <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
+                    <?php
+                    
+                    
+                    
+
+                ?>
+            
         </div>
         <div class="search">
           <i class="fa fa-search"></i>
@@ -110,7 +159,34 @@
 
             </div>
         </div>
-        <div class="item-cart">
+        <input type="hidden" class="hiddenQ" value="<?php echo "$pQuantity"; ?>">
+
+        <form class="item-cart" method="POST" action="">
+          <?php
+          $quant_Error = "";
+          if(isset($_POST['addtocart']) && isset($_SESSION['username'])){
+            include("../connectionPHP/connect.php");
+            $username = $_SESSION['username'];
+            if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity){
+              $pid = $_GET['id'];
+              // $cid = $_SESSION['cid'];
+              $quantity = $_POST['quantity'];
+              $query = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+              $arr = oci_parse($conn, $query);
+              oci_execute($arr);
+              $cid = oci_fetch_array($arr)[0];
+              $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid','$quantity')";
+              $array = oci_parse($conn, $sql);
+              oci_execute($array);
+              // oci_close($conn);
+              header("location: ../cart_page/index.php");
+            }
+            else{
+              $quant_Error = "Quantity should be between 1 and $pQuantity";
+            }
+            $quant_Error = $quant_Error;
+          }
+          ?>
             <h1><?php echo $pName.", ".$pQuantity." counts";  ?></h1>
             <div class="ratings-sec">
                 <div class="ratings">
@@ -121,7 +197,7 @@
                     <p><i class="fa-regular fa-star"></i></p>
                 </div>
                 <p style="margin-right: 2em;">77 ratings</p>
-                <i style="font-size: 1.5rem;" class="fa-regular fa-heart"></i>
+                <i data-love="1" style="font-size: 1.5rem;" class="fa-regular fa-heart"></i>
             </div>
             <div class="category">
                 <p>Category</p>
@@ -131,26 +207,27 @@
             <div class="cost">
                  <p>Price <?php echo "  £".$pPrice;  ?></p>
                  <div>
-                    <p><?php $prevPrice = (int)((float)$pPrice + ((float)$pPrice*(float)$pDiscount)/100); echo "£".$prevPrice; ?></p>
+                    <p><?php $prevPrice = number_format(((float)$pPrice + ((float)$pPrice*(float)$pDiscount)/100),2); echo "£".$prevPrice; ?></p>
                     <p>offer: <?php echo $pDiscount."%";  ?></p>
                  </div>
             </div>
             <h1>Quantity</h1>
             <div class="quantity">
-              <button>-</button>
-              <input type="text" placeholder="<?php echo $pQuantity;  ?>">
-              <button>+</button>
+              <button type="button" name="inc">-</button>
+              <input type="text" name="quantity" placeholder="<?php echo "1";  ?>">
+              <button type="button" name="inc">+</button>
+              <p class="quantity_error" style="color: red; font-size: 0.8rem; font-weight: bold; margin-top: 1em;"><?php  if(isset($quant_Error)) echo $quant_Error;  ?></p>
             </div>
             <div class="place-order">
-              <button>Buy Now</button>
-              <button>Add to Cart</button>
+              <button name='buynow'>Buy Now</button>
+              <button name="addtocart">Add to Cart</button>
             </div>
-        </div>
+        </form>
         <div class="item-place">
             <h1>Location</h1>
             <div>
               <i class="fa-solid fa-location-dot"></i>
-              <p>Hudderfileds, UK</p>
+              <p>Hudderfields, UK</p>
             </div>
         </div>
           <?php
@@ -233,7 +310,7 @@
     </section>
     <div class="cust-review">
             <input type="hidden" value="<?php echo $_GET['id'];  ?>">
-            <input type="hidden" value="<?php if(isset($_SESSION['username'])) echo $_SESSION['username']; ?>">
+            <input type="hidden" value="<?php if(isset($_SESSION['username'])) echo $_SESSION['username']; else echo null; ?>">
       </div>
     <section class="addreview">
       <h1>Add review about this product</h1>
@@ -309,5 +386,7 @@
       </div>
   </footer>
     <script src="app.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   </body>
 </html>

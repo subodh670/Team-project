@@ -19,23 +19,21 @@
     session_start();
     if(!isset($_SESSION['username'])){
       ?>
-      <form class='modal-login'>
+      <form class='modal-login' action="" method="POST">
         <?php
           if(isset($_POST['login-redirect'])){
             header("location: ../sign_in_page/index.php");
           }
-          else if(isset($_POST['login-redirect'])){
-            header("location: ../sign_up_page/index.php");
-          }
+          // else if(isset($_POST['register-redirect'])){
+          //   header("location: ../sign_up_page/index.php");
+          // }
         ?>
         <div>
           <p class="close-signin">&times;</p>
           <img src="../landing_page/image1.png" alt="">
           <div>
             <p>Please</p>
-            <button name="login-redirect">Login</button>
-            <p>or</p>
-            <button name="register-redirect">Register</button>
+            <button style="text-decoration: underline;" name="login-redirect">Login</button>
             <p>to add products to cart.</p>
           </div>
         </div>
@@ -186,6 +184,11 @@
             }
             $quant_Error = $quant_Error;
           }
+          ?>
+          <?php
+
+//for tomorrow
+
           ?>
             <h1><?php echo $pName.", ".$pQuantity." counts";  ?></h1>
             <div class="ratings-sec">

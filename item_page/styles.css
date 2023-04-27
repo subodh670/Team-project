@@ -750,11 +750,23 @@ footer{
 
 
 /* signin modal open */
+@keyframes animatemodal {
+    from{
+        width: 10%;
+        height: 20vh;
+        color: var(--secondary-color);
+    }
+    to{
+        width: 40%;
+        height: 50vh;
+        color: var(--white);
+    }
+}
 .modal-login{
     display: flex;
     position: fixed;
-    height: 60vh;
-    width: 50%;
+    height: 50vh;
+    width: 40%;
     justify-content: start;
     align-items: center;
     flex-direction: column;
@@ -764,6 +776,9 @@ footer{
     background-color: var(--secondary-color);
     z-index: 5;
     color: white;
+    animation-duration: 0.7s;
+    animation-name: animatemodal;
+    border-radius: 8px;
 }
 .modal-login>div{
     width: 100%;

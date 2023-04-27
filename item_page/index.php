@@ -214,7 +214,7 @@
             <h1>Quantity</h1>
             <div class="quantity">
               <button type="button" name="inc">-</button>
-              <input type="text" name="quantity" placeholder="<?php echo "1";  ?>">
+              <input type="text" name="quantity" placeholder="1" value="1" >
               <button type="button" name="inc">+</button>
               <p class="quantity_error" style="color: red; font-size: 0.8rem; font-weight: bold; margin-top: 1em;"><?php  if(isset($quant_Error)) echo $quant_Error;  ?></p>
             </div>

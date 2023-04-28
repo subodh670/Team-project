@@ -55,7 +55,7 @@ ul{
 .cart span{
     font-size: 1.1rem;
     position: relative;
-    top: 0.4em;
+    /* top: 0.4em; */
     color: white;
 }
 .login{
@@ -195,13 +195,14 @@ ul li a:active{
         padding: 0.5em 1.5em;
     }
     .login a {
-        font-size: 16px;
+        font-size: 1rem;
     }
     .logo{
         width: 60%;
     }
     .login_cart_search{
         width: 60%;
+        justify-content: space-between;
     }
     .search-bar{
         right: 50%
@@ -218,6 +219,17 @@ ul li a:active{
         font-size: 0.7em;
         justify-content: center;
     }
+    .logo{
+        width:25%;
+        display: flex;
+        justify-content: right;
+        align-items: center;
+    }
+    .logo img{
+        width: 70px;
+        height: 40px;
+    }
+
     ul li{
         padding: 0.6em;
     }
@@ -236,13 +248,18 @@ ul li a:active{
         padding: 0.1em 1.5em;
     }
     .login{
-        width: 100px;
+        width: 80px;
+        font-size: 0.5rem;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .search-bar{
         margin-right: 40px;
     }
 }
-
+/* header finished */
 /* breadcrumb */
 .breadcrumb{
     width: 40%;
@@ -793,10 +810,14 @@ footer{
     width: 90%;
     text-align: right;
     cursor: pointer;
+    padding: 0;
 }
 .modal-login>div div{
     display: flex;
     gap: 1em;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 .modal-login>div img{
     width: 40%;
@@ -822,4 +843,62 @@ footer{
     backdrop-filter: blur(10px);
     z-index: 3;
     display: none;
+}
+@media(max-width: 1000px){
+    .modal-login{
+        width: 70%;
+        animation-duration: 0.7s;
+        animation-name: animatemodal;
+        /* min-width: 300px; */
+    }
+    @keyframes animatemodal {
+        from{
+            width: 10%;
+            height: 20vh;
+            color: var(--secondary-color);
+        }
+        to{
+            width: 100%;
+            height: 50vh;
+            color: var(--white);
+        }
+    }
+    .modal-login> div div p{
+        font-size: 1rem;
+    }
+    .modal-login div div button{
+        background-color: transparent;
+        border-width: 0px;
+        font-size: 1rem;
+        color: white;
+    }
+}
+@media(max-width: 600px){
+    .modal-login{
+        width: 30%;
+        animation-duration: 0.7s;
+        animation-name: animatemodal;
+        min-width: 280px;
+    }
+    .modal-login> div div p{
+        font-size: 0.8rem;
+    }
+    @keyframes animatemodal {
+        from{
+            width: 10%;
+            height: 20vh;
+            color: var(--secondary-color);
+        }
+        to{
+            width: 40%;
+            height: 50vh;
+            color: var(--white);
+        }
+    }
+    .modal-login div div button{
+        background-color: transparent;
+        border-width: 0px;
+        font-size: 0.8rem;
+        color: white;
+    }
 }

@@ -424,6 +424,7 @@
             </div>
             <div class="loader">
                 <h1 style="border: 1px solid black; padding: 0.3em 0.8em; background-color: var(--tertiary-color); color: white; cursor: pointer;">See More</h1>
+                <span>0 Items remaining</span>
             </div>
         </div>
     </div>

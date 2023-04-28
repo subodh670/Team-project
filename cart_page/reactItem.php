@@ -3,7 +3,7 @@
 if($_SERVER['REQUEST_METHOD']=='POST'){
     include("../connectionPHP/connect.php");
     $dataLove = $_GET['wish'];
-    $prodId = $_GET['proid'];
+    $prodId = $_GET['proId'];
     $custname = $_GET['custname'];
     $query = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$custname'";
     $arr = oci_parse($conn, $query);
@@ -22,12 +22,4 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         oci_close($conn);
     }
 }
-?>
-
-
-
-
-
-
-
 ?>

@@ -96,7 +96,9 @@
         </div>
 </section>
 
-<section class="oneitemselect">
+<main></main>
+<input class='usernameFind' type="hidden" value="<?php echo $_SESSION['username']?>">
+<!-- <section class="oneitemselect"> 
     <div class="selectone">
         <div class="onlyone">
             <input type="checkbox" name="mainselectall">
@@ -274,7 +276,7 @@
         </div>
     </div>
 </section>
-
+-->
 
 
 <section class="ordersummary">

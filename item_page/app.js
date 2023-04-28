@@ -164,7 +164,6 @@ const backdrop = document.querySelector(".backdrop");
 if(closeSignIn !=null){
 
     closeSignIn.addEventListener("click",()=>{
-        console.log("hello");
         modalLogin.style.display = 'none';
         backdrop.style.display = 'none';
     })

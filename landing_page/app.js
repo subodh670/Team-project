@@ -134,6 +134,8 @@ const seeMore = document.querySelector(".loader h1");
 function gettingProduct(type, items){
     let itemsContainer = document.querySelector(".items-container");
     const xmlhttp = new XMLHttpRequest();
+    const loaderItem = document.querySelector(".loader span");
+    loaderItem.textContent = "";
     let content = itemsContainer.innerHTML;
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -156,10 +158,12 @@ function gettingProduct(type, items){
                     if(type === null){
                         itemsContainer.innerHTML = content;
                     }
-                    else if(type === 'sort'){  
+                    else if(type === 'load'){  
                         if(i===items){
                             break;
                         }
+                        let itemsLength = pId.length - items;
+                        loaderItem.textContent = itemsLength<0 ? `${0} Items remaining` : `${pId.length - items} Items remaining`;
                         itemsContainer.innerHTML += `<div class="item">
                         <img src="../productsImage/${pImage2[i]}" alt="productImage">
                         <div>
@@ -231,6 +235,6 @@ viewItemsGrid.addEventListener("click",()=>{
 let noItems = 9;
 seeMore.addEventListener("click",()=>{
     noItems += 6;
-    gettingProduct("sort", noItems);
+    gettingProduct("load", noItems);
 })
 

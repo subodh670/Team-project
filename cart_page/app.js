@@ -152,3 +152,149 @@ function totalCost(unique){
 
 
 
+// ajax for displaying the saved products in cart
+
+function showingsavedProduct(){
+
+    const oneItemSelect = document.querySelector("main");
+
+    let xml1 = new XMLHttpRequest();
+    xml1.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+           let items = JSON.parse(this.responseText);
+            // console.log(items);
+            items.forEach((item)=>{
+                let productName = item[0];
+                let productPrice = item[1];
+                let shopId = item[2];
+                let shopName = item[3];
+                let productQuantity = item[4];
+                let productCategory = item[5];
+                let productImage2 = item[6];
+                let productId = item[7];
+                let productssaved = item[8];
+                oneItemSelect.innerHTML += `
+                <section class="oneitemselect">
+                <div class="selectone">
+                    <div class="onlyone">
+                        <input type="checkbox" name="mainselectall">
+                        <p>${shopName}</p>
+                    </div>
+                </div>
+                <div class="productselect">
+                    <div class="onlyone">
+                        <input type="checkbox" name="secselect" class="orderitem">
+                        <div class="product-desc">
+                            <img src="../productsImage/${productImage2}" alt="">
+                            <div class="desc">
+                                <p>${productName}</p>
+                                <p>${productCategory}</p>
+                                <p>only ${productQuantity} items remaining</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price--qty">
+                        <div class="wish_price_del">
+                            <p>Rs: £${productPrice}</p>
+                            <div>
+                            <input class="getProid" type='hidden' value=${productId}>
+                                <i data-love='0' class="fa-regular fa-heart"></i>
+                               
+                                <i class="fa-solid fa-trash-can"></i>
+            
+                                
+                            </div>
+                        </div>
+                        <div class="countitem">
+                            <button class="decrease">-</button>
+                          <input type="text" value="${productssaved}">
+                          <button class="increase">+</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+                `;
+            })
+            selectboxMain();
+            cartCounter();
+            heartItem();
+
+        }
+    }
+    xml1.open("POST", "displaySave.php?cid=", true);
+    xml1.send();
+
+}
+showingsavedProduct();
+
+
+function heartItem(){
+    const heartIcon = document.querySelectorAll(".wish_price_del .fa-heart");
+    const proidset = document.querySelectorAll(".getProid");
+    const username = document.querySelector(".usernameFind").value;
+    heartIcon.forEach((icon,i)=>{
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                if(JSON.parse(this.responseText)[0]==0){
+                    icon.classList.add("fa-regular");
+                    icon.classList.remove("fa-solid");
+                    icon.dataset.love = '0';
+
+                }
+                else{
+                    icon.classList.add("fa-solid");
+                    icon.classList.remove("fa-regular");
+                    icon.dataset.love = '1';
+                }
+            }
+
+        }
+        xmlhttp.open("POST",`getReact.php?proId=${proidset[i].value}&username=${username}`, true);
+        xmlhttp.send();
+    })  
+
+
+
+    heartIcon.forEach((icon,i)=>{ 
+        icon.addEventListener("click",()=>{
+            if(icon.classList.contains("fa-regular")) {
+                icon.classList.add("fa-solid");
+                icon.classList.remove("fa-regular");
+                icon.dataset.love = '1';
+            } 
+            else if(icon.classList.contains("fa-solid")) {
+                icon.classList.add("fa-regular");
+                icon.classList.remove("fa-solid");
+                icon.dataset.love = '0';
+
+            }
+            let reactXml = new XMLHttpRequest();
+            reactXml.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    console.log(this.responseText);
+                }
+            }
+            reactXml.open("POST", `reactItem.php?proId=${proidset[i].value}&wish=${icon.dataset.love}&custname=${username}`, true);
+            reactXml.send();  
+        })
+    })
+  
+    
+      
+}
+function deleteCartItem(){
+    const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
+    trashIcon.forEach((trash,i)=>{
+        trash.addEventListener("click",()=>{
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = () =>{
+                if(this.readyState == 4 && this.status == 200){
+
+                }
+            }
+            xml.open("POST", "deletCartItem.php", true);
+            xml.send();
+        })
+    })
+}

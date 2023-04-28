@@ -163,7 +163,7 @@
           <?php
           $quant_Error = "";
           if(isset($_POST['addtocart']) && isset($_SESSION['username'])){
-            include("../connectionPHP/connect.php");
+            // include("../connectionPHP/connect.php");
             $username = $_SESSION['username'];
             if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity){
               $pid = $_GET['id'];
@@ -176,8 +176,16 @@
               $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid','$quantity')";
               $array = oci_parse($conn, $sql);
               oci_execute($array);
-              // oci_close($conn);
+              $remainingQuant = $pQuantity - intval($_POST['quantity']);
+              echo $remainingQuant;
+              $sql1 = "UPDATE PRODUCT SET PRODUCT_QUANTITY = $remainingQuant WHERE PRODUCT_ID = $pid";
+              $array2 = oci_parse($conn, $sql1);
+              oci_execute($array2);
+              oci_close($conn);
               header("location: ../cart_page/index.php");
+            }
+            else if($pQuantity == 0){
+              $quant_Error = "Item is not in stock";
             }
             else{
               $quant_Error = "Quantity should be between 1 and $pQuantity";

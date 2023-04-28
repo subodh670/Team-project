@@ -185,7 +185,7 @@
               header("location: ../cart_page/index.php");
             }
             else if($pQuantity == 0){
-              $quant_Error = "Item is not in stock";
+              $quant_Error = "Item out of stock";
             }
             else{
               $quant_Error = "Quantity should be between 1 and $pQuantity";

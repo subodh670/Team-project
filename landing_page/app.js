@@ -135,6 +135,7 @@ function gettingProduct(type, items){
     let itemsContainer = document.querySelector(".items-container");
     const xmlhttp = new XMLHttpRequest();
     const loaderItem = document.querySelector(".loader span");
+    const loaderBtn = document.querySelector(".loader h1");
     loaderItem.textContent = "";
     let content = itemsContainer.innerHTML;
     xmlhttp.onreadystatechange = function() {
@@ -164,6 +165,9 @@ function gettingProduct(type, items){
                         }
                         let itemsLength = pId.length - items;
                         loaderItem.textContent = itemsLength<0 ? `${0} Items remaining` : `${pId.length - items} Items remaining`;
+                        if(itemsLength<0){
+                            loaderBtn.style.display = 'none';
+                        }
                         itemsContainer.innerHTML += `<div class="item">
                         <img src="../productsImage/${pImage2[i]}" alt="productImage">
                         <div>

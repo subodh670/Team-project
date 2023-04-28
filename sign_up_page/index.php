@@ -25,10 +25,10 @@ $otpvalue = rand(100000,999999);
             </a>
         </div>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="../traders_login_page/index.html">Sale a product</a></li>
+            <li><a href="../landing_page/index.php">Home</a></li>
+            <li><a href="../traders_login_page/index.php">Sale a product</a></li>
             <li><a href="#customer_services">Customer Services</a></li>
-            <li><a href="#contact_us">Contact Us</a></li>
+            <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
              <div class="login">
@@ -166,28 +166,28 @@ if(isset($_POST['signup'])){
 </div>
 <div class="secondname">
     <label for="secondname"><i class="fa-regular fa-user"></i></label>
-    <input type="text" id="secondname" placeholder="Last Name" name="secondname">
+    <input type="text" id="secondname" placeholder="Last Name" name="secondname" value="<?php if(isset($_POST['secondname'])) echo $_POST['secondname']; ?>">
     <i class="fa-regular fa-user"></i>
 </div>
 
 <div class="email">
     <label for="email"><i class="fa-solid fa-envelope"></i></label>
-    <input type="text" id="email" placeholder="Email" name="email">
+    <input type="text" id="email" placeholder="Email" name="email" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>">
     <i class="fa-solid fa-envelope"></i>
 </div>
 <div class="mobile">
     <label for="mobile"><i class="fa-solid fa-phone"></i></label>
-    <input type="number" id="mobile" placeholder="Mobile Number" name="mobile">
+    <input type="number" id="mobile" placeholder="Mobile Number" name="mobile" value="<?php if(isset($_POST['mobile'])) echo $_POST['mobile']; ?>">
     <i class="fa-solid fa-phone"></i>
 </div>
 <div class="address">
     <label for="address"><i class="fa-solid fa-house"></i></label>
-    <input type="text" id="address" placeholder="Address" name="address">
+    <input type="text" id="address" placeholder="Address" name="address" value="<?php if(isset($_POST['address'])) echo $_POST['address']; ?>">
     <i class="fa-solid fa-house"></i>
 </div>
 <div class="gender">
     <label for="gender"><i class="fa-regular fa-user"></i></label>
-    <select name="gender" id="gender">
+    <select name="gender" id="gender" value="<?php if(isset($_POST['gender'])) echo $_POST['gender']; ?>">
         <option value="male">male</option>
         <option value="female">female</option>
     </select>
@@ -209,7 +209,7 @@ if(isset($_POST['signup'])){
                 
 <div class="username">
     <label for="username"><i class="fa-regular fa-user"></i></label>
-    <input type="text" id="username" placeholder="Username" name="username">
+    <input type="text" id="username" placeholder="Username" name="username" value="<?php if(isset($_POST['username'])) echo $_POST['username']; ?>">
     <i class="fa-regular fa-user"></i>
 </div>
 <div class="image1">

@@ -336,6 +336,24 @@
       </div>
       
     </section>
+
+    <section class="pro-description">
+      <h1>
+        Product Description
+      </h1>
+      <?php
+      $sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = $id";
+      $array = oci_parse($conn, $sql);
+      oci_execute($array);
+      while($row = oci_fetch_array($array)){
+          $pDesc = $row[4];
+          ?>
+          <p><?php echo $pDesc; ?></p>
+          <?php
+      }
+        ?>
+
+    </section>
       
     <section class="ratingsreviews">
       <h1>Ratings and Reviews</h1>
@@ -385,23 +403,7 @@
       
     </section>
       
-    <section class="pro-description">
-      <h1>
-        Product Description
-      </h1>
-      <?php
-      $sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = $id";
-      $array = oci_parse($conn, $sql);
-      oci_execute($array);
-      while($row = oci_fetch_array($array)){
-          $pDesc = $row[4];
-          ?>
-          <p><?php echo $pDesc; ?></p>
-          <?php
-      }
-        ?>
 
-    </section>
     <footer>
       <div class="container-footer">
           <div class="footer-item1">

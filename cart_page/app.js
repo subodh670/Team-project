@@ -279,22 +279,22 @@ function heartItem(){
             reactXml.send();  
         })
     })
-  
-    
-      
-}
-function deleteCartItem(){
     const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
     trashIcon.forEach((trash,i)=>{
         trash.addEventListener("click",()=>{
             let xml = new XMLHttpRequest();
             xml.onreadystatechange = () =>{
                 if(this.readyState == 4 && this.status == 200){
-
+                    console.log(this.responseText);
                 }
             }
-            xml.open("POST", "deletCartItem.php", true);
+            xml.open("POST", `deletCartItem.php?cname=${username}&pid=${proidset[i].value}`, true);
             xml.send();
         })
     })
+    
+      
+}
+function deleteCartItem(){
+    
 }

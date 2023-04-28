@@ -127,7 +127,7 @@ function displayReview(){
 displayReview();
 
 
-// add reviews
+// add reviews or comment
 
 const commentBox = document.querySelector(".cust-review textarea");
 const butReview = document.querySelector(".cust-review button");
@@ -143,7 +143,7 @@ if(butReview != null){
                 displayReview();
             }
         }
-        json1.open("POST", `comment.php?commentid=${comment}&idPro=${idPro}&c_username=${username}`,true);
+        json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}`,true);
         json1.send();
     })
 }

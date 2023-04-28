@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $arr1 = oci_parse($conn, $sql1);
     oci_execute($arr1);
     $customer_id = oci_fetch_array($arr1)[0];
-    $comment = $_GET['commentid'];
+    $comment = $_GET['comment'];
     $sql2 = "INSERT INTO REVIEW(REVIEW_ID,CREVIEW, PRODUCT_ID, C_ID, TRADER_ID) VALUES('','$comment', $idpro, $customer_id, $trader_id)";
     $arr2 = oci_parse($conn, $sql2);
     oci_execute($arr2);

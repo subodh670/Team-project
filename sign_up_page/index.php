@@ -161,7 +161,7 @@ if(isset($_POST['signup'])){
                 ?>
 <div class="fistname">
     <label for="fistname"><i class="fa-regular fa-user"></i></label>
-    <input type="text" id="firstname" placeholder="First Name" name="firstname">
+    <input type="text" id="firstname" placeholder="First Name" name="firstname" value="<?php if(isset($_POST['firstname'])) echo $_POST['firstname']; ?>">
     <i class="fa-regular fa-user"></i>
 </div>
 <div class="secondname">

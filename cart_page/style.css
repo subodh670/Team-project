@@ -388,6 +388,12 @@ header .custprofile{
     align-items: center;
     gap: 30%;
 }
+.wish_price_del .fa-trash-can{
+    color: var(--secondary-color);
+}
+.wish_price_del .fa-trash-can:hover{
+    color: var(--primary-color);
+}
 .price--qty .countitem input{
     width: 30%;
     height: 30px;

@@ -51,6 +51,7 @@ function displayReview(){
     httpXml.onreadystatechange = function(){
         if(this.readyState == 4 && this.status==200){
             let response = JSON.parse(this.responseText);
+            // console.log(response);
             for(let i=0; i<response.length; i++){
                 let usernameLocal = response[i][0];
                 let image = response[i][1];
@@ -188,7 +189,7 @@ function increaseQuant(){
     // console.log(butInc);
     butInc.onclick = () =>{
         value++;
-        console.log(hiddenQuantity);
+        // console.log(hiddenQuantity);
         inputValue.value = value;
         if(value >= hiddenQuantity){
             inputValue.value = hiddenQuantity;

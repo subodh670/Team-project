@@ -215,13 +215,35 @@ function showingsavedProduct(){
             </section>
                 `;
             })
+            trashCart();
             selectboxMain();
             cartCounter();
             heartItem();
+            function trashCart(){
+                const proidset = document.querySelectorAll(".getProid");
+                const username = document.querySelector(".usernameFind").value;
+                const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
+                trashIcon.forEach((trash,i)=>{
+                    trash.addEventListener("click",()=>{
+                        let xml = new XMLHttpRequest();
+                        xml.onreadystatechange = function(){
+                            if(this.readyState == 4 && this.status == 200){
+                                location.reload(); 
+                                // console.log(this.responseText);
+                            }
+                        }
+                        xml.open("POST", `deleteCartItem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}`, true);
+                        xml.send();
+                        
+                    })
+                })
+                 
+            }
+            
 
         }
     }
-    xml1.open("POST", "displaySave.php?cid=", true);
+    xml1.open("POST", "displaySave.php", true);
     xml1.send();
 
 }
@@ -253,9 +275,6 @@ function heartItem(){
         xmlhttp.open("POST",`getReact.php?proId=${proidset[i].value}&username=${username}`, true);
         xmlhttp.send();
     })  
-
-
-
     heartIcon.forEach((icon,i)=>{ 
         icon.addEventListener("click",()=>{
             if(icon.classList.contains("fa-regular")) {
@@ -278,23 +297,6 @@ function heartItem(){
             reactXml.open("POST", `reactItem.php?proId=${proidset[i].value}&wish=${icon.dataset.love}&custname=${username}`, true);
             reactXml.send();  
         })
-    })
-    const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
-    trashIcon.forEach((trash,i)=>{
-        trash.addEventListener("click",()=>{
-            let xml = new XMLHttpRequest();
-            xml.onreadystatechange = () =>{
-                if(this.readyState == 4 && this.status == 200){
-                    console.log(this.responseText);
-                }
-            }
-            xml.open("POST", `deletCartItem.php?cname=${username}&pid=${proidset[i].value}`, true);
-            xml.send();
-        })
-    })
-    
-      
+    })   
 }
-function deleteCartItem(){
-    
-}
+

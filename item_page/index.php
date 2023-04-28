@@ -208,7 +208,45 @@
                     <p><i class="fa-regular fa-star"></i></p>
                 </div>
                 <p style="margin-right: 2em;">77 ratings</p>
-                <i data-love="1" style="font-size: 1.5rem;" class="fa-regular fa-heart"></i>
+                <?php
+                include("../connectionPHP/connect.php");
+                $proid = $_GET['id'];
+                if(isset($_SESSION['username'])){
+                  $username = $_SESSION['username'];
+                  $query = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+                  $arr = oci_parse($conn, $query);
+                  oci_execute($arr);
+                  $custId = oci_fetch_array($arr)[0];
+                  // echo $proid;
+                  $sql = "SELECT PRODUCT_ID FROM WISHLIST WHERE PRODUCT_ID = $proid AND C_ID = $custId";
+                  $arr = oci_parse($conn, $sql);
+                  oci_execute($arr);
+                  $react = oci_fetch_array($arr);
+                  if(!isset($react[0])){
+                    ?>
+                  <i data-love="0" style="font-size: 1.5rem;" class="fa-regular fa-heart"></i>
+
+                    <?php
+                    }
+                    else{
+                      ?>
+                    <i data-love="1" style="font-size: 1.5rem;" class="fa-solid fa-heart"></i>
+
+
+                    <?php
+                    }
+
+                      }
+                      else{
+                        ?>
+                    <i data-love="0" style="font-size: 1.5rem;" class="fa-regular fa-heart"></i>
+
+                      <?php
+                      }
+                
+                
+                ?>
+                
             </div>
             <div class="category">
                 <p>Category</p>

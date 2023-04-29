@@ -1,7 +1,7 @@
 <?php
 include("../connectionPHP/inc_session.php");
 
-
+// session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,8 +85,74 @@ if(isset($_POST['logout'])){
         <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="">
     </section>
 
-    <section class="profiledash">
-        
+    <section class="profilecontainer">
+        <div class="dashprofile">
+            <p data-go="profile">My profile</p>
+            <p data-go='review'>My reviews</p>
+            <p data-go="wish">My wishlist</p>
+            <p data-go='order'>My orders</p>
+        </div>
+        <div class="dashitem1 dashitem" id="profile">
+            <div class='profile-header'>
+                <h3>personal profile</h3>
+                <button>Edit Profile</button>
+            </div>
+            <div class="showuserdetail">
+                <div class="userdetail useremail">
+                    <p>Email</p>
+                    <p>subodhacharya21@gmail.com</p>
+                </div>
+                <div class="userdetail username">
+                    <p>Username</p>
+                    <p>subodh21</p>
+                </div>
+                <div class="userdetail firstname">
+                    <p>Firstname</p>
+                    <p>Subodh</p>
+                </div>
+                <div class="userdetail lastname">
+                    <p>lastname</p>
+                    <p>Acharya</p>
+                </div>
+                <div class="userdetail mobile">
+                    <p>Mobile</p>
+                    <p>9841240401</p>
+                </div>
+                <div class="userdetail gender">
+                    <p>Gender</p>
+                    <p>Male</p>
+                </div>
+                <div class="userdetail address">
+                    <p>Address</p>
+                    <p>pepsicola</p>
+                </div>
+                <div class="userdetail password">
+                    <p>Password</p>
+                    <div>
+                        <p>************</p>
+                        <button>Change password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashitem2 dashitem" id="review">
+            <div class='profile-header'>
+                <h3>product</h3>
+                <p>Cheesecake</p>
+                <img src="../productsImage/cheesecake2.jpg" alt="">
+            </div>
+            <div class="review-comment">
+                <p>comment1</p>
+                <button class="deletebtn">Delete</button>
+            </div>
+        </div>
+        <div class="dashitem3 dashitem" id="wish">
+
+        <!-- unfinished -->
+        </div>
+        <div class="dashitem4 dashitem" id="order">
+            <!-- unfinished -->
+        </div>
     </section>
 
 

@@ -657,7 +657,7 @@ ul li a:active{
     color: var(--secondary-color);
 }
 .addreview p{
-    margin-bottom: 1em;
+    margin-bottom: 2em;
 }
 .cust-review{
     display: flex;

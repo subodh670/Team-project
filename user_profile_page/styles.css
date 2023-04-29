@@ -250,7 +250,7 @@ ul li a:active{
     width: 90%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     margin: 2em auto;
 }
 .userInfo p{
@@ -269,6 +269,148 @@ ul li a:active{
     border-radius: 10%;
     border: 2px solid black;
 }
+
+
+
+
+/* userinfo ended */
+/* profile dashboard starts */
+
+.profilecontainer{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin:  2em auto;
+}
+.dashprofile{
+    width: 20%;
+    background-color: var(--selected);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3em;
+    padding: 2em;
+    font-size: 1.5rem;
+}
+.dashprofile p{
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+.dashprofile p:hover{
+    text-decoration: underline;
+}
+.dashprofile p:nth-child(1){
+    font-weight: bold;
+}
+#profile{
+    display: none;
+}
+/* profile edit */
+
+.dashitem1, .dashitem2, .dashitem3, .dashitem4{
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex-direction: column;
+    gap: 2em;
+    background-color: var(--selected);
+    padding: 1.4em;
+}
+.dashitem2{
+    width: 75%;
+}
+.profile-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.profile-header button{
+    background-color: var(--tertiary-color);
+    padding: 0.8em 1.8em;
+    border-width: 0px;
+    color: white;
+
+}
+.profile-header button:hover{
+    background-color: var(--secondary-color);
+}
+
+.showuserdetail{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    gap: 2em;
+}
+.userdetail{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.showuserdetail .password{
+    align-items: start;
+}
+.showuserdetail .password div{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    flex-direction: column;
+}
+.showuserdetail .password button{
+    background-color: var(--tertiary-color);
+    padding: 0.6em 1.5em;
+    border-width: 0px;
+    color: white;
+    display: inline;
+}
+.showuserdetail .password button:hover{
+    background-color: var(--primary-color);
+}
+/* reviews edit */
+
+.dashitem2 .profile-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 2em;
+}
+.dashitem2 .profile-header img{
+    width: 10%;
+}
+.review-comment{
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+    padding: 0 2em;
+}
+.review-comment p{
+    font-size: 1.2rem;
+}
+.review-comment .deletebtn{
+    background-color: var(--tertiary-color);
+    padding: 0.8em 1.8em;
+    border-width: 0px;
+    color: white;
+}
+.review-comment .deletebtn:hover{
+    background-color: var(--secondary-color);
+
+}
+
+
+
+
+
+
+
 
 
 

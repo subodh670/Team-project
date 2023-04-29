@@ -22,3 +22,21 @@ faTimes.addEventListener("click",()=>{
     cart.classList.toggle("show-cart");
     search.classList.toggle("show-search");
 })
+
+// switch tabs
+//hide all tabs
+const dashItems = document.querySelectorAll(".profilecontainer .dashitem");
+const tabs = document.querySelectorAll(".dashprofile p");
+tabs.forEach((tab,i)=>{
+    dashItems[i].style.display = 'none';
+    dashItems[0].style.display = 'flex';
+    tab.addEventListener("click",(e)=>{
+        let id = e.currentTarget.dataset.go;
+        document.querySelector(`#${id}`).style.display = "flex";
+        for(let j=0; j<4; j++){
+            if(j!=i){
+                dashItems[j].style.display = 'none';
+            }
+        }
+    })
+})

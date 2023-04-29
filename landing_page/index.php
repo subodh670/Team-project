@@ -294,7 +294,7 @@
                     <img src="<?php echo "../productsImage/".$pImage2; ?>" alt="productImage">
                     <div>
                         <h1><?php echo $pName; ?></h1>
-                        <p><?php echo $pDesc; ?></p>
+                        <p><?php echo substr($pDesc,0,50)."..."; ?></p>
                         <div class="btn_rate">
                             <div class="btn"><a href="<?php echo "../item_page/index.php?id=$pId"; ?>">View More</a></div>
                             <p class="price"><?php echo "£".$pPrice; ?></p>

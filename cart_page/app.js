@@ -74,8 +74,27 @@ function selectboxMain(){
     })
 
 }
-selectboxMain();
+// selectboxMain();
 
+
+// checking the checkbox of items
+function checkingItems(){
+    const checkBoxItems = document.querySelectorAll(".productselect .onlyone input");
+    console.log(checkBoxItems);
+    checkBoxItems.forEach((checkitem,i)=>{
+        // console.log(checkitem);
+        checkitem.addEventListener("change",(e)=>{
+            // console.log(e.target);
+            // checkBoxItems();
+            let isChecked = e.target.matches(':checked');
+            checkitem.dataset.tick = "1" ? isChecked === true : isChecked === false;
+            console.log(checkitem);
+
+        })
+    })
+    
+}
+// checkingItems();
 
 
 //  increasing prices
@@ -177,13 +196,13 @@ function showingsavedProduct(){
                 <section class="oneitemselect">
                 <div class="selectone">
                     <div class="onlyone">
-                        <input type="checkbox" name="mainselectall">
+                        <input type="checkbox" data-tick="0" name="mainselectall">
                         <p>${shopName}</p>
                     </div>
                 </div>
                 <div class="productselect">
                     <div class="onlyone">
-                        <input type="checkbox" name="secselect" class="orderitem">
+                        <input type="checkbox" data-tick="0" name="secselect" class="orderitem">
                         <div class="product-desc">
                             <img src="../productsImage/${productImage2}" alt="">
                             <div class="desc">
@@ -216,7 +235,8 @@ function showingsavedProduct(){
                 `;
             })
             trashCart();
-            selectboxMain();
+            // selectboxMain();
+            checkingItems();
             cartCounter();
             heartItem();
             function trashCart(){

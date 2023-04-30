@@ -35,7 +35,7 @@ verify.onclick = function(){
             if(otp.value === item){
                 verify.type='submit';
                 verify.innerHTML = "Redirect";
-                form1.innerHTML = `<p>Password matched</p> <div class='btn'><button type='submit' name='verify' class='verify'>Redirect</button></div>`;
+                form1.innerHTML = `<p>OTP matched</p> <div class='btn'><button type='submit' name='verify' class='verify'>Redirect</button></div>`;
             }
             
         }

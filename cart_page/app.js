@@ -74,27 +74,89 @@ function selectboxMain(){
     })
 
 }
-selectboxMain();
+// selectboxMain();
 
 
 // checking the checkbox of items
 function checkingItems(){
-    const checkBoxItems = document.querySelectorAll(".productselect .onlyone input");
-    console.log(checkBoxItems);
-    checkBoxItems.forEach((checkitem,i)=>{
-        // console.log(checkitem);
-        checkitem.addEventListener("change",(e)=>{
-            // console.log(e.target);
-            // checkBoxItems();
-            let isChecked = e.target.matches(':checked');
-            checkitem.dataset.tick = "1" ? isChecked === true : "0";
-            console.log(checkitem);
-
+        const checkBoxItems = document.querySelectorAll(".productselect .onlyone input");
+        // console.log(checkBoxItems);
+        checkBoxItems.forEach((checkitem,i)=>{
+            // console.log(checkitem);
+            checkitem.addEventListener("change",(e)=>{
+                // console.log(e.target);
+                // checkBoxItems();
+                let isChecked = e.target.matches(':checked');
+                checkitem.dataset.tick = "1" ? isChecked === true : "0";
+                // console.log(checkitem);
+    
+            })
         })
-    })
     
 }
 checkingItems();
+
+
+// adding checked item to database
+
+
+function addingToOrders(){
+    const checkBoxItems = document.querySelectorAll(".productselect .onlyone input");
+    const getproductid = document.querySelectorAll(".getproductid");
+    const quantities = document.querySelectorAll('.countitem input');
+    const slots = document.querySelector('.slots #slotscollection');
+    const username = document.querySelector(".usernameFind");
+    let slotsValue = "10-13";
+    slots.addEventListener("change",()=>{
+        slotsValue = slots.options[slots.selectedIndex].value;
+    })
+    // console.log(slotsValue);
+    checkBoxItems.forEach((checkitem,i)=>{
+        let productIdValue = getproductid[i];
+        let btnIncrease = document.querySelectorAll(".countitem .increase");
+        let btnDecrease = document.querySelectorAll(".countitem .decrease");
+        checkitem.addEventListener("change",(e)=>{
+            console.log(slotsValue);
+            let isChecked = e.target.matches(':checked');
+            if(isChecked === true){
+                let xml1 = new XMLHttpRequest();
+                xml1.onreadystatechange = function addXml(){
+                    if(this.readyState == 4 && this.status == 200){
+                        console.log(this.responseText);    
+                    }
+                }
+                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}`, true);
+                xml1.send();
+            }
+            else if(isChecked === false || isChecked === null){
+                let xml2 = new XMLHttpRequest();
+                xml2.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                        // console.log(this.responseText);
+                    }
+                }
+                xml2.open("POST", `deleteorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}`, true);
+                xml2.send();
+            }
+            btnIncrease[i].addEventListener("click",()=>{
+                setTimeout(()=>{
+                    addingToOrders();
+                },1000)
+            })
+            btnDecrease[i].addEventListener("click",()=>{
+                setTimeout(()=>{
+                    addingToOrders();
+                },1000)
+            })
+        })
+    })
+
+}
+
+addingToOrders();
+
+
+
 
 
 //  increasing prices
@@ -194,9 +256,9 @@ function showingsavedProduct(){
                 let productssaved = item[8];
                 oneItemSelect.innerHTML += `
                 <section class="oneitemselect">
+                <input type="hidden" value="${productId}" class="getproductid">
                 <div class="selectone">
                     <div class="onlyone">
-                        <input type="checkbox" data-tick="0" name="mainselectall">
                         <p>${shopName}</p>
                     </div>
                 </div>
@@ -219,9 +281,7 @@ function showingsavedProduct(){
                             <input class="getProid" type='hidden' value=${productId}>
                                 <i data-love='0' class="fa-regular fa-heart"></i>
                                
-                                <i class="fa-solid fa-trash-can"></i>
-            
-                                
+                                <i class="fa-solid fa-trash-can"></i>      
                             </div>
                         </div>
                         <div class="countitem">
@@ -235,7 +295,9 @@ function showingsavedProduct(){
                 `;
             })
             trashCart();
-            selectboxMain();
+            // selectboxMain();
+            addingToOrders();
+
             checkingItems();
             cartCounter();
             heartItem();
@@ -320,3 +382,10 @@ function heartItem(){
     })   
 }
 
+
+//checkout
+
+let checkout = document.querySelector(".checkout");
+checkout.addEventListener("click",()=>{
+    window.location.href = "../order_page/index.php";
+})

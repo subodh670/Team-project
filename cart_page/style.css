@@ -266,6 +266,31 @@ header .custprofile{
     }
 }
 /* session userprofile ends */
+/* slots start */
+.slots{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    margin-top: 2em;
+}
+.slots label{
+    font-size: 2rem;
+    color: var(--secondary-color);
+}
+main{
+    margin-top: 3em;
+}
+.slots select{
+    color: white;
+    width: 100px;
+    height: 40px;
+    background-color: var(--secondary-color);
+}
+
+
+
 
 /* select items section */
 .selectall{

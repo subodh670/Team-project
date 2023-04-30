@@ -1,3 +1,6 @@
+<?php
+    include("../connectionPHP/inc_session.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +53,14 @@
 <section class="orderedItems">
     <div class="containerorder">
         <div class="orderslist">
+            <?php
+            include("../connectionPHP/connect.php");
+            $username = $_POST['username'];
+            $sql = "SELECT ORDERS.PRODUCT_QUANTITY, PRODUCT.PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_CATEGORY,PRODUCT_IMAGE2, PRODUCT.PRODUCT_QUANTITY FROM ORDERS,PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID";
+            
+
+
+            ?>
         <div class="productsorder">
             <div class="img--info">
                 <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="">
@@ -81,15 +92,6 @@
         </div>
         <div class="placeorder">
             <p>Collection place: huddersfields</p>
-            <div class="slots">
-                <label for="slotscollection">Choose collection slot: </label>
-                <select name="collection-slot" id="slotscollection">
-                    <option value="10-13">10-13</option>
-                    <option value="13-16">13-16</option>
-                    <option value="16-19">16-19</option>
-
-                </select>
-            </div>
             <hr>
                 <h1>Order summary</h1>
                 <p class="totalitems">Items total: 5</p>

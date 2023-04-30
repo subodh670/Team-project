@@ -85,7 +85,7 @@
     </header>
 
 
-<section class="selectall">
+<!-- <section class="selectall">
         <div class="all">
             <input type="checkbox" name="selectallpro">
             <p>Select all items(0 items)</p>
@@ -94,14 +94,22 @@
             <i class="fa-solid fa-trash-can"></i>
             <span>Delete</span>
         </div>
-</section>
+</section> -->
 
+            <div class="slots">
+                <label for="slotscollection">Choose collection slot: </label>
+                <select name="collection-slot" id="slotscollection">
+                    <option value="10-13">10-13</option>
+                    <option value="13-16">13-16</option>
+                    <option value="16-19">16-19</option>
+
+                </select>
+            </div>
 <main></main>
 <input class='usernameFind' type="hidden" value="<?php echo $_SESSION['username']?>">
 <!-- <section class="oneitemselect"> 
     <div class="selectone">
         <div class="onlyone">
-            <input type="checkbox" name="mainselectall">
             <p>Uk bakery shop</p>
         </div>
     </div>

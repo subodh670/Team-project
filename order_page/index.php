@@ -18,16 +18,16 @@
     </div>
     <header>
         <div class="logo">
-            <a href="../landing_page/index.html">
+            <a href="../landing_page/index.php">
 <img src="../landing_page/image1.png" alt="logo">
 
             </a>
         </div>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="../traders_login_page/index.html">Sale a product</a></li>
+            <li><a href="../landing_page/image1.png">Home</a></li>
+            <li><a href="../traders_login_page/index.php">Sale a product</a></li>
             <li><a href="">Customer Services</a></li>
-            <li><a href="../contact_us/index.html">Contact Us</a></li>
+            <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
              <div class="login">
@@ -55,7 +55,7 @@
         <div class="orderslist">
             <?php
             include("../connectionPHP/connect.php");
-            $username = $_POST['username'];
+            $username = $_SESSION['username'];
             $sql = "SELECT ORDERS.PRODUCT_QUANTITY, PRODUCT.PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_CATEGORY,PRODUCT_IMAGE2, PRODUCT.PRODUCT_QUANTITY FROM ORDERS,PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID";
             
 

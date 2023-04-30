@@ -74,7 +74,7 @@ function selectboxMain(){
     })
 
 }
-// selectboxMain();
+selectboxMain();
 
 
 // checking the checkbox of items
@@ -87,14 +87,14 @@ function checkingItems(){
             // console.log(e.target);
             // checkBoxItems();
             let isChecked = e.target.matches(':checked');
-            checkitem.dataset.tick = "1" ? isChecked === true : isChecked === false;
+            checkitem.dataset.tick = "1" ? isChecked === true : "0";
             console.log(checkitem);
 
         })
     })
     
 }
-// checkingItems();
+checkingItems();
 
 
 //  increasing prices
@@ -235,7 +235,7 @@ function showingsavedProduct(){
                 `;
             })
             trashCart();
-            // selectboxMain();
+            selectboxMain();
             checkingItems();
             cartCounter();
             heartItem();

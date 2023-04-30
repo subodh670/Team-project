@@ -250,7 +250,7 @@ ul li a:active{
     width: 90%;
     display: flex;
     justify-content: space-between;
-    align-items: start;
+    align-items: center;
     margin: 2em auto;
 }
 .userInfo p{
@@ -264,8 +264,8 @@ ul li a:active{
     text-align: left;
 }
 .userInfo img{
-    width: 15%;
-    height: 15%;
+    width: 8%;
+    height: 8%;
     border-radius: 10%;
     border: 2px solid black;
 }
@@ -283,6 +283,14 @@ ul li a:active{
     align-items: start;
     margin:  2em auto;
 }
+@keyframes dashanimate {
+    from{
+        transform: translateX(-50%);
+    }
+    to{
+        transform: translateX(0%);
+    }
+}
 .dashprofile{
     width: 20%;
     background-color: var(--selected);
@@ -291,8 +299,11 @@ ul li a:active{
     align-items: center;
     justify-content: center;
     gap: 3em;
+    animation-duration: 0.6s;
+    animation-name: dashanimate;
     padding: 2em;
     font-size: 1.5rem;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 .dashprofile p{
     cursor: pointer;
@@ -301,14 +312,19 @@ ul li a:active{
 .dashprofile p:hover{
     text-decoration: underline;
 }
-.dashprofile p:nth-child(1){
-    font-weight: bold;
-}
+
 #profile{
     display: none;
 }
 /* profile edit */
-
+@keyframes animatemodal {
+    from{
+        transform: translateX(50%);
+    }
+    to{
+        transform: translateX(0%);
+    }
+}
 .dashitem1, .dashitem2, .dashitem3, .dashitem4{
     width: 75%;
     display: flex;
@@ -316,8 +332,11 @@ ul li a:active{
     align-items: start;
     flex-direction: column;
     gap: 2em;
+    animation-duration: 0.6s;
+    animation-name: animatemodal;
     background-color: var(--selected);
     padding: 1.4em;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 .dashitem2{
     width: 75%;
@@ -367,7 +386,6 @@ ul li a:active{
     padding: 0.6em 1.5em;
     border-width: 0px;
     color: white;
-    display: inline;
 }
 .showuserdetail .password button:hover{
     background-color: var(--primary-color);
@@ -390,6 +408,10 @@ ul li a:active{
     align-items: stretch;
     width: 100%;
     padding: 0 2em;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 3px solid var(--primary-color);
+
 }
 .review-comment p{
     font-size: 1.2rem;
@@ -404,20 +426,151 @@ ul li a:active{
     background-color: var(--secondary-color);
 
 }
+/* wishlist */
+
+.dashitem3{
+    width: 75%;
+}
+.wishitem{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5em;
+    width: 100%;
+}
+.wishitem .wish{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.wishitem h3{
+    color: var(--tertiary-color);
+}
+.wishitem .wish img{
+    width: 10%;
+}
+.titlewish p{
+    margin-bottom: 1em;
+}
+.titlewish{
+    text-align: center;
+}
+.titlewish i{
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+.titlewish i:hover{
+    color: var(--primary-color);
+}
+.wish button{
+    background-color: var(--tertiary-color);
+    padding: 0.6em 1.5em;
+    border-width: 0px;
+    color: white;
+}
+.wish button:hover{
+    background-color: var(--primary-color);
+}
+
+.wish{
+    padding-bottom: 1em;
+    border-bottom: 2px solid var(--primary-color);
+}
 
 
+/* dashboard profile ended */
 
+/* modal edit profile starts */
+.backdrop{
+    backdrop-filter: blur(10px);
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    z-index: 3;
+}
+.hidebackdrop{
+    display: none;
+}
+@keyframes animateprofileedit {
+    from{
+        left: 0%;
+    }
+    to{
+        left: 50%;
+    }
+}
+.editprofile{
+    width: 100%;
+    animation-duration: 0.6s;
+    animation-name: animateprofileedit;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    z-index: 5;
+}
+.hideEditprofile{
+    display: none;
+}
+.editprofile form{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1.5em;
+    padding: 1em;
+}
+.editprofile form>h3{
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+.editprofile form >div i{
+    color: var(--white);
+    margin-right: 1.2em;
+    font-size: 1.5rem;
+}
 
-
-
-
-
-
-
-
-
-
-
+.editprofile form >div input{
+    width: 250px;
+    padding: 0.5em;
+    border-width: 0px;
+    border-bottom: 2px solid white;
+    background-color: var(--secondary-color);
+    outline: none;
+    color: white;
+}
+.editprofile form > div button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: var(--white);
+}
+form .xmark{
+    width: 120%;
+    text-align: right;
+    position: relative;
+    top: 1em;
+}
+form .xmark i{
+    font-size: 4rem;
+    cursor: pointer;
+}
+.erroremail, .errormobile, .errorusername{
+    font-size: 0.8em;
+    margin-left: 5em;
+    color: red;
+    margin-top: 1em;
+}
 
 
 /* footer */

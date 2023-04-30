@@ -1,7 +1,16 @@
 <?php
 include("../connectionPHP/inc_session.php");
-
 // session_start();
+?>
+<?php
+
+if(isset($_POST['logout'])){
+    session_destroy();
+    session_start();
+    $_SESSION['guest'] = false;
+    header("Location: ../landing_page/index.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,8 +24,80 @@ include("../connectionPHP/inc_session.php");
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="backdrop">
+    <div class="backdrop hidebackdrop">
 
+    </div>
+    <div class="editprofile hideEditprofile">
+        <form method="POST" action="">
+        <!-- <span>&times;</span> -->
+        <div class="xmark">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+            <h3>Update Profile</h3>
+            <?php 
+            $username = $_SESSION['username'];
+            include("../connectionPHP/connect.php");
+            $sql = "SELECT * FROM CUSTOMER WHERE C_USERNAME = '$username'";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            while($rows = oci_fetch_array($arr)){
+                $username = $rows[1];
+                $firstname = $rows[2];
+                $lastname = $rows[3];
+                $mobile = $rows[4];
+                $email = $rows[5];
+                $gender = $rows[6];
+                $address = $rows[7];
+                $cid = $rows[0];
+
+                ?>
+            <div class="editusername">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="username" placeholder="username" value="<?php echo $username ?>">
+                <p class='errorusername'></p>
+
+            </div>
+            <input type="hidden" class='chidden' value="<?php echo $cid; ?>">
+            <div class="editemail">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="text" name="useremail" placeholder="email"  value="<?php echo $email ?>">
+                <p class='erroremail'></p>
+
+            </div>
+            <div class="editfirstname">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="firstname" placeholder="firstname"  value="<?php echo $firstname ?>">
+            </div>
+            <div class="editlastname">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="lastname" placeholder="lastname"  value="<?php echo $lastname ?>">
+            </div>
+            <div class="editmobile">
+                <i class="fa-solid fa-phone"></i>
+                <input type="number" name="mobile" placeholder="mobile number"  value="<?php echo $mobile ?>">
+                <p class='errormobile'></p>
+
+            </div>
+            <div class="editgender">
+                <i class="fa-regular fa-user"></i>
+                <select name="gender" id="gender">
+                    <option value="male">male</option>
+                    <option value="female">female</option>
+                </select>
+            </div>
+            <div class="editaddress">
+                <i class="fa-solid fa-house"></i>
+                <input type="text" name="address" placeholder="address"  value="<?php echo $address ?>">
+            </div>
+            <div class="updatebtn">
+                <button type="button" name="update">Update</button>
+            </div>
+
+                <?php
+            }
+
+            ?>
+        </form>
     </div>
     <header>
         <div class="logo">
@@ -52,10 +133,6 @@ include("../connectionPHP/inc_session.php");
                     ?>
                     <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
                     <?php
-                    
-                    
-                    
-
                 ?>
              </div>
              <div class="search">
@@ -68,16 +145,7 @@ include("../connectionPHP/inc_session.php");
                  </form>    
         </div>
     </header>
-<?php
 
-if(isset($_POST['logout'])){
-    session_destroy();
-    session_start();
-    $_SESSION['guest'] = false;
-    header("location: ../landing_page/index.php");
-}
-
-?>
 
     <section class="userInfo">
         <p>Hello, <?php echo $_SESSION['firstname']." ".$_SESSION['lastname']; ?></p>
@@ -87,44 +155,62 @@ if(isset($_POST['logout'])){
 
     <section class="profilecontainer">
         <div class="dashprofile">
+            <h4 style="color: var(--tertiary-color); font-weight: bolder;">My Account</h4>
             <p data-go="profile">My profile</p>
             <p data-go='review'>My reviews</p>
             <p data-go="wish">My wishlist</p>
             <p data-go='order'>My orders</p>
         </div>
         <div class="dashitem1 dashitem" id="profile">
+            <?php 
+            $username = $_SESSION['username'];
+            echo $_SESSION['username'];
+
+            include("../connectionPHP/connect.php");
+            $sql = "SELECT * FROM CUSTOMER WHERE C_USERNAME = '$username'";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            while($rows = oci_fetch_array($arr)){
+                $username = $rows[1];
+                $firstname = $rows[2];
+                $lastname = $rows[3];
+                $mobile = $rows[4];
+                $email = $rows[5];
+                $gender = $rows[6];
+                $address = $rows[7];
+                ?>
             <div class='profile-header'>
                 <h3>personal profile</h3>
-                <button>Edit Profile</button>
+                <button class="editbtntrigger">Edit Profile</button>
             </div>
             <div class="showuserdetail">
                 <div class="userdetail useremail">
                     <p>Email</p>
-                    <p>subodhacharya21@gmail.com</p>
+                    <p><?php echo $email; ?></p>
                 </div>
                 <div class="userdetail username">
                     <p>Username</p>
-                    <p>subodh21</p>
+                    <p><?php echo $username; ?></p>
                 </div>
                 <div class="userdetail firstname">
                     <p>Firstname</p>
-                    <p>Subodh</p>
+                    <p><?php echo $firstname; ?></p>
                 </div>
                 <div class="userdetail lastname">
                     <p>lastname</p>
-                    <p>Acharya</p>
+                    <p><?php echo $lastname; ?></p>
                 </div>
                 <div class="userdetail mobile">
                     <p>Mobile</p>
-                    <p>9841240401</p>
+                    <p><?php echo $mobile; ?></p>
                 </div>
                 <div class="userdetail gender">
                     <p>Gender</p>
-                    <p>Male</p>
+                    <p><?php echo $gender; ?></p>
                 </div>
                 <div class="userdetail address">
                     <p>Address</p>
-                    <p>pepsicola</p>
+                    <p><?php echo $address; ?></p>
                 </div>
                 <div class="userdetail password">
                     <p>Password</p>
@@ -134,21 +220,82 @@ if(isset($_POST['logout'])){
                     </div>
                 </div>
             </div>
+
+            <?php
+            }
+            
+            ?>
+            
         </div>
         <div class="dashitem2 dashitem" id="review">
+            <?php 
+            include("../connectionPHP/connect.php");
+            $username = $_SESSION['username'];
+            $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_IMAGE2, CREVIEW, PRODUCT.PRODUCT_ID FROM REVIEW, PRODUCT, CUSTOMER WHERE REVIEW.PRODUCT_ID = PRODUCT.PRODUCT_ID AND REVIEW.C_ID = CUSTOMER.C_ID AND CUSTOMER.C_USERNAME = '$username'";
+            $array = oci_parse($conn, $sql);
+            oci_execute($array);
+            
+            while($rows = oci_fetch_array($array)){
+                $pname = $rows[0];
+                $pprice = $rows[1];
+                $pQuant = $rows[2];
+                $pImage = $rows[3];
+                $cReview = $rows[4];
+                $pid = $rows[5];
+                ?>
             <div class='profile-header'>
-                <h3>product</h3>
-                <p>Cheesecake</p>
-                <img src="../productsImage/cheesecake2.jpg" alt="">
+                <h3>Product</h3>
+                <p><a href="<?php echo "../item_page/index.php?id=".$pid;?>"><?php  echo $pname; ?></a></p>
+                <img src="../productsImage/<?php echo $pImage;  ?>" alt="">
             </div>
             <div class="review-comment">
-                <p>comment1</p>
+                <p><?php echo $cReview; ?></p>
                 <button class="deletebtn">Delete</button>
             </div>
+
+
+                <?php
+
+            }
+            
+            ?>
+            
         </div>
         <div class="dashitem3 dashitem" id="wish">
+            <div class='wishitem'>
+                <h3>Watchlist</h3>
+                <?php  
+                
+                    include("../connectionPHP/connect.php");
+                    $username = $_SESSION['username'];
+                    $sql = "SELECT WISHLIST_ID, PRODUCT_NAME,PRODUCT_QUANTITY, PRODUCT_IMAGE2, PRODUCT_PRICE, PRODUCT.PRODUCT_ID, CUSTOMER.C_ID FROM WISHLIST, PRODUCT, CUSTOMER WHERE WISHLIST.PRODUCT_ID = PRODUCT.PRODUCT_ID AND WISHLIST.C_ID = CUSTOMER.C_ID AND CUSTOMER.C_USERNAME = '$username'";
+                    $arr = oci_parse($conn, $sql);
+                    oci_execute($arr);
+                    while($rows = oci_fetch_array($arr)){
+                        $wishlist_id = $rows[0];
+                        $productName = $rows[1];
+                        $productQuantity = $rows[2];
+                        $productImage= $rows[3];
+                        $productPrice= $rows[4];
 
-        <!-- unfinished -->
+                    ?>
+                <div class='wish'>
+                    <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                    <div class="titlewish">
+                        <p><?php echo $productName.", ".$productQuantity; ?> counts</p>
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+                    <h3><?php echo $productPrice;  ?></h3>
+                    <button class="wishtocartbtn">Add to cart</button>
+                </div>
+
+                    <?php
+                    }
+                
+                
+                ?>
+                
+            </div>
         </div>
         <div class="dashitem4 dashitem" id="order">
             <!-- unfinished -->

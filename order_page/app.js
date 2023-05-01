@@ -22,3 +22,35 @@ faTimes.addEventListener("click",()=>{
     cart.classList.toggle("show-cart");
     search.classList.toggle("show-search");
 })
+
+//order page
+
+function orderPage(){
+    let placeorder = document.querySelector(".placeorder");
+    let customerName = document.querySelector(".hiddencustomer");
+    let xml = new XMLHttpRequest();
+    xml.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            let response = JSON.parse(this.responseText);
+            let quantity = response[1];
+            let price = response[0]*quantity;
+            placeorder.innerHTML =  `
+            <p>Collection place: huddersfields</p>
+            <hr>
+                <h1>Order summary</h1>
+                <p class="totalitems">Items total: ${quantity}</p>
+                <p class="totalpayment">Total payment: £${price}</p>
+                <p class="tax">All taxes included</p>
+                <button class="orderbtn">Place order</button>
+           
+            `;
+        }
+    }
+    xml.open("POST", "orderPage.php?name="+customerName.value, true);
+    xml.send();
+
+
+
+}
+orderPage();

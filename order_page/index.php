@@ -56,40 +56,41 @@
             <?php
             include("../connectionPHP/connect.php");
             $username = $_SESSION['username'];
-            $sql = "SELECT ORDERS.PRODUCT_QUANTITY, PRODUCT.PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_CATEGORY,PRODUCT_IMAGE2, PRODUCT.PRODUCT_QUANTITY FROM ORDERS,PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID";
-            
+            $sql = "SELECT ORDERS.PRODUCT_QUANTITY, PRODUCT.PRODUCT_NAME, PRODUCT.PRODUCT_PRICE, PRODUCT.PRODUCT_CATEGORY,PRODUCT.PRODUCT_IMAGE2, PRODUCT.PRODUCT_QUANTITY FROM ORDERS,PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            while($row = oci_fetch_array($arr)){
+                $orderQuant = $row[0];
+                $productName = $row[1];
+                $productPrice = $row[2];
+                $productCategory = $row[3];
+                $productImage = $row[4];
+                $productQuant = $row[5];
+
+
+                ?>
+        <div class="productsorder">
+            <div class="img--info">
+                <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                <div class="info">
+                    <p><?php echo $productName; ?></p>
+                    <p><?php echo $productCategory; ?></p>
+                    <p>only <?php echo $productQuant; ?> items remaining</p>
+                </div>
+            </div>
+            <div class="qty--price">
+                <p>Qty :<?php echo $orderQuant; ?></p>
+                <p>Price: £<?php echo $productPrice; ?></p>
+            </div>
+        </div>
+
+                <?php
+            }
 
 
             ?>
-        <div class="productsorder">
-            <div class="img--info">
-                <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="">
-                <div class="info">
-                    <p>Donuts</p>
-                    <p>brand</p>
-                    <p>only 10 items remaining</p>
-                </div>
             </div>
-            <div class="qty--price">
-                <p>Qty :1</p>
-                <p>Price: £20</p>
-            </div>
-        </div>
-        <div class="productsorder">
-            <div class="img--info">
-                <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="">
-                <div class="info">
-                    <p>Donuts</p>
-                    <p>brand</p>
-                    <p>only 10 items remaining</p>
-                </div>
-            </div>
-            <div class="qty--price">
-                <p>Qty :1</p>
-                <p>Price: £20</p>
-            </div>
-        </div>
-        </div>
+            <input type="hidden" class="hiddencustomer" value="<?php echo $_SESSION['username']; ?>">
         <div class="placeorder">
             <p>Collection place: huddersfields</p>
             <hr>

@@ -164,7 +164,7 @@ if(isset($_POST['logout'])){
         <div class="dashitem1 dashitem" id="profile">
             <?php 
             $username = $_SESSION['username'];
-            echo $_SESSION['username'];
+            // echo $_SESSION['username'];
 
             include("../connectionPHP/connect.php");
             $sql = "SELECT * FROM CUSTOMER WHERE C_USERNAME = '$username'";

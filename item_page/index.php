@@ -176,12 +176,12 @@
               $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid','$quantity')";
               $array = oci_parse($conn, $sql);
               oci_execute($array);
-              $remainingQuant = $pQuantity - intval($_POST['quantity']);
-              echo $remainingQuant;
-              $sql1 = "UPDATE PRODUCT SET PRODUCT_QUANTITY = $remainingQuant WHERE PRODUCT_ID = $pid";
-              $array2 = oci_parse($conn, $sql1);
-              oci_execute($array2);
-              oci_close($conn);
+              // $remainingQuant = $pQuantity - intval($_POST['quantity']);
+              // echo $remainingQuant;
+              // $sql1 = "UPDATE PRODUCT SET PRODUCT_QUANTITY = $remainingQuant WHERE PRODUCT_ID = $pid";
+              // $array2 = oci_parse($conn, $sql1);
+              // oci_execute($array2);
+              // oci_close($conn);
               header("location: ../cart_page/index.php");
             }
             else if($pQuantity == 0){
@@ -324,6 +324,10 @@
           </div>
         </div>
         <div class="onlyrating">
+          <?php 
+          
+
+          ?>
             <h1>Rate this product</h1>
             <div class="rate_product">
               <p><i class="fa-solid fa-star"></i></p>

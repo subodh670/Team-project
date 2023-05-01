@@ -74,7 +74,8 @@ function displayReview(){
                   </div>
                   <div class="message">
                     <p>${review}</p>
-                    <button value="${reviewID}" class="deletereview">Delete</button>
+                    <input type='hidden' value="${reviewID}">
+                    <button class="deletereview">Delete</button>
                   </div>`;
                 }
                 else{
@@ -101,9 +102,10 @@ function displayReview(){
             }
             // delete review or comment
             function deleteReview(){
-                const deleteReview = document.querySelectorAll(".message button");
-                deleteReview.forEach((dr)=>{
-                        dr.addEventListener("click",()=>{
+                const deleteReview = document.querySelectorAll(".message input");
+                const deletebtn = document.querySelectorAll(".message button");
+                deleteReview.forEach((dr,i)=>{
+                        deletebtn[i].addEventListener("click",()=>{
                         let xml = new XMLHttpRequest();
                         xml.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status == 200){
@@ -244,3 +246,51 @@ function wishlist(){
 if(document.querySelectorAll(".cust-review input")[1].value != null){
     wishlist();
 }
+
+
+function rate_product(){
+    let proId = document.querySelectorAll(".cust-review input")[0].value;
+    let custname = document.querySelectorAll(".cust-review input")[1].value;
+    let ratings = document.querySelectorAll(".onlyrating p i");
+    ratings.forEach((rating,i)=>{
+        rating.addEventListener("click",()=>{
+            // console.log(rating);
+            for(let j=0; j<=i; j++){
+                ratings[j].classList.remove("fa-regular");
+                ratings[j].classList.add("fa-solid");
+
+            }
+            for(let j=i+1; j<=4; j++){
+                ratings[j].classList.add("fa-regular");
+                ratings[j].classList.remove("fa-solid");
+            }
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    console.log(this.responseText);
+                }
+            }
+            xml.open("POST", `rateProduct.php?proid=${proId}&custname=${custname}&star=${i+1}`, true);
+            xml.send();
+        })
+    })
+}
+rate_product();
+
+function rateInComment(){
+    let proId = document.querySelectorAll(".cust-review input")[0].value;
+    let custname = document.querySelectorAll(".cust-review input")[1].value;
+    const rateProduct = document.querySelectorAll(".ratingsreviews .rate_product");
+    rateProduct.forEach((item)=>{
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log(this.responseText);
+            }
+        }
+        xml.open("POST", `displayRate.php?proid=${proId}`, true);
+        xml.send();
+        // item.innerHTML = ``;
+    })
+}
+// rateInComment();

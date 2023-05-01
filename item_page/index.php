@@ -318,23 +318,53 @@
                 $name1 = oci_fetch_array($res)[8];
                 ?>
                 <p class="trader-type">Trader</p>
-                <p class="trader-inro"><?php echo $name1;  ?></p>
+                <p class="trader-intro"><?php echo $name1;  ?></p>
                 <?php
             ?>
           </div>
         </div>
         <div class="onlyrating">
+        <h1>Rate this product</h1>
+            <div class="rate_product">
           <?php 
+          include("../connectionPHP/connect.php");
+          $pid = $_GET['id'];
+          $cname=  $_SESSION['username'];
+          $sql = "SELECT RATING_STAR FROM RATING,CUSTOMER WHERE CUSTOMER.C_ID = RATING.C_ID AND PRODUCT_ID = $pid AND CUSTOMER.C_USERNAME = '$cname'";
+          $arr = oci_parse($conn, $sql);
+          oci_execute($arr);
+          $row = oci_fetch_array($arr);
+          if(isset($row[0])){
+            $rating = $row[0];
+            for($i=0; $i<$rating; $i++){
+            ?>
+            <p><i class="fa-solid fa-star"></i></p>
+
+            <?php
+            }
+            for($i=$rating; $i<=4; $i++){
+              ?>
+              <p><i class="fa-regular fa-star"></i></p>
+              <?php
+            }
+           
+          }
+          else{
+            ?>
+            <p><i class="fa-regular fa-star"></i></p>
+            <p><i class="fa-regular fa-star"></i></p>
+            <p><i class="fa-regular fa-star"></i></p>
+            <p><i class="fa-regular fa-star"></i></p>
+            <p><i class="fa-regular fa-star"></i></p>
+
+
+          <?php
+          }
+            
           
 
           ?>
-            <h1>Rate this product</h1>
-            <div class="rate_product">
-              <p><i class="fa-solid fa-star"></i></p>
-              <p><i class="fa-solid fa-star"></i></p>
-              <p><i class="fa-solid fa-star"></i></p>
-              <p><i class="fa-solid fa-star"></i></p>
-              <p><i class="fa-regular fa-star"></i></p>
+              
             </div>
         </div>
       </div>

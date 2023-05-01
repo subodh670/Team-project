@@ -16,8 +16,10 @@
         $sql = "DELETE FROM CART WHERE C_ID = $custId AND PRODUCT_ID = $pid";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
+        echo $custId;
+        echo $pid;
         $sql2 = "DELETE FROM ORDERS WHERE C_ID = $custId AND PRODUCT_ID = $pid";
-        $array4 = oci_parse($conn, $sql);
+        $array4 = oci_parse($conn, $sql2);
         oci_execute($array4);
         oci_close($conn);
     }
@@ -25,7 +27,3 @@
 
 ?>
 
-
-
-
-?>

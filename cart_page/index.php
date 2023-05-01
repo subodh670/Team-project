@@ -119,7 +119,7 @@
             <div class="product-desc">
                 <img src="https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="">
                 <div class="desc">
-                    <p>Donuts</p>
+                    <p class="itempro">Donuts</p>
                     <p>no brand</p>
                     <p>only 10 items remaining</p>
                 </div>
@@ -292,8 +292,8 @@
 
         <p class="summary-head">Order summary</p>
         <div class="total">
-            <p>Total</p>
-            <p>£35</p>
+            <p>Total:</p>
+            <p class="ordercost">£0</p>
         </div>
         <div class="order-checkout">
             <button type="submit" class="checkout">Proceed to checkout</button>

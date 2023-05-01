@@ -122,7 +122,7 @@ function addingToOrders(){
                 let xml1 = new XMLHttpRequest();
                 xml1.onreadystatechange = function addXml(){
                     if(this.readyState == 4 && this.status == 200){
-                        console.log(this.responseText);    
+                            orderCost();
                     }
                 }
                 xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}`, true);
@@ -132,7 +132,7 @@ function addingToOrders(){
                 let xml2 = new XMLHttpRequest();
                 xml2.onreadystatechange = function(){
                     if(this.readyState == 4 && this.status == 200){
-                        // console.log(this.responseText);
+                        orderCost();
                     }
                 }
                 xml2.open("POST", `deleteorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}`, true);
@@ -268,7 +268,7 @@ function showingsavedProduct(){
                         <div class="product-desc">
                             <img src="../productsImage/${productImage2}" alt="">
                             <div class="desc">
-                                <p>${productName}</p>
+                                <p class="itempro">${productName}</p>
                                 <p>${productCategory}</p>
                                 <p>only ${productQuantity} items remaining</p>
                             </div>
@@ -301,6 +301,8 @@ function showingsavedProduct(){
             checkingItems();
             cartCounter();
             heartItem();
+            checkingIfordersHappened();
+
             function trashCart(){
                 const proidset = document.querySelectorAll(".getProid");
                 const username = document.querySelector(".usernameFind").value;
@@ -389,3 +391,59 @@ let checkout = document.querySelector(".checkout");
 checkout.addEventListener("click",()=>{
     window.location.href = "../order_page/index.php";
 })
+
+//total cost of order
+function orderCost(){
+    const username = document.querySelector(".usernameFind").value;
+    let costOfOrder = document.querySelector(".container-order .ordercost");
+    let xml = new XMLHttpRequest();
+    xml.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            if(this.responseText != ""){
+                let response = JSON.parse(this.responseText);
+                // console.log(this.responseText);
+                
+                let sum = 0;
+                for(let i=0; i<response.length; i++){
+                    sum += parseInt(response[i]);
+                }
+                // console.log(sum);
+                if(sum>0){
+                    costOfOrder.textContent = `£${sum}`;
+                }
+                
+            }
+            else{
+                    costOfOrder.textContent = `£${0}`;
+            }
+            
+        }
+    }
+    xml.open("POST",`findTotalCost.php?name=${username}`, true );
+    xml.send();
+}   
+orderCost();
+// console.log(costOfOrder);
+
+
+function checkingIfordersHappened(){
+    const username = document.querySelector(".usernameFind").value;
+    let checkingbox = document.querySelectorAll(".onlyone input");
+    let itemName = document.querySelectorAll(".desc .itempro");
+    let xml = new XMLHttpRequest();
+    xml.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            let arr = JSON.parse(this.responseText);
+            // console.log(arr);
+            // console.log(itemName);
+            for(let i=0; i<itemName.length; i++){
+                if(arr.includes(itemName[i].textContent)){
+                    checkingbox[i].checked = 'true';
+                }
+            }
+        }
+    }
+    xml.open("POST", "selectedItem.php?cname="+username, true);
+    xml.send();
+}
+// checkingIfordersHappened();

@@ -108,6 +108,7 @@
 <main></main>
 <input class='usernameFind' type="hidden" value="<?php echo $_SESSION['username']?>">
 <!-- <section class="oneitemselect"> 
+    <input type="hidden" value="${productId}" class="getproductid">
     <div class="selectone">
         <div class="onlyone">
             <p>Uk bakery shop</p>

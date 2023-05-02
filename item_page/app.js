@@ -47,17 +47,18 @@ let username = document.querySelectorAll(".cust-review input")[1].value;
 
 function displayReview(){
     ratingsReview.innerHTML = '<h1>Ratings and Reviews</h1>';
+    const commentBox = document.querySelector(".cust-review textarea");
     let httpXml = new XMLHttpRequest();
     httpXml.onreadystatechange = function(){
         if(this.readyState == 4 && this.status==200){
             let response = JSON.parse(this.responseText);
-            // console.log(response);
+            console.log(response);
             for(let i=0; i<response.length; i++){
                 let usernameLocal = response[i][0];
                 let image = response[i][1];
                 let review = response[i][2];
                 let reviewID = response[i][3];
-                if(username === usernameLocal){
+                if(username == usernameLocal){
                     ratingsReview.innerHTML += ` <div class="personandrating">
                     <div class="person">
                       <img src="../images/${image}" alt="profileimage">
@@ -100,6 +101,8 @@ function displayReview(){
                 }
                 
             }
+            // addReview();
+            commentBox.value = "";
             // delete review or comment
             function deleteReview(){
                 const deleteReview = document.querySelectorAll(".message input");
@@ -135,20 +138,30 @@ const commentBox = document.querySelector(".cust-review textarea");
 const butReview = document.querySelector(".cust-review button");
 
 
-if(butReview != null){
+function addReview(){
+    const emptytextarea = document.querySelector(".emptytextarea");
     butReview.addEventListener("click",()=>{
         let comment = commentBox.value;
-        let json1 = new XMLHttpRequest();
-        json1.onreadystatechange = function(){
-            if(this.readyState == 4 && this.status == 200){
-                comment = "";
-                displayReview();
+        console.log(comment);
+        if(comment!=""){
+            let json1 = new XMLHttpRequest();
+            json1.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    comment = "";
+                    displayReview();
+                }
             }
+            json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}`,true);
+            json1.send();
         }
-        json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}`,true);
-        json1.send();
+        else{
+            emptytextarea.textContent = "Please type something to comment";
+        }
+        
     })
 }
+addReview();
+// }
 
 //quantity error 
 

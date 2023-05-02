@@ -126,7 +126,7 @@ if(isset($_POST['signup'])){
         $target_dir = "../images/";
         $target_file = $target_dir . basename($_FILES["imagetoupload"]["name"]);
         $image = basename($_FILES["imagetoupload"]["name"]);
-          
+        
         if($password != null && $rpassword != null && $email != null && $image != null && $mobile != null && $username != null){
            
             if (move_uploaded_file($_FILES["imagetoupload"]["tmp_name"], $target_file)) {
@@ -187,7 +187,7 @@ if(isset($_POST['signup'])){
 </div>
 <div class="gender">
     <label for="gender"><i class="fa-regular fa-user"></i></label>
-    <select name="gender" id="gender" value="<?php if(isset($_POST['gender'])) echo $_POST['gender']; ?>">
+    <select name="gender" id="gender">
         <option value="male">male</option>
         <option value="female">female</option>
     </select>

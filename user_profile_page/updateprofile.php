@@ -59,6 +59,9 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
            
             echo json_encode([true, true, true, true]);
         }
+        else{
+            echo json_encode([true, true, true, false]);
+        }
     }   
     else{
         echo json_encode([$uniqueEmail, $uniqueName, $uniqueMobile, false]);

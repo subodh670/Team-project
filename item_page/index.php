@@ -115,6 +115,31 @@
 
     
       <?php
+       function productIncart(){
+        if($_SESSION['username']){
+          include("../connectionPHP/connect.php");
+          $username = $_SESSION['username'];
+
+          $pid = $_GET['id'];
+          // $cid = $_SESSION['cid'];
+          // $quantity = $_POST['quantity'];
+          $query = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+          $arr = oci_parse($conn, $query);
+          oci_execute($arr);
+          $cid = oci_fetch_array($arr)[0];
+          $query1 = "SELECT P_QUANTITY FROM CART WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid'";
+          $arr2 = oci_parse($conn, $query1);
+          oci_execute($arr2);
+          $finalArr = oci_fetch_array($arr2);
+          if(isset($finalArr[0])){
+            return $finalArr;
+          }
+          else{
+            return [0];
+          }
+        }
+       
+      }
       $id = $_GET['id'];
       include("../connectionPHP/connect.php");
       $sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = $id";
@@ -165,19 +190,34 @@
           if(isset($_POST['addtocart']) && isset($_SESSION['username'])){
             // include("../connectionPHP/connect.php");
             $username = $_SESSION['username'];
-            if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity){
+            $quantity = productIncart()[0];
+
+            if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity && $_POST['quantity'] <= ($pQuantity-$quantity)){
               $pid = $_GET['id'];
-              // $cid = $_SESSION['cid'];
               $quantity = $_POST['quantity'];
               $query = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
               $arr = oci_parse($conn, $query);
               oci_execute($arr);
               $cid = oci_fetch_array($arr)[0];
-              $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid','$quantity')";
-              $array = oci_parse($conn, $sql);
-              oci_execute($array);
+              $query1 = "SELECT CART_ID, P_QUANTITY FROM CART WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid'";
+              $arr2 = oci_parse($conn, $query1);
+              oci_execute($arr2);
+              $finalArr = oci_fetch_array($arr2);
+              $exist = $finalArr;
+              if(isset($exist[0])){
+                $oldquantity = $exist[1];
+                $totalQ = $oldquantity + $quantity;
+                $sql = "UPDATE CART SET P_QUANTITY = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
+                $array = oci_parse($conn, $sql);
+                oci_execute($array);
+              }
+              else{
+                $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid',$quantity)";
+                $array = oci_parse($conn, $sql);
+                oci_execute($array);
+              }
               // $remainingQuant = $pQuantity - intval($_POST['quantity']);
-              // echo $remainingQuant;
+              // // echo $remainingQuant;
               // $sql1 = "UPDATE PRODUCT SET PRODUCT_QUANTITY = $remainingQuant WHERE PRODUCT_ID = $pid";
               // $array2 = oci_parse($conn, $sql1);
               // oci_execute($array2);
@@ -188,7 +228,13 @@
               $quant_Error = "Item out of stock";
             }
             else{
-              $quant_Error = "Quantity should be between 1 and $pQuantity";
+              $pQ = $pQuantity-productIncart()[0];
+              if($pQ == 0){
+                $quant_Error = "You have put all items in cart";
+              }
+              else{
+                $quant_Error = "Quantity should be between 1 and $pQ";
+              }
             }
             $quant_Error = $quant_Error;
           }
@@ -265,6 +311,20 @@
               <button type="button" name="inc">-</button>
               <input type="text" name="quantity" placeholder="1" value="1" >
               <button type="button" name="inc">+</button>
+              <?php
+             
+              if($_SESSION['username']){
+                $finalArr = productIncart();
+                if(isset($finalArr[0])){
+                  $quant = $finalArr[0];
+                  echo "<p style='font-size: 0.8rem; margin-top: 1em; color: var(--secondary-color);'>$quant item(s) are already in cart</p>";
+                }
+                else{
+                  echo "<p style='font-size: 0.8rem; margin-top: 1em;'>0 item is in cart</p>";
+                }
+              }
+              
+              ?>
               <p class="quantity_error" style="color: red; font-size: 0.8rem; font-weight: bold; margin-top: 1em;"><?php  if(isset($quant_Error)) echo $quant_Error;  ?></p>
             </div>
             <div class="place-order">
@@ -420,7 +480,8 @@
         if(isset($_SESSION['username']) && isset($_SESSION['password'])){
           ?>
           <div class='cust-review'>
-            <textarea name="product_review" cols="30" rows="10">Add review</textarea>
+            <textarea name="product_review" cols="30" rows="10"></textarea>
+            <p class="emptytextarea"></p>
             <input type="hidden" value="<?php echo $_GET['id'];  ?>">
             <input type="hidden" value="<?php echo $_SESSION['username']; ?>">
             <button>ADD REVIEW</button>

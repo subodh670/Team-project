@@ -78,7 +78,7 @@ function editCustPro(){
     const userfirstname = document.querySelector(".editfirstname input");
     const userlastname = document.querySelector(".editlastname input");
     const editmobile = document.querySelector('.editmobile input');
-    const editgender = document.querySelector('.editgender #gender');
+    const editgender = document.querySelector('.editgender select');
     const gendervalue = editgender.options[editgender.selectedIndex].value;
     const editaddress = document.querySelector('.editaddress input');
     const updateBtn = document.querySelector(".updatebtn button");
@@ -90,8 +90,12 @@ function editCustPro(){
         let xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
-                console.log(this.responseText);
+                // console.log(this.responseText);
                 let response = JSON.parse(this.responseText);
+                if(response[1]==true && response[2]==true && response[0]==true && response[3]==false){
+                    // console.log("hello");
+                    location.reload();
+                }
                 if(response[1]===false){
                     errorusername.textContent = 'Username already exists';
                 }
@@ -111,3 +115,25 @@ function editCustPro(){
     }
 }
 editCustPro();
+
+
+// edit password customers
+const changepassbtn = document.querySelector(".changepassbtn");
+const updatepassdiv = document.querySelector('.updatepass');
+const xmarkClose1 = document.querySelector(".xmark1 i");
+changepassbtn.addEventListener("click",()=>{
+    updatepassdiv.classList.remove('hidepass');
+    backdrop.classList.remove("hidebackdrop");
+})
+xmarkClose1.addEventListener("click",(e)=>{
+    updatepassdiv.classList.add('hidepass');
+    backdrop.classList.add("hidebackdrop");
+})
+backdrop.addEventListener("click",()=>{
+    updatepassdiv.classList.add('hidepass');
+    backdrop.classList.add("hidebackdrop");
+})
+const errorsflash = document.querySelector(".errorsflash");
+setTimeout(()=>{
+    errorsflash.style.display = 'none';
+},6000);

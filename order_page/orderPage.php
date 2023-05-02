@@ -14,9 +14,10 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $sum = 0;
     $totalQuant = 0;
     while($rows = oci_fetch_array($arr2)){
-        $sum += $rows[1];
+        $sum += $rows[1]*$rows[0];
         $totalQuant += $rows[0];
     }
+    // echo $sum;
     echo json_encode([$sum , $totalQuant]);
 
 

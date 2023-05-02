@@ -571,7 +571,72 @@ form .xmark i{
     color: red;
     margin-top: 1em;
 }
+/* modal password */
 
+.updatepass{
+     width: 100%;
+    animation-duration: 0.6s;
+    animation-name: animateprofileedit;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    z-index: 5;
+}
+.hidepass{
+    display: none;
+}
+.updatepass form{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1.5em;
+    padding: 1em;
+}
+.updatepass form>h3{
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+.updatepass form >div i{
+    color: var(--white);
+    margin-right: 1.2em;
+    font-size: 1.5rem;
+}
+
+.updatepass form >div input{
+    width: 250px;
+    padding: 0.5em;
+    border-width: 0px;
+    border-bottom: 2px solid white;
+    background-color: var(--secondary-color);
+    outline: none;
+    color: white;
+}
+.updatepass form > div button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: var(--white);
+}
+form .xmark1{
+    width: 120%;
+    text-align: right;
+    position: relative;
+    top: 1em;
+}
+form .xmark i{
+    font-size: 4rem;
+    cursor: pointer;
+}
 
 /* footer */
 
@@ -604,5 +669,33 @@ footer{
 .container-footer div h1{
     color: var(--secondary-color);
 }
+/* error and flashes */
+@keyframes animateflash {
+    from{
+        top: -50px;
+    }
+    to{
+        top: -50px;
+    }
+}
+.errorsflash{
+    display: flex;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
 
+}
+
+.errorsflash p{
+    position: relative;
+    background-color: var(--secondary-color);
+    padding: 0.5em;
+    color: white;
+    animation-name: animateflash;
+    animation-duration: 0.6s;
+}
 

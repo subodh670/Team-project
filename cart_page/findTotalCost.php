@@ -11,6 +11,8 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $sql = "SELECT PRODUCT_PRICE, ORDERS.PRODUCT_QUANTITY FROM ORDERS, PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID AND ORDERS.C_ID ='$cid'";
     $array = oci_parse($conn, $sql);
     oci_execute($array);
+    $price = array();
+    
     while($rows = oci_fetch_array($array)){
         $price[] = $rows[0]*$rows[1];
     }

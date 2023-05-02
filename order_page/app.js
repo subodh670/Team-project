@@ -34,10 +34,10 @@ function orderPage(){
             console.log(this.responseText);
             let response = JSON.parse(this.responseText);
             let quantity = response[1];
-            let price = response[0]*quantity;
+            let price = response[0];
             placeorder.innerHTML =  `
             <p>Collection place: huddersfields</p>
-            <hr>
+            <hr> 
                 <h1>Order summary</h1>
                 <p class="totalitems">Items total: ${quantity}</p>
                 <p class="totalpayment">Total payment: £${price}</p>

@@ -2,16 +2,7 @@
 include("../connectionPHP/inc_session.php");
 // session_start();
 ?>
-<?php
 
-if(isset($_POST['logout'])){
-    session_destroy();
-    session_start();
-    $_SESSION['guest'] = false;
-    header("Location: ../landing_page/index.php");
-}
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +17,92 @@ if(isset($_POST['logout'])){
 <body>
     <div class="backdrop hidebackdrop">
 
+    </div>
+    <div class="updatepass hidepass" >
+        <form action="" method="POST">
+            <div class="xmark1">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <?php    
+            $errornewPass = "";
+            $errorconfirmpass = "";
+            $flashvalidated = "";
+            $errornotmatch = "";
+            function validatePass($pass){
+                $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
+                if(preg_match($password_regex, $pass)){
+                    return true;
+                }
+                else{
+                    return false;   
+                }
+            }
+            if(isset($_POST['updatepassbtn'])){
+                include("../connectionPHP/connect.php");
+                $username = $_SESSION['username'];
+                echo $username;
+                $sql = "SELECT C_PASSWORD FROM CUSTOMER WHERE C_USERNAME = '$username'";
+                $arr = oci_parse($conn, $sql);
+                oci_execute($arr);
+                $pass = oci_fetch_array($arr)[0];
+                $oldpass = sha1($_POST['oldpass']);
+                $newpass = $_POST['newpass'];
+                $cpass = $_POST['cpass'];
+                
+                if($pass == $oldpass){
+                    if(validatePass($newpass)){
+                        if($newpass == $cpass){
+                            $newpass = sha1($newpass);
+                            $sql = "INSERT INTO CUSTOMER(C_PASSWORD) VALUES('$newpass') WHERE C_USERNAME = '$username'";
+                            $array = oci_parse($conn, $sql);
+                            oci_execute($array);
+                            $_SESSION['password'] = $newpass;
+                            $flashvalidated = "<p>Password updated!!</p>";
+                        }
+                        else{
+                            // $_SESSION['errorconfirm'] = true;
+                            $errorconfirmpass = "<p>Error: Passwords do not match with the database</p>";
+
+                        }
+                    }
+                    else{
+                        // $_SESSION['errorvalidpass'] = true;
+                        $errornewPass = "<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>";
+
+    
+                    }
+                }   
+                else{
+                    // $_SESSION['matchpass'] = true;
+                    $errornotmatch = "<p>Passwords do not match!!</p>";
+                    
+                }
+    
+            }
+            
+
+            ?>
+            <h3>Update password</h3>
+            <div class="oldpassword">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="oldpass" placeholder="old password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="newpassword">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="newpass" placeholder="new password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="confirmpass">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="cpass" placeholder="confirm password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="updatebtn">
+                <button type="submit" name="updatepassbtn">Update</button>
+            </div>
+
+        </form>
     </div>
     <div class="editprofile hideEditprofile">
         <form method="POST" action="">
@@ -152,6 +229,17 @@ if(isset($_POST['logout'])){
         <h1>Manage my Account</h1>
         <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="">
     </section>
+    <section class="errorsflash">
+    <?php
+
+        echo $errornewPass;
+        echo $errorconfirmpass;
+        echo $flashvalidated;
+        echo $errornotmatch;
+
+?>
+    </section>
+
 
     <section class="profilecontainer">
         <div class="dashprofile">
@@ -216,7 +304,8 @@ if(isset($_POST['logout'])){
                     <p>Password</p>
                     <div>
                         <p>************</p>
-                        <button>Change password</button>
+                        <button class="changepassbtn">Change password</button>
+                        
                     </div>
                 </div>
             </div>

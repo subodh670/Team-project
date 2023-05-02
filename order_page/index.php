@@ -55,8 +55,13 @@
         <div class="orderslist">
             <?php
             include("../connectionPHP/connect.php");
+
             $username = $_SESSION['username'];
-            $sql = "SELECT ORDERS.PRODUCT_QUANTITY, PRODUCT.PRODUCT_NAME, PRODUCT.PRODUCT_PRICE, PRODUCT.PRODUCT_CATEGORY,PRODUCT.PRODUCT_IMAGE2, PRODUCT.PRODUCT_QUANTITY FROM ORDERS,PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID";
+            $sql = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            $c_id = oci_fetch_array($arr)[0];
+            $sql = "SELECT ORDERS.PRODUCT_QUANTITY, PRODUCT.PRODUCT_NAME, PRODUCT.PRODUCT_PRICE, PRODUCT.PRODUCT_CATEGORY,PRODUCT.PRODUCT_IMAGE2, PRODUCT.PRODUCT_QUANTITY FROM ORDERS,PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID AND ORDERS.C_ID = '$c_id'";
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             while($row = oci_fetch_array($arr)){

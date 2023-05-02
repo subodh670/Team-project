@@ -14,14 +14,22 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $arr2 = oci_parse($conn, $sqlExist);
     oci_execute($arr2); 
     // echo $orderid;?
-    if(isset(oci_fetch_array($arr2)[0])){
-        $orderid = oci_fetch_array($arr2)[0];
+    $arr = oci_fetch_array($arr2);
+    $slotArr = oci_parse($conn, "SELECT PRODUCT_QUANTITY FROM ORDERS WHERE C_ID = $cid");
+    oci_execute($slotArr);
+    $slotQ = 0;
+    while($rows = oci_fetch_array($slotArr)){
+        $slotQ += $rows[0];
+    }
+    $canAdd = $slotQ<=20 ? true:false;
+    if(isset($arr[0]) && $canAdd == true){
+        $orderid = $arr[0];
         // echo $orderid;
         $sql3 = "UPDATE ORDERS SET PRODUCT_QUANTITY = '$quantity' WHERE ORDER_ID = '$orderid'";
         $arr3 = oci_parse($conn, $sql3);
         oci_execute($arr3);
     }
-    else{
+    else if($canAdd == true){
         // echo "eeeee";
         $sqlforTraderid = "SELECT TRADER_ID FROM PRODUCT WHERE PRODUCT_ID = '$pid'";
         $arr4 = oci_parse($conn, $sqlforTraderid);
@@ -32,6 +40,9 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         oci_execute($arr5);
     }
 
+    else{
+        json_encode(['cannot be more than 20']);
+    }
 
 
 

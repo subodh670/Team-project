@@ -26,8 +26,18 @@ faTimes.addEventListener("click",()=>{
 // select items
 
 
+//prevent default in keypress
 
+function preventTyping(){
+    const countItem = document.querySelectorAll(".countitem input");
+    countItem.forEach((item)=>{
+        console.log(item);
+        item.addEventListener("keypress",(e)=>{
+            e.preventDefault();
+        })
+    })
 
+}
 
 function selectboxMain(){
     const selectAllPro = document.querySelector("input[name=selectallpro]");
@@ -116,13 +126,18 @@ function addingToOrders(){
         let btnIncrease = document.querySelectorAll(".countitem .increase");
         let btnDecrease = document.querySelectorAll(".countitem .decrease");
         checkitem.addEventListener("change",(e)=>{
-            console.log(slotsValue);
+            // console.log(slotsValue);
             let isChecked = e.target.matches(':checked');
             if(isChecked === true){
                 let xml1 = new XMLHttpRequest();
                 xml1.onreadystatechange = function addXml(){
                     if(this.readyState == 4 && this.status == 200){
+                        if(this.responseText != ""){
+                            console.log(this.responseText);
+                        }
+                        else{
                             orderCost();
+                        }
                     }
                 }
                 xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}`, true);
@@ -294,6 +309,7 @@ function showingsavedProduct(){
             </section>
                 `;
             })
+            preventTyping();
             trashCart();
             // selectboxMain();
             addingToOrders();
@@ -302,6 +318,7 @@ function showingsavedProduct(){
             cartCounter();
             heartItem();
             checkingIfordersHappened();
+            updateCartAndTotal();
 
             function trashCart(){
                 const proidset = document.querySelectorAll(".getProid");
@@ -446,4 +463,71 @@ function checkingIfordersHappened(){
     xml.open("POST", "selectedItem.php?cname="+username, true);
     xml.send();
 }
+
+
+
 // checkingIfordersHappened();
+
+
+// checking if button in clicked when tick is given and increase orders quantity in database
+function updateCartAndTotal(){
+    let checkBox = document.querySelectorAll('.onlyone input');
+    let pIdAll = document.querySelectorAll(".getproductid");
+    const username = document.querySelector(".usernameFind").value;
+    let decrease = document.querySelectorAll(".countitem .decrease");
+    let increase = document.querySelectorAll(".countitem .increase");
+
+    checkBox.forEach((item,i)=>{
+        // console.log(checkBox);
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                let arr = JSON.parse(this.responseText);
+                if(arr[0]==true){
+                    // console.log("hee");
+                    increase[i].addEventListener("click",()=>{
+                        let inputValue = document.querySelectorAll('.countitem input');
+                        let xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function(){
+                            if(this.readyState == 4 && this.status == 200){
+                                console.log(JSON.parse(this.responseText));
+                                if(JSON.parse(this.responseText)[0]==false){
+
+                                    inputValue[i].disabled = true;
+                                }
+                                else{
+                                    inputValue[i].disabled = false;
+                                }
+                            }
+                        }
+                        xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
+                        xmlhttp.send();
+                    })
+                    decrease[i].addEventListener("click",()=>{
+                        let inputValue = document.querySelectorAll('.countitem input');
+                        let xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function(){
+                            if(this.readyState ==4 && this.status == 200){
+                                // console.log(JSON.parse(this.responseText));
+                                if(JSON.parse(this.responseText)[0]==false){
+
+                                    inputValue[i].disabled = true;
+                                }
+                                else{
+                                    inputValue[i].disabled = false;
+                                }
+                            }
+                        }
+                        xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
+                        xmlhttp.send();
+                    })
+                    
+                }
+                // console.log(this.responseText);
+            }
+        }
+        xml.open("POST", `checkingordered.php?pid=${pIdAll[i].value}&name=${username}`, true);
+        xml.send();
+    })
+}
+updateCartAndTotal();

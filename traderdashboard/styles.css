@@ -13,7 +13,7 @@ html{
     height: 100vh;
 } 
 .menu-dash .row .col-2{
-    height: 180vh;
+    height: 200vh;
     /* position: fixed; */
     background-color: var(--secondary-color);
     color: white;
@@ -79,6 +79,8 @@ html{
     margin-top: 1em;
     font-size: 1.5rem;
     margin-bottom: 1em;
+    font-weight: bold;
+    color: var(--secondary-color);
 }
 .addproduct form{
     display: flex;
@@ -145,3 +147,10 @@ html{
 .btnaddpro button:hover{
     background-color: var(--secondary-color);
 }
+.addproduct label{
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+/* add product finished */
+

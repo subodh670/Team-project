@@ -57,7 +57,7 @@
 <!-- pages -->
 
 
-<div id="onelink">Reports items</div>
+<div id="onelink" class="reports">Reports items</div>
 <div id="twolink">sales items</div>
 <div id="threelink">sales items</div>
 <div id="fourlink">sales items</div>
@@ -95,8 +95,57 @@
 <!-- pages -->
 
 
+<div id="onelink" class="addshop">
+    add shops
+</div>
+<!-- finished first page add product -->
+<div id="twolink" class="disableshop">
+    <div class="enableshop">
+        enable
+    </div>
+    <div class="disableshop">
+        disable
+    </div>
+
+</div>
+<div id="threelink">delete shop</div>
+
+
+      </section>
+    </div>
+    <div class="col-10 showdesc" id="products">
+        <!-- section manage products -->
+      <section class="products-manage">
+      <nav class="navbar navbar-expand-md navbar-light bg-dark">
+  <div class="container-fluid">
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-link="onelink" href="#">Add Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-link="twolink" href="#">Disable Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-link="threelink" href="#"> Edit Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-link="fourlink" href="#"> Delete Products</a>
+        </li>
+      </ul>
+    </div>
+    <a class="navbar-brand" href="#">Dashboard</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+<!-- pages -->
+
+
 <div id="onelink" class="addproduct">
-    <h1>Add Product</h1>
+<h1>Add Product</h1>
     <form action="" method="POST">
         <div class="productname">
             <label for="pname">Product Name</label>
@@ -161,57 +210,21 @@
     </form>
 
 </div>
-<!-- finished first page add product -->
-<div id="twolink">
+<!-- add product page finished -->
 
 
 
-
-
-
-
+<div id="twolink" class="disableproduct">
+   <div class="enableproduct">
+    Enable
+   </div>
+   <div class="disableproduct">
+    Disable
+   </div>
 
 </div>
-<div id="threelink">delete shop</div>
-
-
-      </section>
-    </div>
-    <div class="col-10 showdesc" id="products">
-        <!-- section manage products -->
-      <section class="products-manage">
-      <nav class="navbar navbar-expand-md navbar-light bg-dark">
-  <div class="container-fluid">
-    
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" data-link="onelink" href="#">Add Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-link="twolink" href="#">Disable Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-link="threelink" href="#"> Edit Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-link="fourlink" href="#"> Delete Products</a>
-        </li>
-      </ul>
-    </div>
-    <a class="navbar-brand" href="#">Dashboard</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </div>
-</nav>
-<!-- pages -->
-
-
-<div id="onelink">Reports items</div>
-<div id="twolink">sales items</div>
-<div id="threelink">sales items</div>
-<div id="fourlink">sales items</div>
+<div id="threelink">Edit products</div>
+<div id="fourlink">Delete products</div>
 
 
       </section>

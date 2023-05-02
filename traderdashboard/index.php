@@ -48,7 +48,7 @@
       </ul>
       
     </div>
-    <a class="navbar-brand" href="#">Dashboard</a>
+    <a class="navbar-brand" href="#">Trader profile</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -66,7 +66,7 @@
 </section>
 
     </div>
-    <div class="col-10 showdesc" id='shops'>
+    <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id='shops'>
         <!-- section manage shops -->
       <section class="shops-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
@@ -113,7 +113,7 @@
 
       </section>
     </div>
-    <div class="col-10 showdesc" id="products">
+    <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="products">
         <!-- section manage products -->
       <section class="products-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
@@ -229,7 +229,7 @@
 
       </section>
     </div>
-    <div class="col-10 showdesc" id="offers">
+    <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="offers">
         <!-- section manage offers -->
       <section class="offers-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
@@ -266,7 +266,7 @@
 
       </section>
     </div>
-    <div class="col-10 showdesc" id="profile">
+    <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="profile">
         <!-- section manage profile -->
       <section class="profile-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">

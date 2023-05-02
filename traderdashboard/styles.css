@@ -61,14 +61,22 @@ html{
 /* basic css ended */
 .menu-dash .col-2 img{
     width: 55%;
-    /* margin-top: 5em; */
+    margin-top: 1.2em;
     /* margin-bottom: 0em; */
 }
 .showdesc section > div{
     display: none;
 }
 
-/* add shops */
+@media(max-width: 600px){
+    .col-2{
+        width: 30px !important;
+    }
+}
+
+
+
+/* add products */
 
 .addproduct{
     width: 100%;

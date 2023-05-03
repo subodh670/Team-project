@@ -175,8 +175,8 @@ include("../connectionPHP/inc_session.php");
                 <i class="fa-solid fa-house"></i>
                 <input type="text" name="address" placeholder="address"  value="<?php echo $address ?>">
             </div>
-            <div class="updatebtn">
-                <button type="button" name="update">Update</button>
+            <div class="updatebtn2">
+                <button type="button" name="update">Update Details</button>
             </div>
 
                 <?php

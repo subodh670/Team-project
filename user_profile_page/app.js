@@ -81,16 +81,18 @@ function editCustPro(){
     const editgender = document.querySelector('.editgender select');
     const gendervalue = editgender.options[editgender.selectedIndex].value;
     const editaddress = document.querySelector('.editaddress input');
-    const updateBtn = document.querySelector(".updatebtn button");
+    const updateBtn = document.querySelector(".updatebtn2 button");
     const cid = document.querySelector(".chidden");
     const errorusername = document.querySelector(".errorusername");
     const erroremail = document.querySelector(".erroremail");
     const errormobile = document.querySelector(".errormobile");
-    updateBtn.onclick = () =>{
+    // console.log(updateBtn);
+    updateBtn.addEventListener("click",()=>{
+        console.log(updateBtn);
         let xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
-                // console.log(this.responseText);
+                console.log(this.responseText);
                 let response = JSON.parse(this.responseText);
                 if(response[1]==true && response[2]==true && response[0]==true && response[3]==false){
                     // console.log("hello");
@@ -113,6 +115,7 @@ function editCustPro(){
         xmlHttp.open("POST", `updateprofile.php?name=${username.value}&email=${useremail.value}&firstname=${userfirstname.value}&lastname=${userlastname.value}&mobile=${editmobile.value}&gender=${gendervalue}&address=${editaddress.value}&cid=${cid.value}`, true );
         xmlHttp.send();
     }
+    )
 }
 editCustPro();
 

@@ -1,7 +1,4 @@
 <?php
-// Handle the PayPal response.
-
-
 function addPayment($data) {
     global $db;
 
@@ -31,7 +28,6 @@ function checkTxnid($txnid) {
 
     return ! $results->num_rows;
 }
- 
 function verifyTransaction($data) {
     global $paypalUrl;
 
@@ -72,38 +68,5 @@ function verifyTransaction($data) {
     curl_close($ch);
 
     return $res === 'VERIFIED';
-}
-// Create a connection to the database.
-// $db = new mysqli($dbConfig['host'], $dbConfig['username'], $dbConfig['password'], $dbConfig['name']);
-
-// Assign posted variables to local data array.
-$data = [
-    // 'item_name' => $_POST['item_name'],
-    // 'item_number' => $_POST['item_number'],
-    // 'payment_status' => $_POST['payment_status'],
-    // 'payment_amount' => $_POST['mc_gross'],
-    // 'payment_currency' => $_POST['mc_currency'],
-    // 'txn_id' => $_POST['txn_id'],
-    // 'receiver_email' => $_POST['receiver_email'],
-    // 'payer_email' => $_POST['payer_email'],
-    // 'custom' => $_POST['custom'],
-    'item_name' => 'soap',
-    'item_number' => 34,
-    'payment_status' => 'ok',
-    'payment_amount' => 1000,
-    'payment_currency' => 50,
-    'txn_id' => 1000,
-    'receiver_email' => 'cleckhfmart@gmail.com',
-    'payer_email' => 'subodhacharya21@gmail.com',
-    'custom' => 'ok',
-];
-
-// We need to verify the transaction comes from PayPal and check we've not
-// already processed the transaction before adding the payment to our
-// database.
-if (verifyTransaction($_POST) && checkTxnid($data['txn_id'])) {
-    if (addPayment($data) !== false) {
-        // Payment successfully added.
-    }
 }
 ?>

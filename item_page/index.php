@@ -313,7 +313,7 @@
               <button type="button" name="inc">+</button>
               <?php
              
-              if($_SESSION['username']){
+              if(isset($_SESSION['username'])){
                 $finalArr = productIncart();
                 if(isset($finalArr[0])){
                   $quant = $finalArr[0];
@@ -389,7 +389,10 @@
           <?php 
           include("../connectionPHP/connect.php");
           $pid = $_GET['id'];
-          $cname=  $_SESSION['username'];
+          $cname = null;
+          if(isset($_SESSION['username'])){
+            $cname=  $_SESSION['username'];
+          }
           $sql = "SELECT RATING_STAR FROM RATING,CUSTOMER WHERE CUSTOMER.C_ID = RATING.C_ID AND PRODUCT_ID = $pid AND CUSTOMER.C_USERNAME = '$cname'";
           $arr = oci_parse($conn, $sql);
           oci_execute($arr);

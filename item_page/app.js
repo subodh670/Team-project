@@ -52,7 +52,7 @@ function displayReview(){
     httpXml.onreadystatechange = function(){
         if(this.readyState == 4 && this.status==200){
             let response = JSON.parse(this.responseText);
-            console.log(response);
+            // console.log(response);
             for(let i=0; i<response.length; i++){
                 let usernameLocal = response[i][0];
                 let image = response[i][1];
@@ -102,7 +102,9 @@ function displayReview(){
                 
             }
             // addReview();
-            commentBox.value = "";
+            if(commentBox != null){
+                commentBox.value = "";
+            }
             // delete review or comment
             function deleteReview(){
                 const deleteReview = document.querySelectorAll(".message input");
@@ -139,26 +141,32 @@ const butReview = document.querySelector(".cust-review button");
 
 
 function addReview(){
+    const commentBox = document.querySelector(".cust-review textarea");
+    const butReview = document.querySelector(".cust-review button");
     const emptytextarea = document.querySelector(".emptytextarea");
-    butReview.addEventListener("click",()=>{
-        let comment = commentBox.value;
-        console.log(comment);
-        if(comment!=""){
-            let json1 = new XMLHttpRequest();
-            json1.onreadystatechange = function(){
-                if(this.readyState == 4 && this.status == 200){
-                    comment = "";
-                    displayReview();
-                }
-            }
-            json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}`,true);
-            json1.send();
-        }
-        else{
-            emptytextarea.textContent = "Please type something to comment";
-        }
+    if(emptytextarea != null && commentBox != null && butReview != null){
         
-    })
+        butReview.addEventListener("click",()=>{
+            let comment = commentBox.value;
+            console.log(comment);
+            if(comment!=""){
+                let json1 = new XMLHttpRequest();
+                json1.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                        comment = "";
+                        displayReview();
+                    }
+                }
+                json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}`,true);
+                json1.send();
+            }
+            else{
+                emptytextarea.textContent = "Please type something to comment";
+            }
+            
+        })
+    }
+    
 }
 addReview();
 // }
@@ -280,7 +288,7 @@ function rate_product(){
             let xml = new XMLHttpRequest();
             xml.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
-                    console.log(this.responseText);
+                    // console.log(this.responseText);
                 }
             }
             xml.open("POST", `rateProduct.php?proid=${proId}&custname=${custname}&star=${i+1}`, true);

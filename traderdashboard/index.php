@@ -146,7 +146,7 @@
 
 <div id="onelink" class="addproduct">
 <h1>Add Product</h1>
-    <form action="" method="POST">
+    <form action="#" method="POST">
         <div class="productname">
             <label for="pname">Product Name</label>
             <input type="text" name="pname" id="pname">
@@ -157,7 +157,7 @@
         </div>
         <div class="collection1">
         <div class="productquantity">
-            <label for="pprice">Product Price</label>
+            <label for="pprice">Product Quantity</label>
             <input type="text" name="pprice" id="pprice">
         </div>
         <div class="proDescription">

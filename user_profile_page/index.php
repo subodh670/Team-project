@@ -2,6 +2,15 @@
 include("../connectionPHP/inc_session.php");
 // session_start();
 ?>
+<?php
+    if(isset($_POST['logout'])){
+        session_destroy();
+        session_start();
+        $_SESSION['guest'] = false;
+        header("location: ../landing_page/index.php");
+    }
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +34,7 @@ include("../connectionPHP/inc_session.php");
             </div>
             <?php    
             $errornewPass = "";
-            $errorconfirmpass = "";
+            $errorconfirmass = "";
             $flashvalidated = "";
             $errornotmatch = "";
             function validatePass($pass){
@@ -191,6 +200,7 @@ include("../connectionPHP/inc_session.php");
         </ul>
         <div class="login_cart_search">
              <form class="login" method="POST" action="">
+                
                 <button name='logout'>Log out</button>
              </form>
              <div class="cart">
@@ -231,11 +241,12 @@ include("../connectionPHP/inc_session.php");
     </section>
     <section class="errorsflash">
     <?php
-
-        echo $errornewPass;
-        echo $errorconfirmpass;
-        echo $flashvalidated;
-        echo $errornotmatch;
+        if($errorconfirmass != "" && $errorconfirmass != "" && $flashvalidated!= "" && $errornotmatch != "" ){
+            echo $errornewPass;
+            echo $errorconfirmpass;
+            echo $flashvalidated;
+            echo $errornotmatch;
+        }
 
 ?>
     </section>

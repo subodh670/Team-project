@@ -10,7 +10,7 @@ function mainLinkClick(){
     listsMenu.forEach((item,i)=>{
         item.addEventListener("click",(e)=>{
             let link1 = e.currentTarget.dataset.type;
-            console.log(link1);
+            // console.log(link1);
             listsMenu[i].style.fontSize = "1.1rem";
             listsMenu[i].style.fontWeight = "bolder";
 
@@ -26,6 +26,7 @@ function mainLinkClick(){
     })
 }
 mainLinkClick();
+
 
 //submenu click
 function submenuClick(keyel){
@@ -50,13 +51,21 @@ function submenuClick(keyel){
     })
 }
 
-submenuClick("overall-manage");
-submenuClick("shops-manage");
-submenuClick("products-manage");
-submenuClick("offers-manage");
-submenuClick("profile-manage");
 
 
 
+
+let redirectToProduct = document.querySelector(".redirectToAddProduct");
+if(redirectToProduct !== null){
+    console.log('hello');
+    submenuClick("products-manage");
+}
+else{
+    submenuClick("overall-manage");
+    submenuClick("shops-manage");
+    submenuClick("products-manage");
+    submenuClick("offers-manage");
+    submenuClick("profile-manage");
+}
 
 

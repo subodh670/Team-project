@@ -34,16 +34,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-link="onelink" href="#">Reports</a>
+          <a class="nav-link" data-link="onelink" href="#onelink">Reports</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="twolink" href="#">Dashboard Item 1</a>
+          <a class="nav-link" data-link="twolink" href="#twolink">Dashboard Item 1</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="threelink" href="#">Dashboard Item 2</a>
+          <a class="nav-link" data-link="threelink" href="#threelink">Dashboard Item 2</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="fourlink" href="#">Dashboard Item 3</a>
+          <a class="nav-link" data-link="fourlink" href="#fourlink">Dashboard Item 3</a>
         </li>
       </ul>
       
@@ -75,13 +75,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-link="onelink" href="#">Add Shops</a>
+          <a class="nav-link" data-link="onelink1" href="#onelink1">Add Shops</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="twolink" href="#">Disable shop</a>
+          <a class="nav-link" data-link="twolink1" href="#twolink1">Disable shop</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="threelink" href="#"> Delete shop</a>
+          <a class="nav-link" data-link="threelink1" href="#threelink1"> Delete shop</a>
         </li>
       </ul>
     </div>
@@ -95,11 +95,11 @@
 <!-- pages -->
 
 
-<div id="onelink" class="addshop">
+<div id="onelink1" class="addshop">
     add shops
 </div>
 <!-- finished first page add product -->
-<div id="twolink" class="disableshop">
+<div id="twolink1" class="disableshop">
     <div class="enableshop">
         enable
     </div>
@@ -108,7 +108,7 @@
     </div>
 
 </div>
-<div id="threelink">delete shop</div>
+<div id="threelink1">delete shop</div>
 
 
       </section>
@@ -122,16 +122,16 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-link="onelink" href="#">Add Products</a>
+          <a class="nav-link" data-link="onelink2" href="#onelink2">Add Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="twolink" href="#">Disable Products</a>
+          <a class="nav-link" data-link="twolink2" href="#twolink2">Disable Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="threelink" href="#"> Edit Products</a>
+          <a class="nav-link" data-link="threelink2" href="#threelink2"> Edit Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="fourlink" href="#"> Delete Products</a>
+          <a class="nav-link" data-link="fourlink2" href="#fourlink2"> Delete Products</a>
         </li>
       </ul>
     </div>
@@ -144,9 +144,53 @@
 <!-- pages -->
 
 
-<div id="onelink" class="addproduct">
+<div id="onelink2" class="addproduct">
 <h1>Add Product</h1>
-    <form action="#" method="POST">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
+      <?php
+      // echo "hello";
+      if(isset($_POST['addproduct'])){
+        // echo "eeee";
+        if(!empty($_POST['pname']) && !empty($_POST['pprice']) && !empty($_POST['pquant']) && !empty($_POST['prodesc']) && !empty($_POST['pallergy']) && !empty($_POST['shopname'])){
+          $pname = $_POST['pname'];
+          $pprice = $_POST['pprice'];
+          $pquant = $_POST["pquant"];
+          $pdesc = $_POST['prodesc'];
+          $pallergy = $_POST['pallergy'];
+          $pshop = $_POST['shopname'];
+          if(is_numeric($pquant)){
+            $pquanterror = false;
+          }
+          else{
+            $pquanterror = true;
+          }
+          if(is_numeric($pprice)){
+            $ppriceError = false;
+          }
+          else{
+            $ppriceError = true;
+          }
+          $splittedDesc = explode(" ", $pdesc);
+          $count = count($splittedDesc);
+          if($count >= 20 && $count <= 50){
+            $pdescerror = false;
+          }
+          else{
+            $pdescerror = true;
+          }
+          if($pquanterror == false && $pdescerror == false && $ppriceError == false){
+              $sql = "INSERT INTO PRODUCT(PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, ) VALUES()";
+          }
+          else{
+      header("location: /index.php#onelink2");
+
+            // echo "<p class='redirectToAddProduct'>Redirect to same page!!</p>";
+          }
+        }
+      }
+
+
+      ?>
         <div class="productname">
             <label for="pname">Product Name</label>
             <input type="text" name="pname" id="pname">
@@ -157,8 +201,8 @@
         </div>
         <div class="collection1">
         <div class="productquantity">
-            <label for="pprice">Product Quantity</label>
-            <input type="text" name="pprice" id="pprice">
+            <label for="pquant">Product Quantity</label>
+            <input type="text" name="pquant" id="pquant">
         </div>
         <div class="proDescription">
             <label for="prodesc">Product Description</label>
@@ -169,14 +213,14 @@
         </div>
         <div class="collection2">
         <div class="productallergy">
-            <label for="pallergy">Product Price</label>
+            <label for="pallergy">Product Allergy</label>
             <input type="text" name="pallergy" id="pallergy">
         </div>
         <div class="shop">
             <label for="shopname">
                 Shop
             </label>
-            <select name="shopname" id="shopname">
+            <select name="shopname[]" id="shopname">
                 <option value="">Butchers</option>
             </select>
         </div>
@@ -203,7 +247,7 @@
             
         </div>
         <div class="btnaddpro">
-            <button type="submit">Add product</button>
+            <button type="submit" name="addproduct" class="addproduct">Add product</button>
         </div>
         
         
@@ -214,7 +258,7 @@
 
 
 
-<div id="twolink" class="disableproduct">
+<div id="twolink2" class="disableproduct">
    <div class="enableproduct">
     Enable
    </div>
@@ -223,8 +267,8 @@
    </div>
 
 </div>
-<div id="threelink">Edit products</div>
-<div id="fourlink">Delete products</div>
+<div id="threelink2">Edit products</div>
+<div id="fourlink2">Delete products</div>
 
 
       </section>
@@ -238,13 +282,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-link="onelink" href="#">Add Offers</a>
+          <a class="nav-link" data-link="onelink3" href="#">Add Offers</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="twolink" href="#">Update offers</a>
+          <a class="nav-link" data-link="twolink3" href="#">Update offers</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="threelink" href="#"> Delete Offers</a>
+          <a class="nav-link" data-link="threelink3" href="#"> Delete Offers</a>
         </li>
       </ul>
     </div>
@@ -258,9 +302,9 @@
 <!-- pages -->
 
 
-<div id="onelink">Reports items</div>
-<div id="twolink">sales items</div>
-<div id="threelink">sales items</div>
+<div id="onelink3">Reports items</div>
+<div id="twolink3">sales items</div>
+<div id="threelink3">sales items</div>
 
 
 

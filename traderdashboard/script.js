@@ -38,7 +38,7 @@ function submenuClick(keyel){
     navItem.forEach((item, i)=>{
         item.addEventListener("click",()=>{
             let link = item.dataset.link;
-            document.querySelector(`.${keyel} #${link}`).style.display = 'block';
+            document.querySelector(`.${keyel} > #${link}`).style.display = 'block';
             navItem[i].style.fontWeight = "bolder";
 
             for(let j=0; j<pages.length; j++){
@@ -51,21 +51,73 @@ function submenuClick(keyel){
     })
 }
 
+submenuClick("overall-manage");
+submenuClick("shops-manage");
+submenuClick("products-manage");
+submenuClick("offers-manage");
+submenuClick("profile-manage");
 
 
-
-
-let redirectToProduct = document.querySelector(".redirectToAddProduct");
-if(redirectToProduct !== null){
-    console.log('hello');
-    submenuClick("products-manage");
+function flashAddproduct(){
+    const flashAddproduct = document.querySelectorAll("#onelink p");
+    flashAddproduct.forEach((item)=>{
+        setTimeout(()=>{
+            item.style.display = 'none';
+        },3000)
+    })
 }
-else{
-    submenuClick("overall-manage");
-    submenuClick("shops-manage");
-    submenuClick("products-manage");
-    submenuClick("offers-manage");
-    submenuClick("profile-manage");
+flashAddproduct();
+
+function modalEditProduct(){
+    const triggerEdit = document.querySelectorAll(".edittriggerpro");
+    const modalEditPro = document.querySelector(".editingpanelpro");
+    const backdrop = document.querySelector(".backdrop");
+    const xmark = document.querySelector('.cross .fa-xmark');
+    triggerEdit.forEach((item,i)=>{ 
+        console.log(item);
+        item.addEventListener("click",()=>{
+            modalEditPro.classList.remove('hidemodal');
+            backdrop.classList.remove('hidebackdrop');
+            spawningProductDetails(i);
+        })
+        backdrop.addEventListener("click",()=>{
+            modalEditPro.classList.add('hidemodal');
+            backdrop.classList.add('hidebackdrop');
+        })
+        xmark.addEventListener("click",()=>{
+            modalEditPro.classList.add('hidemodal');
+            backdrop.classList.add('hidebackdrop');
+        })
+
+    })
+
 }
+modalEditProduct();
+
+function spawningProductDetails(id){
+    const id1 = document.querySelectorAll(".hiddenpid");
+    const productname = document.querySelectorAll(".editproduct .productname input");
+    const productprice = document.querySelectorAll(".editproduct .productprice input");
+    const productQuant = document.querySelectorAll('.editproduct .productquantity input');
+    const productdesc = document.querySelectorAll(".editproduct .proDescription textarea");
+    const productAllergy = document.querySelectorAll(".editproduct .productallergy input");
+    const shopname = document.querySelectorAll('.editproduct .shop select');
 
 
+    const xml = new XMLHttpRequest();
+    xml.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            let response = JSON.parse(this.responseText);
+            console.log(response);
+            response.forEach((item,i)=>{
+                    productname[i].value = item['PRODUCT_NAME'];
+                    productprice[i].value = "£"+item['PRODUCT_PRICE'];
+                    productQuant[i].value = item['PRODUCT_QUANTITY'];
+                    productdesc[i].value = item['PRODUCT_DESCRIPTION'];
+                    productAllergy[i].value = item['PRODUCT_ALLERGY_INFORMATION'];
+            })
+        }
+    }
+    xml.open("POST", `specificProduct.php?id=${id1[id].value}`, true);
+    xml.send();
+}

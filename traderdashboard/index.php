@@ -11,7 +11,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"></link>
 </head>
 <body>
+  <div class="backdrop hidebackdrop">
     
+  </div>
 
 <div class="container-fluid text-center menu-dash">
   <div class="row">
@@ -57,7 +59,88 @@
 <!-- pages -->
 
 
-<div id="onelink" class="reports">Reports items</div>
+<div id="onelink" class="reports">
+<?php
+      if(isset($_POST['addproduct'])){
+        if(!empty($_POST['pname']) && !empty($_POST['pprice']) && !empty($_POST['pquant']) && !empty($_POST['prodesc']) && !empty($_POST['pallergy']) && !empty($_POST['shopname'])){
+          $pname = $_POST['pname'];
+          $pprice = $_POST['pprice'];
+          $pquant = $_POST["pquant"];
+          $pdesc = $_POST['prodesc'];
+          $pallergy = $_POST['pallergy'];
+          $pshop = $_POST['shopname'];
+          if(is_numeric($pquant)){
+            $pquanterror = false;
+          }
+          else{
+            $pquanterror = true;
+          }
+          if(is_numeric($pprice)){
+            $ppriceError = false;
+          }
+          else{
+            $ppriceError = true;
+          }
+          $splittedDesc = explode(" ", $pdesc);
+          $count = count($splittedDesc);
+          echo $count;
+          if($count >= 20 && $count <= 50){
+            $pdescerror = false;
+          }
+          else{
+            $pdescerror = true;
+          }
+          $target_dir1 = "../productsImage/";
+          $target_file1 = $target_dir1 . basename($_FILES["image1"]["name"]);
+          $image1 = basename($_FILES["image1"]["name"]);
+          if (move_uploaded_file($_FILES["image1"]["tmp_name"], $target_file1)) {
+            echo "";
+          } else {
+            echo "<p>Error: Sorry, there was an error uploading your first image.</p>";
+            $image1 = null;
+          }
+          $target_dir2 = "../productsImage/";
+          $target_file2 = $target_dir2 . basename($_FILES["image2"]["name"]);
+          $image2 = basename($_FILES["image2"]["name"]);
+          if (move_uploaded_file($_FILES["image2"]["tmp_name"], $target_file2)) {
+            echo "";
+          } else {
+            echo "<p>Error: Sorry, there was an error uploading your second image.</p>";
+            $image2 = null;
+          }
+          $target_dir3 = "../productsImage/";
+          $target_file3 = $target_dir3 . basename($_FILES["image3"]["name"]);
+          $image3 = basename($_FILES["image3"]["name"]);
+          if (move_uploaded_file($_FILES["image3"]["tmp_name"], $target_file3)) {
+            echo "";
+          } else {
+            echo "<p>Error: Sorry, there was an error uploading your third image.</p>";
+            $image3 = null;
+          }
+          if($pquanterror == false && $pdescerror == false && $ppriceError == false && $image1 != null && $image2 != null && $image3 != null){
+              $sql = "INSERT INTO PRODUCT(PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, ) VALUES()";
+              echo "hello";
+          }
+          else{
+            if($pquanterror == true){
+              echo "<p>Quantity must be in number</p>";
+            }
+            if($ppriceError == true){
+              echo "<p>Price must be in number</p>";
+            }
+            if($pdescerror == true){
+              echo "<p>Description should be between 20 and 50 words!!</p>";
+            }
+          }
+        }
+        else{
+          echo "<p>Cannot have empty fields</p>";
+        }
+      }
+
+      ?>
+
+</div>
 <div id="twolink">sales items</div>
 <div id="threelink">sales items</div>
 <div id="fourlink">sales items</div>
@@ -96,7 +179,23 @@
 
 
 <div id="onelink1" class="addshop">
-    add shops
+    <div class="addshop">
+      <h3>Add Shop</h3>
+      <p>According to cleckhfmart rules and regulations only two shops can be allowed per trader.</p>
+      <form class="shopnew" method="POST" action="">
+        <div class="shop-name">
+          <label for="shop--name">Shop Name</label>
+          <input type="text" name="shop--name" id="shop--name"> 
+        </div>
+        <div class="shop-category">
+          <label for="shop--category">Shop Category</label>
+          <input type="text" name="shop--category" id="shop--category">
+        </div>
+        <div class="addshopbtn">
+          <button name="addshop">Add Shop</button>
+        </div>
+      </form>
+    </div>
 </div>
 <!-- finished first page add product -->
 <div id="twolink1" class="disableshop">
@@ -146,79 +245,34 @@
 
 <div id="onelink2" class="addproduct">
 <h1>Add Product</h1>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
-      <?php
-      // echo "hello";
-      if(isset($_POST['addproduct'])){
-        // echo "eeee";
-        if(!empty($_POST['pname']) && !empty($_POST['pprice']) && !empty($_POST['pquant']) && !empty($_POST['prodesc']) && !empty($_POST['pallergy']) && !empty($_POST['shopname'])){
-          $pname = $_POST['pname'];
-          $pprice = $_POST['pprice'];
-          $pquant = $_POST["pquant"];
-          $pdesc = $_POST['prodesc'];
-          $pallergy = $_POST['pallergy'];
-          $pshop = $_POST['shopname'];
-          if(is_numeric($pquant)){
-            $pquanterror = false;
-          }
-          else{
-            $pquanterror = true;
-          }
-          if(is_numeric($pprice)){
-            $ppriceError = false;
-          }
-          else{
-            $ppriceError = true;
-          }
-          $splittedDesc = explode(" ", $pdesc);
-          $count = count($splittedDesc);
-          if($count >= 20 && $count <= 50){
-            $pdescerror = false;
-          }
-          else{
-            $pdescerror = true;
-          }
-          if($pquanterror == false && $pdescerror == false && $ppriceError == false){
-              $sql = "INSERT INTO PRODUCT(PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, ) VALUES()";
-          }
-          else{
-      header("location: /index.php#onelink2");
-
-            // echo "<p class='redirectToAddProduct'>Redirect to same page!!</p>";
-          }
-        }
-      }
-
-
-      ?>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
+      
         <div class="productname">
-            <label for="pname">Product Name</label>
-            <input type="text" name="pname" id="pname">
+            <label for="pname">Product Name(*)</label>
+            <input type="text" name="pname" id="pname" placeholder= "eg: salmon fish">
         </div>
         <div class="productprice">
             <label for="pprice">Product Price</label>
-            <input type="text" name="pprice" id="pprice">
+            <input type="text" name="pprice" id="pprice" placeholder= "eg: £8">
         </div>
         <div class="collection1">
         <div class="productquantity">
-            <label for="pquant">Product Quantity</label>
-            <input type="text" name="pquant" id="pquant">
+            <label for="pquant">Product Quantity(*)</label>
+            <input type="text" name="pquant" id="pquant" placeholder="eg: 6">
         </div>
         <div class="proDescription">
-            <label for="prodesc">Product Description</label>
-            <textarea name="prodesc" id="prodesc" cols="30" rows="10">
-                Add description
-            </textarea>
+            <label for="prodesc">Product Description(*)</label>
+            <textarea name="prodesc" id="prodesc" cols="30" rows="10"></textarea>
         </div>
         </div>
         <div class="collection2">
         <div class="productallergy">
-            <label for="pallergy">Product Allergy</label>
-            <input type="text" name="pallergy" id="pallergy">
+            <label for="pallergy">Product Allergy(*)</label>
+            <input type="text" name="pallergy" id="pallergy" placeholder="eg: lactose allergy">
         </div>
         <div class="shop">
             <label for="shopname">
-                Shop
+                Shop(*)
             </label>
             <select name="shopname[]" id="shopname">
                 <option value="">Butchers</option>
@@ -228,19 +282,19 @@
         <div class="collection3">
             <div class="image1">
                 <label for="image1">
-                First image
+                First image(*)
             </label>
             <input type="file" name="image1" id="image1">
             </div>
             <div class="image2">
                 <label for="image2">
-                Second image
+                Second image(*)
             </label>
             <input type="file" name="image2" id="image2">
             </div>
             <div class="image3">
                 <label for="image3">
-                Third image
+                Third image(*)
             </label>
             <input type="file" name="image3" id="image3">
             </div>
@@ -259,18 +313,253 @@
 
 
 <div id="twolink2" class="disableproduct">
+  <div class="disableproduct">
+     <h1>Disable Product</h1>
+    <?php  
+    include("../connectionPHP/connect.php");
+    $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED FROM PRODUCT WHERE TRADER_ID = 3003";
+    $arr = oci_parse($conn, $sql);
+    oci_execute($arr);
+    while($rows = oci_fetch_array($arr)){
+      $productName = $rows[0];
+      $productPrice = $rows[1];
+      $productQuant = $rows[2];
+      $productDesc = $rows[3];
+      $productCategory = $rows[4];  
+      $productDiscount = $rows[5];
+      $productAllergy = $rows[6];
+      $productImage = $rows[7];
+      $productStatus = $rows[8];
+      $productRegistered = $rows[9];
+      ?>
+      <div class="productenabled">
+                <div class="img--info">
+                    <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                    <div class="info">
+                        <p><?php echo $productName; ?></p>
+                        <p><?php echo $productCategory; ?></p>
+                        <p><?php echo $productQuant; ?> items</p>
+                    </div>
+                </div>
+                <div class="desc--discount--status">
+                  <p><?php echo substr($productDesc,0,50); ?></p>
+                  <p>offer: <?php echo $productDiscount;   ?></p>
+                  <p>Registered: <?php echo $productRegistered; ?></p>
+
+                </div>
+                <div class="qty--price">
+                    <p>Qty :<?php echo ""; ?></p>
+                    <p>Price: £<?php echo $productPrice; ?></p>
+                    <button>Disable</button>
+                </div>
+            </div>
+      
+
+      <?php
+    }
+
+    ?>
+    </div>
    <div class="enableproduct">
-    Enable
-   </div>
-   <div class="disableproduct">
-    Disable
+   <h1>Enable Product</h1>
+    <?php  
+    include("../connectionPHP/connect.php");
+    $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED FROM PRODUCT WHERE TRADER_ID = 3003";
+    $arr = oci_parse($conn, $sql);
+    oci_execute($arr);
+    while($rows = oci_fetch_array($arr)){
+      $productName = $rows[0];
+      $productPrice = $rows[1];
+      $productQuant = $rows[2];
+      $productDesc = $rows[3];
+      $productCategory = $rows[4];  
+      $productDiscount = $rows[5];
+      $productAllergy = $rows[6];
+      $productImage = $rows[7];
+      $productStatus = $rows[8];
+      $productRegistered = $rows[9];
+      ?>
+      <div class="productenabled">
+                <div class="img--info">
+                    <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                    <div class="info">
+                        <p><?php echo $productName; ?></p>
+                        <p><?php echo $productCategory; ?></p>
+                        <p><?php echo $productQuant; ?> items</p>
+                    </div>
+                </div>
+                <div class="desc--discount--status">
+                  <p><?php echo substr($productDesc,0,50); ?></p>
+                  <p>offer: <?php echo $productDiscount;   ?></p>
+                  <p>Registered: <?php echo $productRegistered; ?></p>
+
+                </div>
+                <div class="qty--price">
+                    <p>Qty :<?php echo ""; ?></p>
+                    <p>Price: £<?php echo $productPrice; ?></p>
+                    <button>Enable</button>
+                </div>
+            </div>
+      
+
+      <?php
+    }
+
+    ?>
    </div>
 
 </div>
-<div id="threelink2">Edit products</div>
-<div id="fourlink2">Delete products</div>
+<div id="threelink2">
+<div class="editproduct">
+  <div class="editingpanelpro hidemodal">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
+      <h1>Edit Product</h1>
+      <div class="cross">
+        <i class="fa-solid fa-xmark"></i>
+      </div>
+        <div class="collect0">
+        <div class="productname">
+            <label for="pname">Product Name(*)</label>
+            <input type="text" name="pname" id="pname" placeholder= "eg: salmon fish">
+        </div>
+        <div class="productprice">
+            <label for="pprice">Product Price(*)(in £) </label>
+            <input type="text" name="pprice" id="pprice" placeholder= "eg: 8">
+        </div>
+        </div>
+        <div class="collect2">
+        <div class="productquantity">
+            <label for="pquant">Product Quantity(*)</label>
+            <input type="text" name="pquant" id="pquant" placeholder="eg: 6">
+        </div>
+        <div class="proDescription">
+            <label for="prodesc">Product Description(*)</label>
+            <textarea name="prodesc" id="prodesc" cols="20" rows="5"></textarea>
+        </div>
+        </div>
+        <div class="collect3">
+        <div class="productallergy">
+            <label for="pallergy">Product Allergy(*)</label>
+            <input type="text" name="pallergy" id="pallergy" placeholder="eg: lactose allergy">
+        </div>
+        <div class="shop">
+                Shop(*)
+            </label>
+            <select name="shopname[]" id="shopname">
+                <option value="">Butchers</option>
+            </select>
+        </div>
+        </div>
+        
+        <div class="btnaddpro">
+            <button type="submit" name="editproduct" class="editproduct">Add product</button>
+        </div>
+        
+        
+    </form>
+  </div>
+   <h1>Edit Product</h1>
+    <?php  
+    include("../connectionPHP/connect.php");
+    $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
+    $arr = oci_parse($conn, $sql);
+    oci_execute($arr);
+    while($rows = oci_fetch_array($arr)){
+      $productName = $rows[0];
+      $productPrice = $rows[1];
+      $productQuant = $rows[2];
+      $productDesc = $rows[3];
+      $productCategory = $rows[4];  
+      $productDiscount = $rows[5];
+      $productAllergy = $rows[6];
+      $productImage = $rows[7];
+      $productStatus = $rows[8];
+      $productRegistered = $rows[9];
+      $productId = $rows[10];
+      ?>
+      <div class="productenabled">
+                <div class="img--info">
+                    <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                    <div class="info">
+                        <p><?php echo $productName; ?></p>
+                        <p><?php echo $productCategory; ?></p>
+                        <p><?php echo $productQuant; ?> items</p>
+                    </div>
+                </div>
+                <input type="hidden" value="<?php echo $productId; ?>" class="hiddenpid">
+                <div class="desc--discount--status">
+                  <p><?php echo substr($productDesc,0,50); ?></p>
+                  <p>offer: <?php echo $productDiscount;   ?></p>
+                  <p>Registered: <?php echo $productRegistered; ?></p>
 
+                </div>
+                <div class="qty--price">
+                    <p>Qty :<?php echo ""; ?></p>
+                    <p>Price: £<?php echo $productPrice; ?></p>
+                    <button class="edittriggerpro">Edit product</button>
+                </div>
+            </div>
+      
 
+      <?php
+    }
+
+    ?>
+   </div>
+
+</div>
+<div id="fourlink2">
+<div class="deleteproduct">
+<h1>Delete Product</h1>
+    <?php  
+    include("../connectionPHP/connect.php");
+    $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
+    $arr = oci_parse($conn, $sql);
+    oci_execute($arr);
+    while($rows = oci_fetch_array($arr)){
+      $productName = $rows[0];
+      $productPrice = $rows[1];
+      $productQuant = $rows[2];
+      $productDesc = $rows[3];
+      $productCategory = $rows[4];  
+      $productDiscount = $rows[5];
+      $productAllergy = $rows[6];
+      $productImage = $rows[7];
+      $productStatus = $rows[8];
+      $productRegistered = $rows[9];
+      $productId = $rows[10];
+      ?>
+      <div class="productenabled">
+                <div class="img--info">
+                    <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                    <div class="info">
+                        <p><?php echo $productName; ?></p>
+                        <p><?php echo $productCategory; ?></p>
+                        <p><?php echo $productQuant; ?> items</p>
+                    </div>
+                </div>
+                <input type="hidden" value="<?php echo $productId; ?>" class="hiddenpid">
+                <div class="desc--discount--status">
+                  <p><?php echo substr($productDesc,0,50); ?></p>
+                  <p>offer: <?php echo $productDiscount;   ?></p>
+                  <p>Registered: <?php echo $productRegistered; ?></p>
+
+                </div>
+                <div class="qty--price">
+                    <p>Qty :<?php echo ""; ?></p>
+                    <p>Price: £<?php echo $productPrice; ?></p>
+                    <button class="edittriggerpro">Delete product</button>
+                </div>
+            </div>
+      
+
+      <?php
+    }
+
+    ?>
+</div>
+
+</div>
       </section>
     </div>
     <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="offers">
@@ -341,16 +630,6 @@
   
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <script src="script.js"></script>

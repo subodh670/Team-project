@@ -77,7 +77,7 @@
         <div class="productsorder">
             <div class="img--info">
                 <img src="../productsImage/<?php echo $productImage; ?>" alt="">
-                <div class="info">
+                <div class="info"> 
                     <p><?php echo $productName; ?></p>
                     <p><?php echo $productCategory; ?></p>
                     <p>only <?php echo $productQuant; ?> items remaining</p>

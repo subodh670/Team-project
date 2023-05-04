@@ -107,6 +107,11 @@ html{
     align-items: start;
     flex-direction: column;
 }
+.addproduct input{
+    outline: none !important;
+    border-width: 0px;
+    border-bottom: 1px solid black;
+}
 .productname label, .productprice label{
     margin-bottom: 1em;
 }
@@ -161,4 +166,200 @@ html{
 }
 
 /* add product finished */
+/* flash error message add products */
+@keyframes addproductflash {
+    from{
+        top: -30px;
+    }
+    to{
+        top: 30px;
+    }
+}
+#onelink p{
+    position: relative;
+    background-color: var(--primary-color);
+    padding: 0.6em;
+    color: white;
+    margin: 0 auto;
+    width: 50%;
+    margin-bottom: 0.5em;
+    animation-duration: 0.6s;
+    animation-name: addproductflash;
+}
 
+
+/* to disable */
+/* products list */
+.productenabled{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--selected);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    padding: 2em;
+    gap: 2em;
+}
+.disableproduct{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    margin: 0 auto;
+}
+.disableproduct h1{
+    font-size: 1.3rem;
+    margin-top: 2em;
+}
+.enableproduct{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    margin: 0 auto;
+}
+.enableproduct h1{
+    font-size: 1.3rem;
+    margin-top: 2em;
+}
+.editproduct{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    margin: 0 auto;
+}
+.img--info .info p{
+    margin-bottom: 1em;
+}
+.img--info{
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.img--info img{
+    width: 40%;
+    object-fit: cover;
+    object-position: center;
+}
+.qty--price{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 20%;
+}
+.qty--price button{
+    border-width: 0px;
+    background-color: var(--tertiary-color);
+    padding: 0.3em 1em;
+    transition: 0.6s;
+    color: white;
+}
+.qty--price button:hover{
+    background-color: var(--secondary-color);
+}
+ /* products disable, edit showing section finished */
+
+ /* editing modal for editing product */
+
+ .threelink2{
+    position: relative;
+ }
+ .editingpanelpro{
+    width: 70%;
+    position: fixed;
+    background-color: var(--secondary-color);
+    /* margin: 0 auto; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-40%,-45%);
+    left: 50%;
+    top: 50%;
+    height: 90vh;
+    z-index: 5;
+    border-radius: 8px;
+ }
+ .hidemodal{
+    display: none;
+ }
+ .editingpanelpro h1{
+    font-size: 1.3rem;
+    color: white;
+    width: 100%;
+    margin: 0 auto;
+ }
+ .editingpanelpro form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1.5em;
+ }
+ .editingpanelpro .collect0, .editingpanelpro .collect1, .editingpanelpro .collect2, .editingpanelpro .collect3{
+    width: 70%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+ }
+ .collect0 .productname, .collect0 .productprice{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+ }
+ .collect0 input, .collect1 input, .collect2 input, .collect3 input{
+    outline: none;
+    border-width: 0px;
+    border-bottom: 1px solid white;
+    background-color: var(--secondary-color);
+    color: white;
+ }
+.btnaddpro .editproduct{
+    width: 40%;
+    margin: 0 auto;
+}
+.editingpanelpro .cross{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.editingpanelpro .cross i{
+    font-size: 2rem;
+    color: white;
+}
+.backdrop{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+}
+.hidebackdrop{
+    display: none;
+}
+/* delete product */
+.deleteproduct h1{
+    font-size: 1.3rem;
+    margin-bottom: 2em;
+}
+#fourlink2 .deleteproduct{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+}

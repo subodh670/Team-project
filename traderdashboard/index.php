@@ -178,18 +178,18 @@
 <!-- pages -->
 
 
-<div id="onelink1" class="addshop">
+<div id="onelink1">
     <div class="addshop">
       <h3>Add Shop</h3>
       <p>According to cleckhfmart rules and regulations only two shops can be allowed per trader.</p>
       <form class="shopnew" method="POST" action="">
         <div class="shop-name">
           <label for="shop--name">Shop Name</label>
-          <input type="text" name="shop--name" id="shop--name"> 
+          <input type="text" name="shop--name" id="shop--name" placeholder="eg: dairy"> 
         </div>
         <div class="shop-category">
           <label for="shop--category">Shop Category</label>
-          <input type="text" name="shop--category" id="shop--category">
+          <input type="text" name="shop--category" id="shop--category" placeholder="eg: curd">
         </div>
         <div class="addshopbtn">
           <button name="addshop">Add Shop</button>
@@ -199,11 +199,25 @@
 </div>
 <!-- finished first page add product -->
 <div id="twolink1" class="disableshop">
-    <div class="enableshop">
-        enable
-    </div>
     <div class="disableshop">
-        disable
+        <h3>
+          Disable Shop
+        </h3>
+        <div class="shopDetail">
+          <p>Shop1</p>
+          <p>Category</p>
+          <button>Disable</button>
+        </div>
+
+    </div>
+    <hr>
+    <div class="enableshop">
+        <h3>Enable Shop</h3>
+        <div class="shopDetail">
+          <p>Shop1</p>
+          <p>Category</p>
+          <button>Disable</button>
+        </div>
     </div>
 
 </div>
@@ -413,7 +427,7 @@
 <div class="editproduct">
   <div class="editingpanelpro hidemodal">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
-      <h1>Edit Product</h1>
+      <h3>Edit Product</h3>
       <div class="cross">
         <i class="fa-solid fa-xmark"></i>
       </div>
@@ -458,7 +472,7 @@
         
     </form>
   </div>
-   <h1>Edit Product</h1>
+   <h3 style="color: var(--secondary-color); margin-top: 2em;">Edit Product</h3>
     <?php  
     include("../connectionPHP/connect.php");
     $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
@@ -510,7 +524,7 @@
 </div>
 <div id="fourlink2">
 <div class="deleteproduct">
-<h1>Delete Product</h1>
+<h3 style="color: var(--secondary-color); margin-top: 2em;">Delete Product</h3>
     <?php  
     include("../connectionPHP/connect.php");
     $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";

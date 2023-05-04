@@ -7,12 +7,14 @@ include("../connectionPHP/inc_session.php");
         session_destroy();
         session_start();
         $_SESSION['guest'] = false;
+        setcookie("quantity", "", time() + (86400 * 30), "/");
+        setcookie("product", "" , time() + (86400 * 30), "/");
         header("location: ../landing_page/index.php");
     }
 
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">

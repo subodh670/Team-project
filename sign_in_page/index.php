@@ -63,15 +63,45 @@ session_start();
         <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
         <div class="form-box login1">
             <h2>Signin</h2>
-            <form action="#" method="POST">
+            <form action="" method="POST">
                 <?php
-
+                function insertCookie($cid){
+                    include("../connectionPHP/connect.php");
+                    $id_cookie = $_COOKIE['product'];
+                    $quantity_cookie = $_COOKIE['quantity'];
+                    $arrid = explode(" ", $id_cookie);
+                    $quantarr = explode(" ", $quantity_cookie);
+                    // var_dump($quantarr);
+                    $arr = array();
+                    for($i = 0; $i<count($arrid); $i++){
+                        $id = $arrid[$i];
+                        $sql = "SELECT P_QUANTITY FROM CART WHERE PRODUCT_ID = $id AND C_ID = $cid";
+                        $result = oci_parse($conn, $sql);
+                        oci_execute($result);
+                        $outcome = oci_fetch_array($result);
+                        // $sum = 0;
+                        if(isset($outcome[0])){
+                            $quantarr1 = intval($quantarr[$i]) + $outcome[0];
+                            $sql1 = "UPDATE CART SET P_QUANTITY = '$quantarr1' WHERE C_ID = $cid AND PRODUCT_ID = '$id'";
+                            $res = oci_parse($conn, $sql1);
+                            oci_execute($res);
+                            echo "hi";
+                        }
+                        else{
+                            $quantarr1 = intval($quantarr[$i]);
+                            $sql1 = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES($id, $cid, '$quantarr1')";
+                            $res = oci_parse($conn, $sql1);
+                            oci_execute($res);
+                            echo "hello";
+                        }
+                    }
+                }
                 if(isset($_POST['submitlogin'])){
                     if(!empty($_POST['username']) && !empty($_POST['password'])){
                         $username = $_POST['username'];
                         $pass = sha1($_POST['password']);
                         include("../connectionPHP/connect.php");
-                        $sql = "SELECT C_USERNAME, C_PASSWORD, C_IMAGE, C_FIRSTNAME, C_LASTNAME, C_REGISTEREDEMAIL, C_EMAILADDRESS FROM CUSTOMER";
+                        $sql = "SELECT C_USERNAME, C_PASSWORD, C_IMAGE, C_FIRSTNAME, C_LASTNAME, C_REGISTEREDEMAIL, C_EMAILADDRESS,C_ID FROM CUSTOMER";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         while($row = oci_fetch_array($array)){
@@ -84,6 +114,8 @@ session_start();
                                     $_SESSION['firstname'] = $row[3];
                                     $_SESSION['lastname'] = $row[4];
                                     $_SESSION['guest'] = true;
+                                    $cid = $row[7];
+                                    insertCookie($cid);
                                     header("location: ../landing_page/index.php");
                                 }
                                 else{

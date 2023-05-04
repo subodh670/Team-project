@@ -31,7 +31,7 @@ faTimes.addEventListener("click",()=>{
 function preventTyping(){
     const countItem = document.querySelectorAll(".countitem input");
     countItem.forEach((item)=>{
-        console.log(item);
+        // console.log(item);
         item.addEventListener("keypress",(e)=>{
             e.preventDefault();
         })
@@ -257,9 +257,10 @@ function showingsavedProduct(){
     let xml1 = new XMLHttpRequest();
     xml1.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 200){
+            // console.log(this.responseText);
            let items = JSON.parse(this.responseText);
             // console.log(items);
-            items.forEach((item)=>{
+            items.forEach((item,i)=>{
                 let productName = item[0];
                 let productPrice = item[1];
                 let shopId = item[2];
@@ -269,6 +270,16 @@ function showingsavedProduct(){
                 let productImage2 = item[6];
                 let productId = item[7];
                 let productssaved = item[8];
+                let cookieQ = document.cookie;
+                // let cookieQ1 = cookieQ.split(";")[1].split("%20")[0];
+                let cookieQ2 = cookieQ.split(";")[2].split("%20");
+                let firstvalue = cookieQ2[0].split("=")[1];
+                let arr1 = [firstvalue];
+                for(let i=1; i<cookieQ2.length; i++){
+                    arr1.push(Number(cookieQ2[i]));
+                }
+                // console.log(cookieQ1, cookieQ2);
+                // productssaved = productssaved != null ? productssaved : getcookie("quantity");
                 oneItemSelect.innerHTML += `
                 <section class="oneitemselect">
                 <input type="hidden" value="${productId}" class="getproductid">
@@ -301,7 +312,7 @@ function showingsavedProduct(){
                         </div>
                         <div class="countitem">
                             <button class="decrease">-</button>
-                          <input type="text" value="${productssaved}">
+                          <input type="text" value="${productssaved??arr1[i]}">
                           <button class="increase">+</button>
                         </div>
                     </div>
@@ -322,7 +333,7 @@ function showingsavedProduct(){
 
             function trashCart(){
                 const proidset = document.querySelectorAll(".getProid");
-                const username = document.querySelector(".usernameFind").value;
+                const username = document.querySelector(".usernameFind")?.value;
                 const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
                 trashIcon.forEach((trash,i)=>{
                     trash.addEventListener("click",()=>{
@@ -354,51 +365,54 @@ showingsavedProduct();
 function heartItem(){
     const heartIcon = document.querySelectorAll(".wish_price_del .fa-heart");
     const proidset = document.querySelectorAll(".getProid");
-    const username = document.querySelector(".usernameFind").value;
-    heartIcon.forEach((icon,i)=>{
-        let xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function(){
-            if(this.readyState == 4 && this.status == 200){
-                if(JSON.parse(this.responseText)[0]==0){
-                    icon.classList.add("fa-regular");
-                    icon.classList.remove("fa-solid");
-                    icon.dataset.love = '0';
-
+    const username = document.querySelector(".usernameFind")?.value;
+    if(username != null){
+        heartIcon.forEach((icon,i)=>{
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    if(JSON.parse(this.responseText)[0]==0){
+                        icon.classList.add("fa-regular");
+                        icon.classList.remove("fa-solid");
+                        icon.dataset.love = '0';
+    
+                    }
+                    else{
+                        icon.classList.add("fa-solid");
+                        icon.classList.remove("fa-regular");
+                        icon.dataset.love = '1';
+                    }
                 }
-                else{
+    
+            }
+            xmlhttp.open("POST",`getReact.php?proId=${proidset[i].value}&username=${username}`, true);
+            xmlhttp.send();
+        })  
+        heartIcon.forEach((icon,i)=>{ 
+            icon.addEventListener("click",()=>{
+                if(icon.classList.contains("fa-regular")) {
                     icon.classList.add("fa-solid");
                     icon.classList.remove("fa-regular");
                     icon.dataset.love = '1';
+                } 
+                else if(icon.classList.contains("fa-solid")) {
+                    icon.classList.add("fa-regular");
+                    icon.classList.remove("fa-solid");
+                    icon.dataset.love = '0';
+    
                 }
-            }
-
-        }
-        xmlhttp.open("POST",`getReact.php?proId=${proidset[i].value}&username=${username}`, true);
-        xmlhttp.send();
-    })  
-    heartIcon.forEach((icon,i)=>{ 
-        icon.addEventListener("click",()=>{
-            if(icon.classList.contains("fa-regular")) {
-                icon.classList.add("fa-solid");
-                icon.classList.remove("fa-regular");
-                icon.dataset.love = '1';
-            } 
-            else if(icon.classList.contains("fa-solid")) {
-                icon.classList.add("fa-regular");
-                icon.classList.remove("fa-solid");
-                icon.dataset.love = '0';
-
-            }
-            let reactXml = new XMLHttpRequest();
-            reactXml.onreadystatechange = function(){
-                if(this.readyState == 4 && this.status == 200){
-                    console.log(this.responseText);
+                let reactXml = new XMLHttpRequest();
+                reactXml.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                        console.log(this.responseText);
+                    }
                 }
-            }
-            reactXml.open("POST", `reactItem.php?proId=${proidset[i].value}&wish=${icon.dataset.love}&custname=${username}`, true);
-            reactXml.send();  
-        })
-    })   
+                reactXml.open("POST", `reactItem.php?proId=${proidset[i].value}&wish=${icon.dataset.love}&custname=${username}`, true);
+                reactXml.send();  
+            })
+        }) 
+    }
+  
 }
 
 
@@ -411,57 +425,64 @@ checkout.addEventListener("click",()=>{
 
 //total cost of order
 function orderCost(){
-    const username = document.querySelector(".usernameFind").value;
-    let costOfOrder = document.querySelector(".container-order .ordercost");
-    let xml = new XMLHttpRequest();
-    xml.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-            if(this.responseText != ""){
-                let response = JSON.parse(this.responseText);
-                // console.log(this.responseText);
-                
-                let sum = 0;
-                for(let i=0; i<response.length; i++){
-                    sum += parseInt(response[i]);
+
+    const username = document.querySelector(".usernameFind")?.value;
+    if(username != null){
+        let costOfOrder = document.querySelector(".container-order .ordercost");
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                if(this.responseText != ""){
+                    let response = JSON.parse(this.responseText);
+                    // console.log(this.responseText);
+                    
+                    let sum = 0;
+                    for(let i=0; i<response.length; i++){
+                        sum += parseInt(response[i]);
+                    }
+                    // console.log(sum);
+                    if(sum>0){
+                        costOfOrder.textContent = `£${sum}`;
+                    }
+                    
                 }
-                // console.log(sum);
-                if(sum>0){
-                    costOfOrder.textContent = `£${sum}`;
+                else{
+                        costOfOrder.textContent = `£${0}`;
                 }
                 
             }
-            else{
-                    costOfOrder.textContent = `£${0}`;
-            }
-            
         }
+        xml.open("POST",`findTotalCost.php?name=${username}`, true );
+        xml.send();
     }
-    xml.open("POST",`findTotalCost.php?name=${username}`, true );
-    xml.send();
+    
 }   
 orderCost();
 // console.log(costOfOrder);
 
 
 function checkingIfordersHappened(){
-    const username = document.querySelector(".usernameFind").value;
-    let checkingbox = document.querySelectorAll(".onlyone input");
-    let itemName = document.querySelectorAll(".desc .itempro");
-    let xml = new XMLHttpRequest();
-    xml.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-            let arr = JSON.parse(this.responseText);
-            // console.log(arr);
-            // console.log(itemName);
-            for(let i=0; i<itemName.length; i++){
-                if(arr.includes(itemName[i].textContent)){
-                    checkingbox[i].checked = 'true';
+    const username = document.querySelector(".usernameFind")?.value;
+    if(username != null){
+        let checkingbox = document.querySelectorAll(".onlyone input");
+        let itemName = document.querySelectorAll(".desc .itempro");
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                let arr = JSON.parse(this.responseText);
+                // console.log(arr);
+                // console.log(itemName);
+                for(let i=0; i<itemName.length; i++){
+                    if(arr.includes(itemName[i].textContent)){
+                        checkingbox[i].checked = 'true';
+                    }
                 }
             }
         }
+        xml.open("POST", "selectedItem.php?cname="+username, true);
+        xml.send();
     }
-    xml.open("POST", "selectedItem.php?cname="+username, true);
-    xml.send();
+    
 }
 
 
@@ -473,61 +494,63 @@ function checkingIfordersHappened(){
 function updateCartAndTotal(){
     let checkBox = document.querySelectorAll('.onlyone input');
     let pIdAll = document.querySelectorAll(".getproductid");
-    const username = document.querySelector(".usernameFind").value;
+    const username = document.querySelector(".usernameFind")?.value;
     let decrease = document.querySelectorAll(".countitem .decrease");
     let increase = document.querySelectorAll(".countitem .increase");
-
-    checkBox.forEach((item,i)=>{
-        // console.log(checkBox);
-        let xml = new XMLHttpRequest();
-        xml.onreadystatechange = function(){
-            if(this.readyState == 4 && this.status == 200){
-                let arr = JSON.parse(this.responseText);
-                if(arr[0]==true){
-                    // console.log("hee");
-                    increase[i].addEventListener("click",()=>{
-                        let inputValue = document.querySelectorAll('.countitem input');
-                        let xmlhttp = new XMLHttpRequest();
-                        xmlhttp.onreadystatechange = function(){
-                            if(this.readyState == 4 && this.status == 200){
-                                console.log(JSON.parse(this.responseText));
-                                if(JSON.parse(this.responseText)[0]==false){
-
-                                    inputValue[i].disabled = true;
-                                }
-                                else{
-                                    inputValue[i].disabled = false;
-                                }
-                            }
-                        }
-                        xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
-                        xmlhttp.send();
-                    })
-                    decrease[i].addEventListener("click",()=>{
-                        let inputValue = document.querySelectorAll('.countitem input');
-                        let xmlhttp = new XMLHttpRequest();
-                        xmlhttp.onreadystatechange = function(){
-                            if(this.readyState ==4 && this.status == 200){
-                                // console.log(JSON.parse(this.responseText));
-                                if(JSON.parse(this.responseText)[0]==false){
-
-                                    inputValue[i].disabled = true;
-                                }
-                                else{
-                                    inputValue[i].disabled = false;
+    if(username != null){
+        checkBox.forEach((item,i)=>{
+            // console.log(checkBox);
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    let arr = JSON.parse(this.responseText);
+                    if(arr[0]==true){
+                        // console.log("hee");
+                        increase[i].addEventListener("click",()=>{
+                            let inputValue = document.querySelectorAll('.countitem input');
+                            let xmlhttp = new XMLHttpRequest();
+                            xmlhttp.onreadystatechange = function(){
+                                if(this.readyState == 4 && this.status == 200){
+                                    console.log(JSON.parse(this.responseText));
+                                    if(JSON.parse(this.responseText)[0]==false){
+    
+                                        inputValue[i].disabled = true;
+                                    }
+                                    else{
+                                        inputValue[i].disabled = false;
+                                    }
                                 }
                             }
-                        }
-                        xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
-                        xmlhttp.send();
-                    })
-                    
+                            xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
+                            xmlhttp.send();
+                        })
+                        decrease[i].addEventListener("click",()=>{
+                            let inputValue = document.querySelectorAll('.countitem input');
+                            let xmlhttp = new XMLHttpRequest();
+                            xmlhttp.onreadystatechange = function(){
+                                if(this.readyState ==4 && this.status == 200){
+                                    // console.log(JSON.parse(this.responseText));
+                                    if(JSON.parse(this.responseText)[0]==false){
+    
+                                        inputValue[i].disabled = true;
+                                    }
+                                    else{
+                                        inputValue[i].disabled = false;
+                                    }
+                                }
+                            }
+                            xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
+                            xmlhttp.send();
+                        })
+                        
+                    }
+                    // console.log(this.responseText);
                 }
-                // console.log(this.responseText);
             }
-        }
-        xml.open("POST", `checkingordered.php?pid=${pIdAll[i].value}&name=${username}`, true);
-        xml.send();
-    })
+            xml.open("POST", `checkingordered.php?pid=${pIdAll[i].value}&name=${username}`, true);
+            xml.send();
+        })
+    }
+    
 }
 updateCartAndTotal();

@@ -256,14 +256,26 @@ ul li a:active{
     align-items: start;
     margin: 0 auto;
 }
-
+@keyframes animateitem {
+    from{
+        left: -50%;
+    }
+    to{
+        left: 0%;
+    }
+}
 .productsorder{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 2px solid black;
+    /* border: 2px solid black; */
+
     padding: 2em;
+    position: relative;
+    animation-duration: 0.6s;
+    animation-name: animateitem;
 
 }
 .orderslist{

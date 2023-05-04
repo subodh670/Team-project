@@ -295,7 +295,7 @@ main{
 /* select items section */
 .selectall{
     width: 90%;
-    border: 2px solid black;    
+    /* border: 2px solid black;     */
     margin: 3em auto;
     display: flex;
     justify-content: space-between;
@@ -338,7 +338,11 @@ main{
 }
 .oneitemselect .selectone{
     width: 90%;
-    border: 2px solid black;    
+    position: relative;
+    animation-duration: 0.6s;
+    animation-name: animateitem;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    /* border: 2px solid black;     */
     margin: 0 auto;
     display: flex;
     justify-content: start;
@@ -354,12 +358,22 @@ main{
     align-items: center;
     width: 18%;
 }
-
+@keyframes animateitem {
+    from{
+        left: -50%;
+    }
+    to{
+        left: 0%;
+    }
+}
 .productselect{
+    position: relative;
+    animation-duration: 0.6s;
+    animation-name: animateitem;
     width: 90%;
-    border-width: 0px 2px 2px 2px;
-    border-color: black;
-    border-style: solid;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    /* border-color: black; */
+    /* border-style: solid; */
     padding: 2em 1em;
     display: flex;
     justify-content: space-between;
@@ -546,7 +560,7 @@ input[type = checkbox]{
 .container-order{
     width: 40%;
     margin: 1em auto;
-    border: 2px solid black;
+    /* border: 2px solid black; */
 }
 
 .summary-head{

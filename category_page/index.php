@@ -62,6 +62,19 @@
                         }
                     
                     }
+                    else{
+                        include("../connectionPHP/connect.php");
+                        if(isset($_COOKIE['product'])){
+                            $id_cookie = $_COOKIE['product'];
+                            $quantity_cookie = $_COOKIE['quantity'];
+                            $arrid = explode(" ", $id_cookie);
+                            $quantarr = explode(" ", $quantity_cookie);
+                            $totalnum = 0;
+                            for($i = 0; $i<count($arrid); $i++){
+                                $totalnum += intval($quantarr[$i]);
+                            }
+                        }
+                    }
                     ?>
                     <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
                     <?php

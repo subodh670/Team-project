@@ -90,7 +90,17 @@ html{
     font-weight: bold;
     color: var(--secondary-color);
 }
+@keyframes formanimate {
+    from{
+        transform: translateX(70%);
+    }
+    to{
+        transform: translateX(0%);
+    }
+}
 .addproduct form{
+    animation-name: formanimate;
+    animation-duration: 0.6s;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -100,6 +110,7 @@ html{
     background-color: white;
     margin: 0 auto;
     padding: 1em;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 .addproduct form>div{
     display: flex;
@@ -191,6 +202,8 @@ html{
 /* to disable */
 /* products list */
 .productenabled{
+    animation-name: formanimate;
+    animation-duration: 0.6s;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -235,6 +248,9 @@ html{
     gap: 1em;
     margin: 0 auto;
 }
+.editproduct h3{
+    color: var(--secondary-color);
+}
 .img--info .info p{
     margin-bottom: 1em;
 }
@@ -274,6 +290,14 @@ html{
  .threelink2{
     position: relative;
  }
+ @keyframes animatepanel {
+    from{
+        transform: translate(-100%, -45%);
+    }
+    to{
+        transform: translateX(-40%, -45%);
+    }
+ }
  .editingpanelpro{
     width: 70%;
     position: fixed;
@@ -288,6 +312,8 @@ html{
     height: 90vh;
     z-index: 5;
     border-radius: 8px;
+    animation-duration: 0.6s;
+    animation-name: animatepanel;
  }
  .hidemodal{
     display: none;
@@ -362,4 +388,59 @@ html{
     align-items: center;
     flex-direction: column;
     gap: 2em;
+}
+/* add shops */
+
+
+
+
+.addshop{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 3em;
+    gap: 2em;
+}
+.addshop h3{
+    color: var(--secondary-color);
+    font-weight: bolder;
+}
+.addshop p{
+    color: var(--tertiary-color);
+}
+.addshop form{
+    width: 60%;
+    background-color: var(--selected);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+    padding: 2em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+.addshop .shop-name, .addshop .shop-category{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 1em;
+    flex-direction: column;
+}
+.addshop input{
+    outline: none;
+    border-width: 0px;
+    border-bottom: 1px solid black;
+    background-color: var(--selected);
+}
+.addshopbtn button{
+    padding: 0.5em 0.8em;
+    border-width: 0px;
+    background-color: var(--tertiary-color);
+    color: white;
+    transition: 0.6s;
+}
+.addshopbtn button:hover{
+    background-color: var(--secondary-color);
 }

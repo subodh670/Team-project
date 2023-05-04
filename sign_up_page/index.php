@@ -187,7 +187,7 @@ if(isset($_POST['signup'])){
 </div>
 <div class="gender">
     <label for="gender"><i class="fa-regular fa-user"></i></label>
-    <select name="gender" id="gender">
+    <select name="gender[]" id="gender">
         <option value="male">male</option>
         <option value="female">female</option>
     </select>

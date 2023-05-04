@@ -17,30 +17,6 @@
   <body>
     <?php
     session_start();
-    if(!isset($_SESSION['username'])){
-      ?>
-      <form class='modal-login' action="" method="POST">
-        <?php
-          if(isset($_POST['login-redirect'])){
-            header("location: ../sign_in_page/index.php");
-          }
-          // else if(isset($_POST['register-redirect'])){
-          //   header("location: ../sign_up_page/index.php");
-          // }
-        ?>
-        <div>
-          <p class="close-signin">&times;</p>
-          <img src="../landing_page/image1.png" alt="">
-          <div>
-            <p>Please</p>
-            <button style="text-decoration: underline;" name="login-redirect">Login</button>
-            <p>to add products to cart.</p>
-          </div>
-        </div>
-      </form>
-    <div class="backdrop" style="display: block"></div>
-    <?php
-    }
     ?>
     <header>
       <div class="logo">
@@ -92,6 +68,19 @@
                         }
                     
                     }
+                    else{
+                      include("../connectionPHP/connect.php");
+                        if(isset($_COOKIE['product'])){
+                            $id_cookie = $_COOKIE['product'];
+                            $quantity_cookie = $_COOKIE['quantity'];
+                            $arrid = explode(" ", $id_cookie);
+                            $quantarr = explode(" ", $quantity_cookie);
+                            $totalnum = 0;
+                            for($i = 0; $i<count($arrid); $i++){
+                                $totalnum += intval($quantarr[$i]);
+                            }
+                        }
+                  }
                     ?>
                     <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
                     <?php
@@ -100,7 +89,7 @@
                     
 
                 ?>
-            
+        
         </div>
         <div class="search">
           <i class="fa fa-search"></i>
@@ -238,6 +227,54 @@
             }
             $quant_Error = $quant_Error;
           }
+          else if(isset($_POST['addtocart']) && !isset($_SESSION['username'])){
+            // $username = $_SESSION['username'];
+            // $quantity = productIncart()[0];
+            $pid = $_GET['id'];
+            $quantNow = $_POST['quantity'];
+            if(isset($_COOKIE['product'])){
+              $id_cookie = $_COOKIE['product'];
+                $quantity_cookie = $_COOKIE['quantity'];
+                $arrid = explode(" ", $id_cookie);
+                $quantarr = explode(" ", $quantity_cookie);
+                // print_r($quantarr);
+              if(in_array("$pid", $arrid)){
+                $index = array_search("$pid", $arrid);
+                $prevQuant = intval($quantarr[$index]);
+                if(($prevQuant+$_POST['quantity'])<$pQuantity){
+                  $totalQuant = $prevQuant+$quantNow;
+                  $cookie_name = "product";
+                  $base = $quantarr;
+                  $replace = array($index => $totalQuant);
+                  $finalarr = array_replace($base, $replace);
+                  $strfinal = implode(" ", $finalarr);
+                  setcookie("quantity", $strfinal, time() + (86400 * 30), "/");
+                  header("location: ../cart_page/index.php");
+                }
+                else{
+                  
+                  $quant_Error = "Quantity cannot exceed the stock!";
+                }
+                
+              }
+              else{
+                // $arr = array_push($id_cookie_arr, $pid);
+                // $quantArr = array_push($quantity_cookie_arr,$quantNow);
+
+                setcookie("quantity", $quantity_cookie." $quantNow", time() + (86400 * 30), "/");
+                setcookie("product", $id_cookie." $pid" , time() + (86400 * 30), "/");
+                header("location: ../cart_page/index.php");
+              
+              }
+            }
+            else{
+              setcookie("product", "$pid", time() + (86400 * 30), "/");
+              setcookie("quantity", "$quantNow", time() + (86400 * 30), "/");
+              header("location: ../cart_page/index.php");
+
+            }
+
+          }
           ?>
           <?php
 
@@ -342,9 +379,6 @@
           <?php
             
       }
-  
-
-
 
 ?>
         

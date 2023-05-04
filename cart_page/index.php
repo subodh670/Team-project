@@ -29,7 +29,8 @@
         <div class="login_cart_search">
         <?php
         // session_start();
-        include("../connectionPHP/inc_session.php");
+        // include("../connectionPHP/inc_session.php");
+        session_start();
         if(isset($_SESSION['username']) && isset($_SESSION['password'])){
             ?>
             <div class="login custprofile">
@@ -62,6 +63,19 @@
                             $totalnum += $numbers[0];
                         }
                     
+                    }
+                    else{
+                        include("../connectionPHP/connect.php");
+                        if(isset($_COOKIE['product'])){
+                            $id_cookie = $_COOKIE['product'];
+                            $quantity_cookie = $_COOKIE['quantity'];
+                            $arrid = explode(" ", $id_cookie);
+                            $quantarr = explode(" ", $quantity_cookie);
+                            $totalnum = 0;
+                            for($i = 0; $i<count($arrid); $i++){
+                                $totalnum += intval($quantarr[$i]);
+                            }
+                        }
                     }
                     ?>
                     <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
@@ -106,7 +120,13 @@
                 </select>
             </div>
 <main></main>
-<input class='usernameFind' type="hidden" value="<?php echo $_SESSION['username']?>">
+<?php
+if(isset($_SESSION['username'])){
+?>
+    <input class='usernameFind' type="hidden" value="<?php echo $_SESSION['username']?>">
+    <?php
+}
+?>
 <!-- <section class="oneitemselect"> 
     <input type="hidden" value="${productId}" class="getproductid">
     <div class="selectone">

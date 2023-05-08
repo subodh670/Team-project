@@ -8,16 +8,15 @@
     <link rel="stylesheet" href="../fontawesome-free-6.3.0-web/css/all.min.css">
     <link rel="stylesheet" href="landing_styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-
-<link href="https://fonts.googleapis.com/css2?family=Inter&family=Questrial&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Questrial&family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="backdrop">
@@ -65,7 +64,7 @@
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
@@ -90,12 +89,7 @@
                     ?>
                     <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
                     <?php
-                    
-                    
-                    
-
-                ?>
-            
+                ?>        
              </div>
              <div class="search">
                 <i class="fa fa-search"></i>
@@ -153,11 +147,11 @@
             <div class="categories show-cat">
                 <?php
                 include("../connectionPHP/connect.php");
-                $sql = "SELECT * FROM PRODUCT";
+                $sql = "SELECT * FROM CATEGORY";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
                 while($row = oci_fetch_array($array)){
-                    $category = $row[5];
+                    $category = $row[1];
                     ?>
                         <a href="<?php  echo "../category_page/index.php?cat=$category" ?>"><p><?php echo $category ?></p></a>
                     <?php
@@ -287,21 +281,21 @@
             <h1>Flash Sale </h1>
             <div class="items-container">
                 <?php
-        $sql = "SELECT * FROM PRODUCT WHERE ROWNUM <= 9";
+        $sql = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME FROM PRODUCT,CATEGORY WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND ROWNUM <= 9";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
         while($row = oci_fetch_array($array)){
             $pId = $row[0];
             $pName = $row[1];
-            $pPrice = $row[2];
-            $pQuantity = $row[3];
-            $pDesc = $row[4];
-            $pCategory = $row[5];
+            $pPrice = $row[3];
+            $pQuantity = $row[4];
+            $pDesc = $row[2];
+            $pCategory = $row[9];
             $pDiscount = $row[6];
-            $pAllergy = $row[7];
-            $pImage1 = $row[8];
-            $pImage2 = $row[9];
-            $pImage3 = $row[10];
+            $pAllergy = $row[5];
+            $pImage1 = $row[6];
+            $pImage2 = $row[7];
+            $pImage3 = $row[8];
             ?>
             <div class="item">
                     <img src="<?php echo "../productsImage/".$pImage2; ?>" alt="productImage">

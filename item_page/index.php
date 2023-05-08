@@ -59,7 +59,7 @@
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
@@ -112,11 +112,13 @@
           $pid = $_GET['id'];
           // $cid = $_SESSION['cid'];
           // $quantity = $_POST['quantity'];
-          $query = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+          $query = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
           $arr = oci_parse($conn, $query);
           oci_execute($arr);
           $cid = oci_fetch_array($arr)[0];
-          $query1 = "SELECT P_QUANTITY FROM CART WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid'";
+          // $query1 = "SELECT CART_ID FROM PRODUCT_CART WHERE PRODUCT_CART"
+          $query1 = "SELECT TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid AND PRODUCT_ID = $pid";
+          // $query1 = "SELECT P_QUANTITY FROM CART WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid'";
           $arr2 = oci_parse($conn, $query1);
           oci_execute($arr2);
           $finalArr = oci_fetch_array($arr2);
@@ -131,23 +133,23 @@
       }
       $id = $_GET['id'];
       include("../connectionPHP/connect.php");
-      $sql = "SELECT * FROM PRODUCT WHERE PRODUCT_ID = $id";
+      $sql = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME, SHOP.SHOP_ID, MART_USER.USER_ID FROM PRODUCT,CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND SHOP.FK_USER_ID = MART_USER.USER_ID AND PRODUCT_ID = $id";
       $array = oci_parse($conn, $sql);
       oci_execute($array);
       while($row = oci_fetch_array($array)){
           $pId = $row[0];
           $pName = $row[1];
-          $pPrice = $row[2];
-          $pQuantity = $row[3];
-          $pDesc = $row[4];
-          $pCategory = $row[5];
-          $pDiscount = $row[6];
-          $pAllergy = $row[7];
-          $pImage1 = $row[8];
-          $pImage2 = $row[9];
-          $pImage3 = $row[10];
-          $pShop = $row[11];
-          $pTrader = $row[12];
+          $pPrice = $row[3];
+          $pQuantity = $row[4];
+          $pDesc = $row[2];
+          $pCategory = $row[9];
+          $pDiscount = 8;
+          $pAllergy = $row[5];
+          $pImage1 = $row[6];
+          $pImage2 = $row[7];
+          $pImage3 = $row[8];
+          $pShop = $row[10];
+          $pTrader = $row[11];
           ?>
           <section class="breadcrumb">
             <div> <a href="../landing_page/index.php">Home</a> </div>
@@ -184,24 +186,41 @@
             if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity && $_POST['quantity'] <= ($pQuantity-$quantity)){
               $pid = $_GET['id'];
               $quantity = $_POST['quantity'];
-              $query = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+              $query = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
               $arr = oci_parse($conn, $query);
               oci_execute($arr);
               $cid = oci_fetch_array($arr)[0];
-              $query1 = "SELECT CART_ID, P_QUANTITY FROM CART WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid'";
+              $query1 = "SELECT PRODUCT_CART.CART_ID, TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid AND PRODUCT_ID = $pid";
               $arr2 = oci_parse($conn, $query1);
               oci_execute($arr2);
               $finalArr = oci_fetch_array($arr2);
               $exist = $finalArr;
               if(isset($exist[0])){
+                $cartid = $exist[0];
                 $oldquantity = $exist[1];
                 $totalQ = $oldquantity + $quantity;
-                $sql = "UPDATE CART SET P_QUANTITY = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
+                // $sql = "UPDATE CART SET ITEMS = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
+                $sql = "UPDATE CART
+                JOIN PRODUCT_CART
+                ON CART.CART_ID = PRODUCT_CART.CART_ID
+                SET CART.FK_USER_ID = '$cid',
+                    CART.TOTAL_ITEMS = '$totalQ',
+                    PRODUCT_CART.PRODUCT_ID = '$pid'
+                WHERE CART.CART_ID = $cartid";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
+
               }
               else{
-                $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid',$quantity)";
+                // $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid',$quantity)";
+                $sql = "INSERT INTO CART(FK_USER_ID, TOTAL_ITEMS, ITEMS) VALUES('$cid', '$totalQ', '$pName')";
+                $array = oci_parse($conn, $sql);
+                oci_execute($array);
+                $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid' AND TOTAL_ITEMS = '$totalQ' AND ITEMS = '$pName'";
+                $array = oci_parse($conn, $sql);
+                oci_execute($array);
+                $cart_id = oci_fetch_array($array)[0];
+                $sql = "INSERT INTO PRODUCT_CART(PRODUCT_ID, CART_ID) VALUES('$pId', '$cart_id')";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
               }
@@ -296,12 +315,12 @@
                 $proid = $_GET['id'];
                 if(isset($_SESSION['username'])){
                   $username = $_SESSION['username'];
-                  $query = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+                  $query = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
                   $arr = oci_parse($conn, $query);
                   oci_execute($arr);
                   $custId = oci_fetch_array($arr)[0];
                   // echo $proid;
-                  $sql = "SELECT PRODUCT_ID FROM WISHLIST WHERE PRODUCT_ID = $proid AND C_ID = $custId";
+                  $sql = "SELECT WISHLIST_PRODUCT.PRODUCT_ID FROM WISHLIST, WISHLIST_PRODUCT WHERE WISHLIST.WISHLIST_ID = WISHLIST_PRODUCT.WISHLIST_ID AND WISHLIST_PRODUCT.PRODUCT_ID = $proid AND WISHLIST.FK_USER_ID = $custId";
                   $arr = oci_parse($conn, $sql);
                   oci_execute($arr);
                   $react = oci_fetch_array($arr);
@@ -396,7 +415,7 @@
                 $sql = "SELECT * FROM SHOP WHERE SHOP_ID = $pShop";
                 $res = oci_parse($conn, $sql);
                 oci_execute($res);
-                $name = oci_fetch_array($res)[2];
+                $name = oci_fetch_array($res)[1];
                 ?>
                 <p class="cat-type">Shop</p>
                 <p class="cat-info"><?php echo $name;  ?></p>
@@ -406,10 +425,10 @@
           </div>
           <div class="trader">
           <?php
-                $sql = "SELECT * FROM TRADER WHERE TRADER_ID = $pTrader";
+                $sql = "SELECT * FROM MART_USER WHERE USER_ID = $pTrader";
                 $res = oci_parse($conn, $sql);
                 oci_execute($res);
-                $name1 = oci_fetch_array($res)[8];
+                $name1 = oci_fetch_array($res)[3];
                 ?>
                 <p class="trader-type">Trader</p>
                 <p class="trader-intro"><?php echo $name1;  ?></p>
@@ -427,7 +446,8 @@
           if(isset($_SESSION['username'])){
             $cname=  $_SESSION['username'];
           }
-          $sql = "SELECT RATING_STAR FROM RATING,CUSTOMER WHERE CUSTOMER.C_ID = RATING.C_ID AND PRODUCT_ID = $pid AND CUSTOMER.C_USERNAME = '$cname'";
+          // $sql = "SELECT RATING_STAR FROM RATING,CUSTOMER WHERE CUSTOMER.C_ID = RATING.C_ID AND PRODUCT_ID = $pid AND CUSTOMER.C_USERNAME = '$cname'";
+          $sql = "SELECT RATE FROM REVIEW, MART_USER WHERE REVIEW.FK_USER_ID = MART_USER.USER_ID AND MART_USER.USERNAME = '$cname' AND FK_PRODUCT_ID = '$pid'";
           $arr = oci_parse($conn, $sql);
           oci_execute($arr);
           $row = oci_fetch_array($arr);
@@ -477,7 +497,7 @@
       $array = oci_parse($conn, $sql);
       oci_execute($array);
       while($row = oci_fetch_array($array)){
-          $pDesc = $row[4];
+          $pDesc = $row[2];
           ?>
           <p><?php echo $pDesc; ?></p>
           <?php
@@ -493,11 +513,48 @@
           <i class="fa-sharp fa-solid fa-circle-user"></i>
           <p class="username">Subodh21</p>
           <div class="rate_product">
+          <?php 
+          include("../connectionPHP/connect.php");
+          $pid = $_GET['id'];
+          $cname = null;
+          if(isset($_SESSION['username'])){
+            $cname=  $_SESSION['username'];
+          }
+          // $sql = "SELECT RATING_STAR FROM RATING,CUSTOMER WHERE CUSTOMER.C_ID = RATING.C_ID AND PRODUCT_ID = $pid AND CUSTOMER.C_USERNAME = '$cname'";
+          $sql = "SELECT RATE FROM REVIEW, MART_USER WHERE REVIEW.FK_USER_ID = MART_USER.USER_ID AND MART_USER.USERNAME = '$cname' AND FK_PRODUCT_ID = '$pid'";
+          $arr = oci_parse($conn, $sql);
+          oci_execute($arr);
+          $row = oci_fetch_array($arr);
+          if(isset($row[0])){
+            $rating = $row[0];
+            for($i=0; $i<$rating; $i++){
+            ?>
             <p><i class="fa-solid fa-star"></i></p>
-            <p><i class="fa-solid fa-star"></i></p>
-            <p><i class="fa-solid fa-star"></i></p>
-            <p><i class="fa-solid fa-star"></i></p>
+
+            <?php
+            }
+            for($i=$rating; $i<=4; $i++){
+              ?>
+              <p><i class="fa-regular fa-star"></i></p>
+              <?php
+            }
+           
+          }
+          else{
+            ?>
             <p><i class="fa-regular fa-star"></i></p>
+            <p><i class="fa-regular fa-star"></i></p>
+            <p><i class="fa-regular fa-star"></i></p>
+            <p><i class="fa-regular fa-star"></i></p>
+            <p><i class="fa-regular fa-star"></i></p>
+
+
+          <?php
+          }
+            
+          
+
+          ?>
           </div>
         </div>
 

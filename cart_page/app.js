@@ -127,7 +127,7 @@ function addingToOrders(){
         let btnDecrease = document.querySelectorAll(".countitem .decrease");
         checkitem.addEventListener("change",(e)=>{
             // console.log(slotsValue);
-            let isChecked = e.target.matches(':checked');
+            let isChecked = e.target.matches(':checked'); 
             if(isChecked === true){
                 let xml1 = new XMLHttpRequest();
                 xml1.onreadystatechange = function addXml(){
@@ -270,14 +270,21 @@ function showingsavedProduct(){
                 let productImage2 = item[6];
                 let productId = item[7];
                 let productssaved = item[8];
-                let cookieQ = document.cookie;
-                // let cookieQ1 = cookieQ.split(";")[1].split("%20")[0];
-                let cookieQ2 = cookieQ.split(";")[2].split("%20");
-                let firstvalue = cookieQ2[0].split("=")[1];
-                let arr1 = [firstvalue];
-                for(let i=1; i<cookieQ2.length; i++){
-                    arr1.push(Number(cookieQ2[i]));
+                // let cookieQ = document.cookie;
+                let cookieid = document.querySelector('.idcookie')?.value;
+                let quantcookie = document.querySelector(".idquant")?.value;
+                let arr1 = [];
+                if(cookieid != null && quantcookie != null){
+                    let cookieQ2 = quantcookie.split(" ");
+                    for(let i=0; i<cookieQ2.length; i++){
+                        arr1.push(Number(cookieQ2[i]));
+                    }
                 }
+                // console.log(cookieid);
+                // console.log(quantcookie);
+                // console.log(arr1);
+
+                // arr1 = 34;
                 // console.log(cookieQ1, cookieQ2);
                 // productssaved = productssaved != null ? productssaved : getcookie("quantity");
                 oneItemSelect.innerHTML += `

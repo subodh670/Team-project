@@ -20,7 +20,7 @@ session_start();
     if(isset($_POST['verify'])){
         include("../connectionPHP/connect.php");
         $email = $_SESSION['email'];
-        $sql = "UPDATE CUSTOMER SET C_REGISTEREDEMAIL = 'yes' WHERE C_EMAILADDRESS = '$email'";
+        $sql = "UPDATE MART_USER SET REGISTERED_EMAIL = 'yes' WHERE EMAIL = '$email'";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
         session_destroy();
@@ -65,7 +65,7 @@ session_start();
             <h2>Signin</h2>
             <form action="" method="POST">
                 <?php
-                function insertCookie($cid){
+                function insertCookie($userid){
                     include("../connectionPHP/connect.php");
                     $id_cookie = $_COOKIE['product'];
                     $quantity_cookie = $_COOKIE['quantity'];
@@ -75,21 +75,27 @@ session_start();
                     $arr = array();
                     for($i = 0; $i<count($arrid); $i++){
                         $id = $arrid[$i];
-                        $sql = "SELECT P_QUANTITY FROM CART WHERE PRODUCT_ID = $id AND C_ID = $cid";
+                        // $sql = "SELECT TOTAL_ITEMS FROM CART WHERE PRODUCT_ID = $id AND C_ID = $cid";
+                        $sql = "SELECT TOTAL_ITEMS, CART_ID FROM CART WHERE FK_USER_ID = '$userid' AND CART_ID = (SELECT CART_ID FROM PRODUCT_CART WHERE PRODUCT_ID='$id')";
                         $result = oci_parse($conn, $sql);
                         oci_execute($result);
                         $outcome = oci_fetch_array($result);
+                        $cart_id = $outcome[1];
                         // $sum = 0;
                         if(isset($outcome[0])){
                             $quantarr1 = intval($quantarr[$i]) + $outcome[0];
-                            $sql1 = "UPDATE CART SET P_QUANTITY = '$quantarr1' WHERE C_ID = $cid AND PRODUCT_ID = '$id'";
+                            // $sql1 = "UPDATE CART SET P_QUANTITY = '$quantarr1' WHERE C_ID = $userid AND PRODUCT_ID = '$id'";
+                            // $interSql = "SELECT CART_ID FROM CART "
+                            $sql1 = "UPDATE CART SET P_QUANTITY = '$quantarr1' WHERE CART_ID ='$cart_id'";
                             $res = oci_parse($conn, $sql1);
                             oci_execute($res);
                             echo "hi";
                         }
                         else{
                             $quantarr1 = intval($quantarr[$i]);
-                            $sql1 = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES($id, $cid, '$quantarr1')";
+                            // $sql1 = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES($id, $cid, '$quantarr1')";
+                            $sql1 = "INSERT INTO CART(TOTAL_ITEMS, FK_USER_ID) VALUES('$quantarr1', '$userid')";
+                            $sql2 = "INSERT INTO PRODUCT_ID VALUES('$id') WHERE CART_ID = '$cart_id'";
                             $res = oci_parse($conn, $sql1);
                             oci_execute($res);
                             echo "hello";
@@ -101,28 +107,31 @@ session_start();
                         $username = $_POST['username'];
                         $pass = sha1($_POST['password']);
                         include("../connectionPHP/connect.php");
-                        $sql = "SELECT C_USERNAME, C_PASSWORD, C_IMAGE, C_FIRSTNAME, C_LASTNAME, C_REGISTEREDEMAIL, C_EMAILADDRESS,C_ID FROM CUSTOMER";
+                        $sql = "SELECT USERNAME, PASSWORD, IMAGE, FIRST_NAME, LAST_NAME, REGISTERED_EMAIL, EMAIL,ROLE, USER_ID FROM MART_USER";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         while($row = oci_fetch_array($array)){
                             if($username == $row[0] && $pass == $row[1]){
                                 $status = $row[5];
+                                $role = $row[7];
                                 if($status == 'yes'){
+                                    $_SESSION['cid'] = $row[8];
                                     $_SESSION['username'] = $username;
                                     $_SESSION['password'] = $pass;
                                     $_SESSION['image'] = $row[2];
                                     $_SESSION['firstname'] = $row[3];
                                     $_SESSION['lastname'] = $row[4];
                                     $_SESSION['guest'] = true;
+                                    $_SESSION['role'] =  $row[7];
                                     $cid = $row[7];
-                                    insertCookie($cid);
+                                    insertCookie($userid);
                                     header("location: ../landing_page/index.php");
                                 }
                                 else{
                                     $otpvalue = rand(100000,999999);
                                     $_SESSION['email'] = $row[6];
                                     include("../connectionPHP/connect.php");
-                                    $sql = "UPDATE CUSTOMER SET C_OTP = '$otpvalue' WHERE C_EMAILADDRESS = '$row[6]'";
+                                    $sql = "UPDATE MART_USER SET OTP = '$otpvalue' WHERE EMAIL = '$row[6]' AND role='customer'";
                                     $array = oci_parse($conn, $sql);
                                     oci_execute($array);
                                     oci_close($conn);

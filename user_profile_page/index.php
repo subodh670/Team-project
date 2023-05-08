@@ -26,17 +26,9 @@ include("../connectionPHP/inc_session.php");
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="backdrop hidebackdrop">
-
-    </div>
-    <div class="updatepass hidepass" >
-        <form action="" method="POST">
-            <div class="xmark1">
-                <i class="fa-solid fa-xmark"></i>
-            </div>
-            <?php    
+<?php    
             $errornewPass = "";
-            $errorconfirmass = "";
+            $errorconfirmpass = "";
             $flashvalidated = "";
             $errornotmatch = "";
             function validatePass($pass){
@@ -47,11 +39,10 @@ include("../connectionPHP/inc_session.php");
                 else{
                     return false;   
                 }
-            }
+            } 
             if(isset($_POST['updatepassbtn'])){
                 include("../connectionPHP/connect.php");
                 $username = $_SESSION['username'];
-                echo $username;
                 $sql = "SELECT C_PASSWORD FROM CUSTOMER WHERE C_USERNAME = '$username'";
                 $arr = oci_parse($conn, $sql);
                 oci_execute($arr);
@@ -59,15 +50,14 @@ include("../connectionPHP/inc_session.php");
                 $oldpass = sha1($_POST['oldpass']);
                 $newpass = $_POST['newpass'];
                 $cpass = $_POST['cpass'];
-                
                 if($pass == $oldpass){
-                    if(validatePass($newpass)){
+                    if(validatePass($newpass) == true){
                         if($newpass == $cpass){
-                            $newpass = sha1($newpass);
-                            $sql = "INSERT INTO CUSTOMER(C_PASSWORD) VALUES('$newpass') WHERE C_USERNAME = '$username'";
+                            $newpass1 = sha1($newpass);
+                            $sql = "UPDATE CUSTOMER SET C_PASSWORD = '$newpass1' WHERE C_USERNAME = '$username'";
                             $array = oci_parse($conn, $sql);
                             oci_execute($array);
-                            $_SESSION['password'] = $newpass;
+                            $_SESSION['password'] = $newpass1;
                             $flashvalidated = "<p>Password updated!!</p>";
                         }
                         else{
@@ -93,6 +83,15 @@ include("../connectionPHP/inc_session.php");
             
 
             ?>
+    <div class="backdrop hidebackdrop">
+
+    </div>
+    <div class="updatepass hidepass" >
+        <form action="" method="POST">
+            <div class="xmark1">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            
             <h3>Update password</h3>
             <div class="oldpassword">
                 <i class="fa-solid fa-envelope"></i>
@@ -243,7 +242,7 @@ include("../connectionPHP/inc_session.php");
     </section>
     <section class="errorsflash">
     <?php
-        if($errorconfirmass != "" && $errorconfirmass != "" && $flashvalidated!= "" && $errornotmatch != "" ){
+        if($errornewPass != "" || $errorconfirmpass != "" || $flashvalidated!= "" || $errornotmatch != "" ){
             echo $errornewPass;
             echo $errorconfirmpass;
             echo $flashvalidated;

@@ -142,16 +142,18 @@ function gettingProduct(type, items){
         if (this.readyState == 4 && this.status == 200) {
             const item = JSON.parse(this.responseText);
             let pId = item['PRODUCT_ID'];
-            let pName = item['PRODUCT_NAME'];
-            var pPrice = item["PRODUCT_PRICE"];
-            let pQuantity = item['PRODUCT_QUANTITY'];
-            let pDesc = item['PRODUCT_DESCRIPTION'];
-            let pCategory = item['PRODUCT_CATEGORY'];
-            var pDiscount = item['PRODUCT_DISCOUNT'];
-            let pAllergy = item['PRODUCT_ALLERGY_INFORMATION'];
-            let pImage1 = item['PRODUCT_IMAGE1'];
-            let pImage2 = item['PRODUCT_IMAGE2'];
-            let pImage3 = item['PRODUCT_IMAGE3'];
+            // console.log(pId);
+            let pName = item['NAME'];
+            var pPrice = item["PRICE"];
+            let pQuantity = item['STOCK_AVAILABLE'];
+            let pDesc = item['DESCRIPTION'];
+            let pCategory = item['CATEGORY_NAME'];
+            // var pDiscount = item['PRODUCT_DISCOUNT'];
+            var pDiscount = 8;
+            let pAllergy = item['ALLERGY_INFORMATION'];
+            let pImage1 = item['IMAGE1'];
+            let pImage2 = item['IMAGE2'];
+            let pImage3 = item['IMAGE3'];
             let prevPrice = [];    
             itemsContainer.innerHTML = ""
                 for(let i=0; i<pId.length; i++){
@@ -159,7 +161,8 @@ function gettingProduct(type, items){
                     if(type === null){
                         itemsContainer.innerHTML = content;
                     }
-                    else if(type === 'load'){  
+                    else if(type === 'load'){ 
+                        // console.log(i); 
                         if(i===items){
                             break;
                         }

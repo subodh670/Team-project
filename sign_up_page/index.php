@@ -59,7 +59,7 @@ $otpvalue = rand(100000,999999);
             </div>
             <div class="signup">
             <?php
-
+            
 function validatePass($pass){
     $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
     if(preg_match($password_regex, $pass)){
@@ -91,7 +91,7 @@ if(isset($_POST['signup'])){
             $email = null;
         }
         include("../connectionPHP/connect.php");
-        $query = "SELECT C_EMAILADDRESS, C_MOBILE, C_USERNAME FROM CUSTOMER";
+        $query = "SELECT EMAIL, MOBILE_NO, USERNAME FROM MART_USER";
         $arr = oci_parse($conn, $query);
         oci_execute($arr);
         while($row = oci_fetch_array($arr)){
@@ -135,7 +135,9 @@ if(isset($_POST['signup'])){
                 echo "<p>Error: Sorry, there was an error uploading your file.</p>";
                 $image = null;
             }
-            $sql = "INSERT INTO CUSTOMER(C_USERNAME, C_MOBILE, C_GENDER, C_ADDRESS, C_FIRSTNAME, C_LASTNAME, C_EMAILADDRESS, C_PASSWORD, C_IMAGE, C_REGISTEREDEMAIL,C_OTP) VALUES('$username', '$mobile', '$gender', '$address','$firstname', '$lastname', '$email', '$password', '$image','no', '$otpvalue')";
+            $date1 = date("d/m/y");
+            // echo $date1;
+            $sql = "INSERT INTO MART_USER(USERNAME, MOBILE_NO, GENDER, ADDRESS, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, IMAGE, REGISTERED_EMAIL,OTP, ROLE, STATUS) VALUES('$username', '$mobile', '$gender', '$address','$firstname', '$lastname', '$email', '$password', '$image','no', '$otpvalue','customer', 1)";
             $array = oci_parse($conn, $sql);
             oci_execute($array);
             oci_close($conn);
@@ -187,7 +189,7 @@ if(isset($_POST['signup'])){
 </div>
 <div class="gender">
     <label for="gender"><i class="fa-regular fa-user"></i></label>
-    <select name="gender[]" id="gender">
+    <select name="gender" id="gender">
         <option value="male">male</option>
         <option value="female">female</option>
     </select>

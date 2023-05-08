@@ -4,7 +4,7 @@
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     include("../connectionPHP/connect.php");
-    $sql4 = "SELECT RATING_STAR FROM RATING, REVIEW WHERE  PRODUCT_ID = $proid";
+    $sql4 = "SELECT RATE FROM RATING, REVIEW WHERE  PRODUCT_ID = $proid";
     $result = oci_parse($conn, $sql4);
     oci_execute($result);
     $num = oci_fetch_array($result);

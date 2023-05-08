@@ -52,7 +52,8 @@ function displayReview(){
     httpXml.onreadystatechange = function(){
         if(this.readyState == 4 && this.status==200){
             let response = JSON.parse(this.responseText);
-            // console.log(response);
+            console.log(this.responseText);
+            // console.log(usernameLocal,image, review, reviewID); 
             for(let i=0; i<response.length; i++){
                 let usernameLocal = response[i][0];
                 let image = response[i][1];
@@ -144,6 +145,8 @@ function addReview(){
     const commentBox = document.querySelector(".cust-review textarea");
     const butReview = document.querySelector(".cust-review button");
     const emptytextarea = document.querySelector(".emptytextarea");
+    let rate = rate_product();
+    console.log(rate);
     if(emptytextarea != null && commentBox != null && butReview != null){
         
         butReview.addEventListener("click",()=>{
@@ -153,11 +156,12 @@ function addReview(){
                 let json1 = new XMLHttpRequest();
                 json1.onreadystatechange = function(){
                     if(this.readyState == 4 && this.status == 200){
+                        console.log(this.responseText);
                         comment = "";
                         displayReview();
                     }
                 }
-                json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}`,true);
+                json1.open("POST", `comment.php?comment=${comment}&idPro=${idPro}&c_username=${username}&rate=${rate}`,true);
                 json1.send();
             }
             else{
@@ -254,7 +258,7 @@ function wishlist(){
         let ajax = new XMLHttpRequest();
         ajax.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
-                // console.log(this.responseText);
+                console.log(this.responseText);
             }
         }
         let proId = document.querySelectorAll(".cust-review input")[0].value;
@@ -273,6 +277,7 @@ function rate_product(){
     let proId = document.querySelectorAll(".cust-review input")[0].value;
     let custname = document.querySelectorAll(".cust-review input")[1].value;
     let ratings = document.querySelectorAll(".onlyrating p i");
+    let rate = null;
     ratings.forEach((rating,i)=>{
         rating.addEventListener("click",()=>{
             // console.log(rating);
@@ -293,25 +298,31 @@ function rate_product(){
             }
             xml.open("POST", `rateProduct.php?proid=${proId}&custname=${custname}&star=${i+1}`, true);
             xml.send();
+            rate = i+1;
+            
         })
+        rate = 0;
+
     })
+    return rate;
+
 }
 rate_product();
 
-function rateInComment(){
-    let proId = document.querySelectorAll(".cust-review input")[0].value;
-    let custname = document.querySelectorAll(".cust-review input")[1].value;
-    const rateProduct = document.querySelectorAll(".ratingsreviews .rate_product");
-    rateProduct.forEach((item)=>{
-        let xml = new XMLHttpRequest();
-        xml.onreadystatechange = function(){
-            if(this.readyState == 4 && this.status == 200){
-                console.log(this.responseText);
-            }
-        }
-        xml.open("POST", `displayRate.php?proid=${proId}`, true);
-        xml.send();
-        // item.innerHTML = ``;
-    })
-}
-// rateInComment();
+// function rateInComment(){
+//     let proId = document.querySelectorAll(".cust-review input")[0].value;
+//     let custname = document.querySelectorAll(".cust-review input")[1].value;
+//     const rateProduct = document.querySelectorAll(".ratingsreviews .rate_product");
+//     rateProduct.forEach((item)=>{
+//         let xml = new XMLHttpRequest();
+//         xml.onreadystatechange = function(){
+//             if(this.readyState == 4 && this.status == 200){
+//                 console.log(this.responseText);
+//             }
+//         }
+//         xml.open("POST", `displayRate.php?proid=${proId}`, true);
+//         xml.send();
+//         // item.innerHTML = ``;
+//     })
+// }
+// // rateInComment();

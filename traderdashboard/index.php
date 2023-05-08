@@ -14,7 +14,77 @@
   <div class="backdrop hidebackdrop">
     
   </div>
+  <div class="editprofile hideEditprofile">
+        <form method="POST" action="">
+        <div class="xmark">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+            <h3>Update Profile</h3>
+            <?php 
+            // $username = $_SESSION['username'];
+            include("../connectionPHP/connect.php");
+            $sql = "SELECT * FROM TRADER WHERE TRADER_USERNAME = 'arnold34'";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            while($rows = oci_fetch_array($arr)){
+                $username = $rows[3];
+                $firstname = $rows[1];
+                $lastname = $rows[2];
+                $mobile = $rows[4];
+                $email = $rows[5];
+                $gender = $rows[6];
+                $address = $rows[7];
+                $tid = $rows[0];
 
+                ?>
+            <div class="editusername">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="username" placeholder="username" value="<?php echo $username ?>">
+                <p class='errorusername'></p>
+
+            </div>
+            <input type="hidden" class='chidden' value="<?php echo $tid; ?>">
+            <div class="editemail">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="text" name="useremail" placeholder="email"  value="<?php echo $email ?>">
+                <p class='erroremail'></p>
+
+            </div>
+            <div class="editfirstname">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="firstname" placeholder="firstname"  value="<?php echo $firstname ?>">
+            </div>
+            <div class="editlastname">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="lastname" placeholder="lastname"  value="<?php echo $lastname ?>">
+            </div>
+            <div class="editmobile">
+                <i class="fa-solid fa-phone"></i>
+                <input type="number" name="mobile" placeholder="mobile number"  value="<?php echo $mobile ?>">
+                <p class='errormobile'></p>
+
+            </div>
+            <div class="editgender">
+                <i class="fa-regular fa-user"></i>
+                <select name="gender" id="gender">
+                    <option value="male">male</option>
+                    <option value="female">female</option>
+                </select>
+            </div>
+            <div class="editaddress">
+                <i class="fa-solid fa-house"></i>
+                <input type="text" name="address" placeholder="address"  value="<?php echo $address ?>">
+            </div>
+            <div class="updatebtn2">
+                <button type="button" name="update">Update Details</button>
+            </div>
+
+                <?php
+            }
+
+            ?>
+        </form>
+    </div>
 <div class="container-fluid text-center menu-dash">
   <div class="row">
     <div class="col-2 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-xl-2">
@@ -60,6 +130,13 @@
 
 
 <div id="onelink" class="reports">
+  <?php
+  // session_start();
+// if(isset($_SESSION['offerdelete'])){
+//   echo "<p>Offer is deleted!!</p>";
+//   unset($_SESSION['offerdelete']);
+// }
+  ?>
 <?php
       if(isset($_POST['addproduct'])){
         if(!empty($_POST['pname']) && !empty($_POST['pprice']) && !empty($_POST['pquant']) && !empty($_POST['prodesc']) && !empty($_POST['pallergy']) && !empty($_POST['shopname'])){
@@ -198,30 +275,45 @@
     </div>
 </div>
 <!-- finished first page add product -->
-<div id="twolink1" class="disableshop">
-    <div class="disableshop">
-        <h3>
+<div id="twolink1" class="disableshopMain">
+    <h3>
           Disable Shop
         </h3>
+    <div class="disableshop">
+        
         <div class="shopDetail">
           <p>Shop1</p>
           <p>Category</p>
+          <input type="hidden" class="activeInput">
           <button>Disable</button>
         </div>
 
     </div>
     <hr>
+    <h3>Enable Shop</h3>
     <div class="enableshop">
-        <h3>Enable Shop</h3>
+        
         <div class="shopDetail">
           <p>Shop1</p>
           <p>Category</p>
+          <input type="hidden" class="inactiveInput">
           <button>Disable</button>
         </div>
     </div>
 
 </div>
-<div id="threelink1">delete shop</div>
+<div id="threelink1">
+  <h3>Delete shop</h3>
+  <div class="deleteshop">
+  <div class="shopDetail">
+          <p>Shop1</p>
+          <p>Category</p>
+          <input type="hidden" class="deleteInput">
+          <button>Delete</button>
+  </div>
+  </div>
+  
+</div>
 
 
       </section>
@@ -605,9 +697,161 @@
 <!-- pages -->
 
 
-<div id="onelink3">Reports items</div>
-<div id="twolink3">sales items</div>
-<div id="threelink3">sales items</div>
+<div id="onelink3">
+<h4 style="color: var(--secondary-color);">Offers given</h4>
+    <div class="totaloffersgiven">
+        <?php
+        include("../connectionPHP/connect.php");
+      $sql = "SELECT PRODUCT_NAME, OFFER_PER, OFFER_VALID FROM PRODUCT, OFFER WHERE PRODUCT.PRODUCT_ID = OFFER.PRODUCT_ID";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      while($rows = oci_fetch_array($arr)){
+        $pname = $rows[0];
+        $offerper = $rows[1];
+        $offerexpire = $rows[2];
+
+        ?>
+<div class="productsq">
+          <h4><?php echo $pname ?></h4>
+          <h4><?php echo $offerper; ?></h4>
+          <h4><?php echo $offerexpire; ?> </h4>
+        </div>
+
+<?php
+      }
+        ?>
+        
+    </div>
+    <h3>Add or update offers</h3>
+    <div class="addoffers">
+        <div>
+          <label for="addinput">
+            New offer(in %  )
+          </label>
+          <input type="number" id="addinput" class="offeradd" placeholder="eg: 8%">
+          <label for="expiredate">
+            Expiry date
+          </label>
+          <input type="date" id="expiredate" class="offerdate" placeholder="eg: 02/02/2024">
+        </div>
+        <div class="selectproduct">
+          <div class="pro1">
+          <label for="poffer">product(*)</label>
+          <select name="poffer" id="poffer" class="pofferclass">
+            <option value=""></option>
+          </select>
+          </div>
+          
+        </div>
+        <div class="offerbtn">
+          <button>Add offer</button>
+        </div>
+    </div>
+
+
+</div>
+<div id="twolink3">
+  <h1>Update offers</h1>
+  <?php
+        include("../connectionPHP/connect.php");
+      $sql = "SELECT PRODUCT_NAME, OFFER_PER, OFFER_VALID FROM PRODUCT, OFFER WHERE PRODUCT.PRODUCT_ID = OFFER.PRODUCT_ID";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      while($rows = oci_fetch_array($arr)){
+        $pname = $rows[0];
+        $offerper = $rows[1];
+        $offerexpire = $rows[2];
+
+        ?>
+<div class="productsq">
+          <h4><?php echo $pname ?></h4>
+          <h4><?php echo $offerper; ?></h4>
+          <h4><?php echo $offerexpire; ?> </h4>
+        </div>
+
+<?php
+      }
+        ?>
+<div class="addoffers">
+        <div>
+          <label for="addinput">
+            New offer(in %  )
+          </label>
+          <input type="number" id="addinput" class="offeradd" placeholder="eg: 8%">
+          <label for="expiredate">
+            Expiry date
+          </label>
+          <input type="date" id="expiredate" class="offerdate" placeholder="eg: 02/02/2024">
+        </div>
+        <div class="selectproduct">
+          <div class="pro1">
+          <label for="poffer">product(*)</label>
+          <select name="poffer" id="poffer1" class="pofferclass1">
+            <option value=""></option>
+          </select>
+          </div>
+          
+        </div>
+        <div class="offerbtn">
+          <button>Update offer</button>
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+</div>
+<div id="threelink3">
+<h3>Delete offer</h3>
+<?php
+        include("../connectionPHP/connect.php");
+      $sql = "SELECT PRODUCT_NAME, OFFER_PER, OFFER_VALID, OFFER_ID FROM PRODUCT, OFFER WHERE PRODUCT.PRODUCT_ID = OFFER.PRODUCT_ID";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      while($rows = oci_fetch_array($arr)){
+
+        $pname = $rows[0];
+        $offerper = $rows[1];
+        $offerexpire = $rows[2];
+        $offerid = $rows[3];
+        if(!isset($rows[0])){
+          echo "<h4>No data found!!</h4>";
+        }
+        ?>
+        <form action="#" method="POST">
+        <?php
+  if(isset($_POST['deleteoffer'])){
+    $offerId = $_POST['deleteofferinput'];
+    // echo $offerId;
+    $sql1 = "DELETE FROM OFFER WHERE OFFER_ID = $offerId";
+    $arr1 = oci_parse($conn, $sql1);
+    oci_execute($arr1);
+    $_SESSION['offerdelete'] = true;
+     
+    // header("location: index.php");
+  }
+
+
+?>
+<div class="productsq">
+          <h4><?php echo $pname ?></h4>
+          <h4><?php echo $offerper; ?></h4>
+          <h4><?php echo $offerexpire; ?> </h4>
+          <input type="hidden" name="deleteofferinput" value="<?php echo $offerid; ?>">
+          <button type="submit" name="deleteoffer">Delete offer</button>
+        </div>
+        </form>
+
+<?php
+      }
+        ?>
+
+
+</div>
 
 
 
@@ -622,7 +866,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#">Update profile</a>
+          <a class="nav-link" data-link="onelink4" href="#onelink4">Update profile</a>
         </li>
       </ul>
     </div>
@@ -636,7 +880,74 @@
 <!-- pages -->
 
 
-<div id="onelink">Reports items</div>
+<div id="onelink4">
+  <div class="profile-section">
+  <?php 
+            // $username = $_SESSION['username'];
+            // echo $_SESSION['username'];
+
+            include("../connectionPHP/connect.php");
+            $sql = "SELECT * FROM TRADER WHERE TRADER_ID = 3003";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            while($rows = oci_fetch_array($arr)){
+                $username = $rows[3];
+                $firstname = $rows[1];
+                $lastname = $rows[2];
+                $mobile = $rows[4];
+                $email = $rows[5];
+                $gender = $rows[6];
+                $address = $rows[7];
+                ?>
+            <div class='profile-header'>
+                <h3>Trader profile</h3>
+                <button class="editbtntrigger">Edit Profile</button>
+            </div>
+            <div class="showuserdetail">
+                <div class="userdetail useremail">
+                    <p>Email</p>
+                    <p><?php echo $email; ?></p>
+                </div>
+                <div class="userdetail username">
+                    <p>Username</p>
+                    <p><?php echo $username; ?></p>
+                </div>
+                <div class="userdetail firstname">
+                    <p>Firstname</p>
+                    <p><?php echo $firstname; ?></p>
+                </div>
+                <div class="userdetail lastname">
+                    <p>lastname</p>
+                    <p><?php echo $lastname; ?></p>
+                </div>
+                <div class="userdetail mobile">
+                    <p>Mobile</p>
+                    <p><?php echo $mobile; ?></p>
+                </div>
+                <div class="userdetail gender">
+                    <p>Gender</p>
+                    <p><?php echo $gender; ?></p>
+                </div>
+                <div class="userdetail address">
+                    <p>Address</p>
+                    <p><?php echo $address; ?></p>
+                </div>
+                <div class="userdetail password">
+                    <p>Password</p>
+                    <div>
+                        <p>************</p>
+                        <button class="changepassbtn">Change password</button>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <?php
+            }
+            
+            ?>
+            </div>
+</div>
 
       </section>
     </div>

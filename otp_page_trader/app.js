@@ -1,0 +1,37 @@
+"use strict";
+
+const counter = document.querySelector(".counter");
+const form1 = document.querySelector(".otp form");
+let count = 180;
+let intervalOutput = setInterval(()=>{
+    counter.innerHTML = `${count} seconds remaining`
+    count--;
+    if(count === -1){
+        clearInterval(intervalOutput);
+    }
+},1000);
+// console.log(count);
+
+
+setTimeout(()=>{
+    form1.innerHTML = `<p>Request timeout failed</p>
+         <div class='btn'>
+            <button name='resend'>Resend</button>    
+         </div>
+        `;
+},180000);
+
+
+
+const verify = document.querySelector(".verify");
+const otp = document.querySelector(".inputotp #otp");
+const finalOtp = document.querySelector("#finalotp");
+verify.onclick = function(){
+    let email = document.querySelector(".validtop");
+    let xmlhttp = new XMLHttpRequest();
+    if(otp.value === finalOtp.value){
+        verify.type='submit';
+        verify.innerHTML = "Redirect";
+        form1.innerHTML = `<p>OTP matched</p> <div class='btn'><button type='submit' name='verify' class='verify'>Redirect</button></div>`;
+    }
+}

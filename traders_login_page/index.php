@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -46,11 +49,41 @@
                     goods for traders.</h1>
                 <p>create an account in 5 minutes and reach million of customers today</p>
             </div>
-            <form class="signup">
+            <form class="signup" method="POST" action="">
+                <?php 
+                if(isset($_POST['otpbtn'])){
+                    if(!empty($_POST['email'])){
+                        $email = $_POST['email'];
+                        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                            $otpvalue = rand(100000,999999);
+                            $emailApprove = $email;
+                            $_SESSION['finalotp'] = $otpvalue;
+                            $_SESSION['traderemail'] = $emailApprove;
+                            $message = "Your otp code is ". $otpvalue. " Thanks for joining our website and being trader for our website. Please do not share this code with anyone!!";
+                            if(mail("$email", "OTP code for cleckHFmart", $message)){
+                                echo "mail sent";
+                            }
+                            else{
+                                echo "unable to connect";
+                            }
+                            header("location: ../otp_page_trader/index.php");
+                    
+                        }
+                        else{
+                            echo "Given field is not email type!!";
+                        }
+                    }
+                    else{
+                        echo "Email field is empty!!";
+                    }
+                }
+
+
+                ?>
                 <h1>Create an account</h1>
                 <div class="email">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" >
+                    <input type="text" id="email" name="email" >
                 </div>
                 <div class="otp">
                     <button class="otpbtn" name="otpbtn"    >Send me an otp</button>

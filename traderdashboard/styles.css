@@ -391,9 +391,6 @@ html{
 }
 /* add shops */
 
-
-
-
 .addshop{
     display: flex;
     justify-content: center;
@@ -443,4 +440,382 @@ html{
 }
 .addshopbtn button:hover{
     background-color: var(--secondary-color);
+}
+
+/* shop dashboard */
+
+#twolink1, #threelink1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    width: 100%;
+}
+#twolink1 h3, #threelink1 h3{
+    font-size: 1.2rem;
+    margin-top: 4em;
+    margin-bottom: 4em;
+    color: var(--secondary-color);
+}
+
+#twolink1 .disableshop, #twolink1 .enableshop, #threelink1 .deleteshop{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 5em;
+}
+
+.shopDetail{
+    width: 20%;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    background-color: var(--selected);
+}
+.shopDetail button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: white;
+}
+.shopDetail button:hover{
+    background-color: var(--secondary-color);
+}
+
+
+/* adding offers */
+
+
+#onelink3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#onelink3 h3{
+    font-weight: bolder;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    font-size: 1.3rem;
+    color:var(--secondary-color);
+}
+.addoffers{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    width: 80%;
+    margin: 0 auto;
+    gap: 6em;
+}
+.addoffers>div{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 1em;
+    flex-direction: column;
+    margin: 0 auto;
+}
+.addsign i, .deletesign i{
+    font-size: 2rem;
+}
+.selectproduct{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.selectproduct .pro1{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+}
+.totaloffersgiven{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 1em;
+}
+.offerbtn button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: white;
+}
+.offerbtn button:hover{
+    background-color: var(--secondary-color);
+
+}
+.twolink3{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+}
+.productsq{
+    margin: auto;
+    width: 20%;
+    background-color:var(--selected);
+    padding: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.productsq button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: white;
+}
+.productsq button:hover{
+    background-color: var(--secondary-color);
+
+}
+
+/* user profile edit */
+@keyframes animateprofile {
+    from{
+        left: 70%;
+
+    }
+    to{
+        left: 0%;
+    }
+    
+}
+.profile-section{
+    position: relative;
+    animation-name: animateprofile;
+    animation-duration: 0.6s;
+    margin-top: 3em;
+    width: 90%;
+    padding: 2em;
+    margin: 0 auto;
+    background-color: var(--selected);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+.profile-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1em;
+}
+.profile-header button{
+    background-color: var(--tertiary-color);
+    padding: 0.5em 0.8em;
+    border-width: 0px;
+    color: white;
+
+}
+.profile-header button:hover{
+    background-color: var(--secondary-color);
+}
+
+.showuserdetail{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+}
+.userdetail{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.showuserdetail .password{
+    align-items: start;
+}
+.showuserdetail .password div{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    flex-direction: column;
+}
+.password button{
+    background-color: var(--tertiary-color);
+    padding: 0.5em 0.8em;
+    border-width: 0px;
+    color: white;
+}
+.password button:hover{
+    background-color: var(--primary-color);
+}
+
+
+/* modal edit profile */
+.backdrop{
+    backdrop-filter: blur(10px);
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    z-index: 3;
+}
+.hidebackdrop{
+    display: none;
+}
+@keyframes animateprofileedit {
+    from{
+        left: 0%;
+    }
+    to{
+        left: 50%;
+    }
+}
+.editprofile{
+    width: 100%;
+    animation-duration: 0.6s;
+    animation-name: animateprofileedit;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    z-index: 5;
+}
+.hideEditprofile{
+    display: none;
+}
+.editprofile form{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+}
+.editprofile form>h3{
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+.editprofile form >div i{
+    color: var(--white);
+    margin-right: 1.2em;
+    font-size: 1.5rem;
+}
+
+.editprofile form >div input{
+    width: 250px;
+    padding: 0.5em;
+    border-width: 0px;
+    border-bottom: 2px solid white;
+    background-color: var(--secondary-color);
+    outline: none;
+    color: white;
+}
+.editprofile form > div button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: var(--white);
+}
+form .xmark{
+    width: 120%;
+    text-align: right;
+    position: relative;
+    top: 1em;
+}
+form .xmark i{
+    font-size: 4rem;
+    cursor: pointer;
+}
+form .xmark i:hover{
+    color: black;
+}
+.erroremail, .errormobile, .errorusername{
+    font-size: 0.8em;
+    margin-left: 5em;
+    color: red;
+    margin-top: 1em;
+}
+/* modal password */
+
+.updatepass{
+     width: 100%;
+    animation-duration: 0.6s;
+    animation-name: animateprofileedit;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    z-index: 5;
+}
+.hidepass{
+    display: none;
+}
+.updatepass form{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1.5em;
+    padding: 1em;
+}
+.updatepass form>h3{
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+.updatepass form >div i{
+    color: var(--white);
+    margin-right: 1.2em;
+    font-size: 1.5rem;
+}
+
+.updatepass form >div input{
+    width: 250px;
+    padding: 0.5em;
+    border-width: 0px;
+    border-bottom: 2px solid white;
+    background-color: var(--secondary-color);
+    outline: none;
+    color: white;
+}
+.updatepass form > div button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: var(--white);
+}
+form .xmark1{
+    width: 120%;
+    text-align: right;
+    position: relative;
+    top: 1em;
+}
+form .xmark i{
+    font-size: 4rem;
+    cursor: pointer;
 }

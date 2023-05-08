@@ -5,7 +5,7 @@
 if($_SERVER['REQUEST_METHOD']=='POST'){
     include("../connectionPHP/connect.php");
     $pid = $_GET['pid'];
-    $sql = "SELECT C_USERNAME, C_IMAGE, CREVIEW, REVIEW_ID FROM REVIEW, CUSTOMER WHERE REVIEW.C_ID = CUSTOMER.C_ID AND PRODUCT_ID = $pid AND CUSTOMER.C_REGISTEREDEMAIL = 'yes'";
+    $sql = "SELECT USERNAME, IMAGE, REVIEW_DESCRIPTION, REVIEW_ID FROM REVIEW, MART_USER WHERE REVIEW.FK_USER_ID = MART_USER.USER_ID AND FK_PRODUCT_ID = $pid AND MART_USER.REGISTERED_EMAIL = 'yes'";
     $array = oci_parse($conn, $sql);
     oci_execute($array);
     $num = count(oci_fetch_array($array));

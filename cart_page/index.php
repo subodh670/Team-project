@@ -55,8 +55,9 @@
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
-                        $array = oci_parse($conn, $sql);
+                        // $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
+                        $array = oci_parse($conn, $sql); 
                         oci_execute($array);
                         $totalnum = 0;
                         while($numbers = oci_fetch_array($array)){
@@ -97,6 +98,20 @@
             
         </div>
     </header>
+    <?php
+    if(isset($_COOKIE['product']) || isset($_COOKIE['quantity'])){
+        $id_cookie = $_COOKIE['product'];
+        $quantity_cookie = $_COOKIE['quantity'];
+        ?>
+        <input type="hidden" class="idcookie" value="<?php echo $id_cookie; ?>">
+        <input type="hidden" class="idquant" value="<?php  echo $quantity_cookie;  ?>">
+        
+        <?php
+    }
+
+
+
+?>
 
 
 <!-- <section class="selectall">

@@ -237,6 +237,26 @@ ul li a:active{
         margin-right: 40px;
     }
 }
+header .custprofile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: 2px solid white;
+    object-fit: cover;
+    object-position: center;
+}
+header .custprofile{
+    width: 20%;
+    background-color: transparent;
+}
+@media (max-width: 500px) {
+    header .custprofile{
+        width: 30%;
+    }
+}
+.cart span{
+    color: white;
+}
 /* header finished */
 
 /* products ordered */

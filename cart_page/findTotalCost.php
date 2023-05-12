@@ -8,7 +8,9 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $arr = oci_parse($conn, $query);
     oci_execute($arr);
     $cid = oci_fetch_array($arr)[0];
-    $sql = "SELECT PRODUCT_PRICE, ORDERS.PRODUCT_QUANTITY FROM ORDERS, PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID AND ORDERS.C_ID ='$cid'";
+    // $sql = "SELECT PRODUCT_PRICE, ORDERS.PRODUCT_QUANTITY FROM ORDERS, PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID AND ORDERS.C_ID ='$cid'";
+    $sql = "SELECT TOTAL_COST, PRODUCT_ORDER.QUANTITY FROM PRODUCT_ORDER, CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND CART.FK_USER_ID ='$cid'";
+
     $array = oci_parse($conn, $sql);
     oci_execute($array);
     $price = array();

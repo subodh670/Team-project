@@ -43,7 +43,7 @@ include("../connectionPHP/inc_session.php");
             if(isset($_POST['updatepassbtn'])){
                 include("../connectionPHP/connect.php");
                 $username = $_SESSION['username'];
-                $sql = "SELECT C_PASSWORD FROM CUSTOMER WHERE C_USERNAME = '$username'";
+                $sql = "SELECT PASSWORD FROM MART_USER WHERE USERNAME = '$username'";
                 $arr = oci_parse($conn, $sql);
                 oci_execute($arr);
                 $pass = oci_fetch_array($arr)[0];
@@ -54,7 +54,7 @@ include("../connectionPHP/inc_session.php");
                     if(validatePass($newpass) == true){
                         if($newpass == $cpass){
                             $newpass1 = sha1($newpass);
-                            $sql = "UPDATE CUSTOMER SET C_PASSWORD = '$newpass1' WHERE C_USERNAME = '$username'";
+                            $sql = "UPDATE MART_USER SET PASSWORD = '$newpass1' WHERE USERNAME = '$username'";
                             $array = oci_parse($conn, $sql);
                             oci_execute($array);
                             $_SESSION['password'] = $newpass1;
@@ -124,16 +124,16 @@ include("../connectionPHP/inc_session.php");
             <?php 
             $username = $_SESSION['username'];
             include("../connectionPHP/connect.php");
-            $sql = "SELECT * FROM CUSTOMER WHERE C_USERNAME = '$username'";
+            $sql = "SELECT * FROM MART_USER WHERE USERNAME = '$username'";
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             while($rows = oci_fetch_array($arr)){
-                $username = $rows[1];
-                $firstname = $rows[2];
-                $lastname = $rows[3];
-                $mobile = $rows[4];
-                $email = $rows[5];
-                $gender = $rows[6];
+                $username = $rows[3];
+                $firstname = $rows[1];
+                $lastname = $rows[2];
+                $mobile = $rows[6];
+                $email = $rows[4];
+                $gender = $rows[8];
                 $address = $rows[7];
                 $cid = $rows[0];
 
@@ -209,7 +209,7 @@ include("../connectionPHP/inc_session.php");
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
@@ -267,16 +267,16 @@ include("../connectionPHP/inc_session.php");
             // echo $_SESSION['username'];
 
             include("../connectionPHP/connect.php");
-            $sql = "SELECT * FROM CUSTOMER WHERE C_USERNAME = '$username'";
+            $sql = "SELECT * FROM MART_USER WHERE USERNAME = '$username'";
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             while($rows = oci_fetch_array($arr)){
-                $username = $rows[1];
-                $firstname = $rows[2];
-                $lastname = $rows[3];
-                $mobile = $rows[4];
-                $email = $rows[5];
-                $gender = $rows[6];
+                $username = $rows[3];
+                $firstname = $rows[1];
+                $lastname = $rows[2];
+                $mobile = $rows[6];
+                $email = $rows[4];
+                $gender = $rows[8];
                 $address = $rows[7];
                 ?>
             <div class='profile-header'>

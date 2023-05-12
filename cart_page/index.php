@@ -127,12 +127,7 @@
 
             <div class="slots">
                 <label for="slotscollection">Choose collection slot: </label>
-                <select name="collection-slot" id="slotscollection">
-                    <option value="10-13">10-13</option>
-                    <option value="13-16">13-16</option>
-                    <option value="16-19">16-19</option>
-
-                </select>
+                <input type="date" name="collection-slot" id="slotscollection">
             </div>
 <main></main>
 <?php

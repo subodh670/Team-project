@@ -200,23 +200,29 @@
                 $oldquantity = $exist[1];
                 $totalQ = $oldquantity + $quantity;
                 // $sql = "UPDATE CART SET ITEMS = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
-                $sql = "UPDATE CART
-                JOIN PRODUCT_CART
-                ON CART.CART_ID = PRODUCT_CART.CART_ID
-                SET CART.FK_USER_ID = '$cid',
-                    CART.TOTAL_ITEMS = '$totalQ',
-                    PRODUCT_CART.PRODUCT_ID = '$pid'
-                WHERE CART.CART_ID = $cartid";
+                $sql = "MERGE INTO CART
+                USING (
+                    SELECT PRODUCT_CART.CART_ID
+                    FROM CART
+                    INNER JOIN PRODUCT_CART ON CART.CART_ID = PRODUCT_CART.CART_ID
+                    WHERE CART.CART_ID = '$cartid'
+                      AND CART.FK_USER_ID = '$cid'
+                      AND PRODUCT_CART.PRODUCT_ID = '$pid'
+                ) src
+                ON (CART.CART_ID = src.CART_ID)
+                WHEN MATCHED THEN
+                    UPDATE SET CART.TOTAL_ITEMS = '$totalQ'";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
+                echo "HELLO";
 
               }
               else{
                 // $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid',$quantity)";
-                $sql = "INSERT INTO CART(FK_USER_ID, TOTAL_ITEMS, ITEMS) VALUES('$cid', '$totalQ', '$pName')";
+                $sql = "INSERT INTO CART(FK_USER_ID, TOTAL_ITEMS, ITEMS) VALUES('$cid', '$quantity', '$pName')";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
-                $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid' AND TOTAL_ITEMS = '$totalQ' AND ITEMS = '$pName'";
+                $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid' AND TOTAL_ITEMS = '$quantity' AND ITEMS = '$pName'";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
                 $cart_id = oci_fetch_array($array)[0];

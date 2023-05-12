@@ -116,16 +116,23 @@ function addingToOrders(){
     const quantities = document.querySelectorAll('.countitem input');
     const slots = document.querySelector('.slots #slotscollection');
     const username = document.querySelector(".usernameFind");
-    let slotsValue = "10-13";
-    slots.addEventListener("change",()=>{
-        slotsValue = slots.options[slots.selectedIndex].value;
-    })
+    let day = new Date(slots.value).getDay();
+    let price = document.querySelectorAll(".wish_price_del> p");
+    let pName = document.querySelectorAll(".product-desc .desc .itempro");
+    // console.log(pName[1].textContent);
+    let slotsValue = slots.value;
+    // console.log(day);
+    // let slotsValue = "10-13";
+    // slots.addEventListener("change",()=>{
+    //     slotsValue = slots.options[slots.selectedIndex].value;
+    // })
     // console.log(slotsValue);
     checkBoxItems.forEach((checkitem,i)=>{
         let productIdValue = getproductid[i];
         let btnIncrease = document.querySelectorAll(".countitem .increase");
         let btnDecrease = document.querySelectorAll(".countitem .decrease");
         checkitem.addEventListener("change",(e)=>{
+            console.log(day);
             // console.log(slotsValue);
             let isChecked = e.target.matches(':checked'); 
             if(isChecked === true){
@@ -140,7 +147,7 @@ function addingToOrders(){
                         }
                     }
                 }
-                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}`, true);
+                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price[i].textContent.slice(6)}&pname=${pName[i].textContent}`, true);
                 xml1.send();
             }
             else if(isChecked === false || isChecked === null){
@@ -150,7 +157,7 @@ function addingToOrders(){
                         orderCost();
                     }
                 }
-                xml2.open("POST", `deleteorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}`, true);
+                xml2.open("POST", `deleteorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&pname=${pName[i].textContent}`, true);
                 xml2.send();
             }
             btnIncrease[i].addEventListener("click",()=>{
@@ -168,7 +175,6 @@ function addingToOrders(){
 
 }
 
-addingToOrders();
 
 
 
@@ -257,7 +263,7 @@ function showingsavedProduct(){
     let xml1 = new XMLHttpRequest();
     xml1.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 200){
-            // console.log(this.responseText);
+            console.log(this.responseText);
            let items = JSON.parse(this.responseText);
             // console.log(items);
             items.forEach((item,i)=>{
@@ -351,7 +357,7 @@ function showingsavedProduct(){
                                 // console.log(this.responseText);
                             }
                         }
-                        xml.open("POST", `deleteCartItem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}`, true);
+                        xml.open("POST", `deleteCartItem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
                         xml.send();
                         
                     })
@@ -510,6 +516,7 @@ function updateCartAndTotal(){
             let xml = new XMLHttpRequest();
             xml.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
+                    console.log(this.responseText);
                     let arr = JSON.parse(this.responseText);
                     if(arr[0]==true){
                         // console.log("hee");

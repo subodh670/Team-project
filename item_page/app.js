@@ -51,8 +51,8 @@ function displayReview(){
     let httpXml = new XMLHttpRequest();
     httpXml.onreadystatechange = function(){
         if(this.readyState == 4 && this.status==200){
+            console.log(this.responseText); 
             let response = JSON.parse(this.responseText);
-            console.log(this.responseText);
             // console.log(usernameLocal,image, review, reviewID); 
             for(let i=0; i<response.length; i++){
                 let usernameLocal = response[i][0];

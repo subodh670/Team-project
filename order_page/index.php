@@ -58,7 +58,7 @@
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
@@ -67,11 +67,22 @@
                         }
                     
                     }
-                    
+                    else{
+                      include("../connectionPHP/connect.php");
+                        if(isset($_COOKIE['product'])){
+                            $id_cookie = $_COOKIE['product'];
+                            $quantity_cookie = $_COOKIE['quantity'];
+                            $arrid = explode(" ", $id_cookie);
+                            $quantarr = explode(" ", $quantity_cookie);
+                            $totalnum = 0;
+                            for($i = 0; $i<count($arrid); $i++){
+                                $totalnum += intval($quantarr[$i]);
+                            }
+                        }
+                  }
                     ?>
                     <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
                     <?php
-                    
                     
                     
 
@@ -98,11 +109,14 @@
             include("../connectionPHP/connect.php");
 
             $username = $_SESSION['username'];
-            $sql = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+            $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             $c_id = oci_fetch_array($arr)[0];
-            $sql = "SELECT ORDERS.PRODUCT_QUANTITY, PRODUCT.PRODUCT_NAME, PRODUCT.PRODUCT_PRICE, PRODUCT.PRODUCT_CATEGORY,PRODUCT.PRODUCT_IMAGE2, PRODUCT.PRODUCT_QUANTITY FROM ORDERS,PRODUCT WHERE ORDERS.PRODUCT_ID = PRODUCT.PRODUCT_ID AND ORDERS.C_ID = '$c_id'";
+            // echo $c_id;
+            // $sql = "SELECT CART_ID"
+            $sql = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM PRODUCT_ORDER,PRODUCT,CATEGORY, CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
+            // $sql = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM PRODUCT, CATEGORY INNER JOIN PRODUCT_ORDER, CART ON "
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             while($row = oci_fetch_array($arr)){

@@ -4,14 +4,14 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     include("../connectionPHP/connect.php");
     $username = $_GET['name'];
     // echo $username;
-    $sql = "SELECT C_ID FROM CUSTOMER WHERE C_USERNAME = '$username'";
+    $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     $c_id = oci_fetch_array($arr)[0];
     $pid = $_GET['pid'];
     $quant = $_GET['quant'];
     // echo $quant;
-    $slotArr = oci_parse($conn, "SELECT PRODUCT_QUANTITY FROM ORDERS");
+    $slotArr = oci_parse($conn, "SELECT QUANTITY FROM PRODUCT_ORDER WHERE ");
     oci_execute($slotArr);
     $slotQ = 0;
     while($rows = oci_fetch_array($slotArr)){

@@ -59,17 +59,21 @@ function displayReview(){
                 let image = response[i][1];
                 let review = response[i][2];
                 let reviewID = response[i][3];
+                let rate = response[i][4];
+                let rating = ``;
+                for(let i=0; i<rate; i++){
+                    rating += `<p><i class="fa-solid fa-star"></i></p>`;
+                }
+                for(let i=rate; i<=4; i++){
+                    rating += `<p><i class="fa-regular fa-star"></i></p>`;     
+                }
                 if(username == usernameLocal){
                     ratingsReview.innerHTML += ` <div class="personandrating">
                     <div class="person">
                       <img src="../images/${image}" alt="profileimage">
                       <p class="username">${usernameLocal}</p>
                       <div class="rate_product">
-                        <p><i class="fa-solid fa-star"></i></p>
-                        <p><i class="fa-solid fa-star"></i></p>
-                        <p><i class="fa-solid fa-star"></i></p>
-                        <p><i class="fa-solid fa-star"></i></p>
-                        <p><i class="fa-regular fa-star"></i></p>
+                        ${rating}
                       </div>
                     </div>
             
@@ -87,11 +91,7 @@ function displayReview(){
                         <img src="../images/${image}" alt="profileimage">
                         <p class="username">${usernameLocal}</p>
                         <div class="rate_product">
-                          <p><i class="fa-solid fa-star"></i></p>
-                          <p><i class="fa-solid fa-star"></i></p>
-                          <p><i class="fa-solid fa-star"></i></p>
-                          <p><i class="fa-solid fa-star"></i></p>
-                          <p><i class="fa-regular fa-star"></i></p>
+                          ${rating}
                         </div>
                       </div>
               
@@ -277,7 +277,7 @@ function rate_product(){
     let proId = document.querySelectorAll(".cust-review input")[0].value;
     let custname = document.querySelectorAll(".cust-review input")[1].value;
     let ratings = document.querySelectorAll(".onlyrating p i");
-    let rate = null;
+    let rate = 0;
     ratings.forEach((rating,i)=>{
         rating.addEventListener("click",()=>{
             // console.log(rating);
@@ -293,7 +293,7 @@ function rate_product(){
             let xml = new XMLHttpRequest();
             xml.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
-                    // console.log(this.responseText);
+                    console.log(this.responseText);
                 }
             }
             xml.open("POST", `rateProduct.php?proid=${proId}&custname=${custname}&star=${i+1}`, true);

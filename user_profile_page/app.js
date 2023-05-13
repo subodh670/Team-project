@@ -142,3 +142,51 @@ setTimeout(()=>{
 },6000);
 
 
+//delete review
+function deleteReview(){
+
+    let reviewdelete = document.querySelectorAll(".review-comment .deletereviewbtn");
+    let dashItem = document.querySelector(".dashitem2");
+    console.log(reviewdelete);
+    let reviewId = document.querySelectorAll(".review-comment .reviewid");
+    reviewdelete.forEach((item,i)=>{
+        item.addEventListener("click",()=>{
+            reviewId = reviewId[i]?.value;
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    window.location.reload();
+                    // window.location.replace = "index.php#review";
+                }
+            }
+            xml.open("POST", `deletereview.php?id=${reviewId}`, true);
+            xml.send();
+        })
+    })
+}
+deleteReview();
+
+function wishtocart(){
+
+    const wishToCartBtn = document.querySelectorAll(".wishtocartbtn");
+    let wishlistid = document.querySelectorAll(".wishlistidclass");
+    let wishlistname = document.querySelectorAll(".wishlistnameclass");
+    let cid = document.querySelector(".dashitem3 .cid");
+    console.log(wishToCartBtn);
+    wishToCartBtn.forEach((item,i)=>{
+        item.addEventListener("click",()=>{
+            wishlistid = wishlistid[i].value;
+            wishlistname = wishlistname[i].value;
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                  location.reload();
+                    // console.log(this.responseText);
+                }
+            }
+            xml.open("POST", `wishtocart.php?id=${wishlistid}&name=${wishlistname}&cid=${cid}`, true);
+            xml.send();
+        })
+    })
+}
+wishtocart();

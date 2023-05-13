@@ -328,11 +328,11 @@ include("../connectionPHP/inc_session.php");
             ?>
             
         </div>
-        <div class="dashitem2 dashitem" id="review">
+        <div class="dashitem2 dashitem" id="review" name="reviewdash">
             <?php 
             include("../connectionPHP/connect.php");
             $username = $_SESSION['username'];
-            $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_IMAGE2, CREVIEW, PRODUCT.PRODUCT_ID FROM REVIEW, PRODUCT, CUSTOMER WHERE REVIEW.PRODUCT_ID = PRODUCT.PRODUCT_ID AND REVIEW.C_ID = CUSTOMER.C_ID AND CUSTOMER.C_USERNAME = '$username'";
+            $sql = "SELECT NAME, PRICE, STOCK_AVAILABLE, IMAGE2, REVIEW.REVIEW_DESCRIPTION, PRODUCT.PRODUCT_ID, REVIEW.REVIEW_ID FROM REVIEW, PRODUCT, MART_USER WHERE REVIEW.FK_PRODUCT_ID = PRODUCT.PRODUCT_ID AND REVIEW.FK_USER_ID = MART_USER.USER_ID AND MART_USER.USERNAME = '$username'";
             $array = oci_parse($conn, $sql);
             oci_execute($array);
             
@@ -343,6 +343,7 @@ include("../connectionPHP/inc_session.php");
                 $pImage = $rows[3];
                 $cReview = $rows[4];
                 $pid = $rows[5];
+                $reviewId = $rows[6];
                 ?>
             <div class='profile-header'>
                 <h3>Product</h3>
@@ -351,7 +352,8 @@ include("../connectionPHP/inc_session.php");
             </div>
             <div class="review-comment">
                 <p><?php echo $cReview; ?></p>
-                <button class="deletebtn">Delete</button>
+                <input type="hidden" class="reviewid" value="<?php echo $reviewId; ?>">
+                <button class="deletebtn deletereviewbtn">Delete</button>
             </div>
 
 
@@ -369,7 +371,12 @@ include("../connectionPHP/inc_session.php");
                 
                     include("../connectionPHP/connect.php");
                     $username = $_SESSION['username'];
-                    $sql = "SELECT WISHLIST_ID, PRODUCT_NAME,PRODUCT_QUANTITY, PRODUCT_IMAGE2, PRODUCT_PRICE, PRODUCT.PRODUCT_ID, CUSTOMER.C_ID FROM WISHLIST, PRODUCT, CUSTOMER WHERE WISHLIST.PRODUCT_ID = PRODUCT.PRODUCT_ID AND WISHLIST.C_ID = CUSTOMER.C_ID AND CUSTOMER.C_USERNAME = '$username'";
+                    $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+                    $arr = oci_parse($conn, $sql);
+                    oci_execute($arr);
+                    $cid = oci_fetch_array($arr)[0];
+                    
+                    $sql = "SELECT WISHLIST_ID, NAME,STOCK_AVAILABLE, PRODUCT.IMAGE2, PRODUCT.PRICE FROM WISHLIST, PRODUCT, MART_USER WHERE WISHLIST.ITEMS = PRODUCT.NAME AND WISHLIST.FK_USER_ID = MART_USER.USER_ID AND MART_USER.USER_ID = '$cid'";
                     $arr = oci_parse($conn, $sql);
                     oci_execute($arr);
                     while($rows = oci_fetch_array($arr)){
@@ -378,7 +385,7 @@ include("../connectionPHP/inc_session.php");
                         $productQuantity = $rows[2];
                         $productImage= $rows[3];
                         $productPrice= $rows[4];
-
+                        // echo $wishlist_id;
                     ?>
                 <div class='wish'>
                     <img src="../productsImage/<?php echo $productImage; ?>" alt="">
@@ -387,15 +394,34 @@ include("../connectionPHP/inc_session.php");
                         <i class="fa-solid fa-trash-can"></i>
                     </div>
                     <h3><?php echo $productPrice;  ?></h3>
-                    <button class="wishtocartbtn">Add to cart</button>
-                </div>
-
                     <?php
+                    $sql1 = "SELECT CART_ID FROM CART WHERE ITEMS = '$productName' AND FK_USER_ID = '$cid'";
+                    $arr1 = oci_parse($conn, $sql1);
+                    oci_execute($arr1);
+                    $wishtocartexist = oci_fetch_array($arr1);
+                    if(isset($wishtocartexist[0])){
+                        ?>
+                    <button class="wishedtocart">Added to cart</button>
+                    </div>
+                        <?php
+
+                    }
+                    else{
+                        // echo "HELLo";
+                        ?>
+                        <input type="hidden" class="wishlistidclass" value="<?php echo $wishlist_id; ?>">
+                        <input type="hidden" class="wishlistnameclass" value="<?php echo $productName; ?>">
+
+                        <button class="wishtocartbtn">Add to cart</button>
+                        </div>
+                    
+                        <?php
+                    }
+                    
                     }
                 
                 
                 ?>
-                
             </div>
         </div>
         <div class="dashitem4 dashitem" id="order">

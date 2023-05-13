@@ -309,13 +309,43 @@
             <h1><?php echo $pName.", ".$pQuantity." counts";  ?></h1>
             <div class="ratings-sec">
                 <div class="ratings">
-                    <p><i class="fa-solid fa-star"></i></p>
-                    <p><i class="fa-solid fa-star"></i></p>
-                    <p><i class="fa-solid fa-star"></i></p>
-                    <p><i class="fa-solid fa-star"></i></p>
+                  <?php
+                  $pid = $_GET['id'];
+                  $sql = "SELECT RATE FROM REVIEW WHERE FK_PRODUCT_ID = $pid";
+                  $arr = oci_parse($conn, $sql);
+                  oci_execute($arr);
+                  $count = 0;
+                  $rate = 0;
+                  while($rows = oci_fetch_array($arr)){
+                    $rate += $rows[0];
+                    $count++;
+                  }
+                  if($count!=0){
+                    $avgrate = round($rate/$count);
+                  }
+                  else{
+                    $avgrate = 0;
+                  }
+                  for($i=0; $i<$avgrate; $i++){
+                  ?>
+                  <p><i class="fa-solid fa-star"></i></p>
+
+                  <?php
+                  }
+                  for($i=$avgrate; $i<=4; $i++){
+                    ?>
                     <p><i class="fa-regular fa-star"></i></p>
+                    <?php
+                  }
+
+                  ?>
+                    <!-- <p><i class="fa-solid fa-star"></i></p>
+                    <p><i class="fa-solid fa-star"></i></p>
+                    <p><i class="fa-solid fa-star"></i></p>
+                    <p><i class="fa-solid fa-star"></i></p>
+                    <p><i class="fa-regular fa-star"></i></p> -->
                 </div>
-                <p style="margin-right: 2em;">77 ratings</p>
+                <p style="margin-right:  2em;">77 ratings</p>
                 <?php
                 include("../connectionPHP/connect.php");
                 $proid = $_GET['id'];
@@ -531,6 +561,7 @@
           $arr = oci_parse($conn, $sql);
           oci_execute($arr);
           $row = oci_fetch_array($arr);
+          echo $row[0];
           if(isset($row[0])){
             $rating = $row[0];
             for($i=0; $i<$rating; $i++){

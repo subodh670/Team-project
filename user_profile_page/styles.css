@@ -444,6 +444,7 @@ ul li a:active{
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    /* flex-direction: column; */
 }
 .wishitem h3{
     color: var(--tertiary-color);

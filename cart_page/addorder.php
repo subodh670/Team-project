@@ -3,10 +3,10 @@
 if($_SERVER['REQUEST_METHOD']=="POST"){
     include("../connectionPHP/connect.php");
     $pid = $_GET['pid'];
-    $quantity = $_GET['quant'];
+    $quantity = intval($_GET['quant']);
     $slot = $_GET['slot'];
     $day = $_GET['day'];
-    $price = $_GET['price'];
+    $price = intval($_GET['price']);
     $pName = $_GET['pname'];
     $username = $_GET['username'];
     $query = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
@@ -36,6 +36,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         $slotQ += $rows[1];
     }
     $canAdd = $slotQ<=20 ? true:false;
+    echo $slotQ;
     if(isset($arr[0]) && $canAdd == true){
         $orderid = $arr[0];
         // echo $orderid;

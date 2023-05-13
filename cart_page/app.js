@@ -32,10 +32,15 @@ function preventTyping(){
     const countItem = document.querySelectorAll(".countitem input");
     countItem.forEach((item)=>{
         // console.log(item);
-        item.addEventListener("keypress",(e)=>{
-            e.preventDefault();
+        item.addEventListener("change",(e)=>{
+            if(isNaN(item.value)){
+                item.value = 0;  
+                // e.preventDefault();
+            }
         })
+        
     })
+    
 
 }
 
@@ -187,33 +192,41 @@ function cartCounter(){
     const increaseCount = document.querySelectorAll(".price--qty .countitem input");
 const increaseValue = document.querySelectorAll('.price--qty .countitem .increase');
 const decreaseValue = document.querySelectorAll('.price--qty .countitem .decrease');
-const priceIncrease = document.querySelectorAll(".price--qty .wish_price_del p");
+// const priceIncrease = document.querySelectorAll(".price--qty .wish_price_del p");
 let globalPrice = null;
     increaseValue.forEach((item,i)=>{
-    globalPrice = Number(priceIncrease[i].textContent.substring(5));
+    // globalPrice = Number(priceIncrease[i].textContent.substring(5));
         item.addEventListener("click",(e)=>{
-            increaseCount[i].value = Number(increaseCount[i].value)+1;
-            let price = Number(priceIncrease[i].textContent.substring(5));
-            price += globalPrice;
-            priceIncrease[i].innerHTML =  `Rs: £${price}`;
+            
+                increaseCount[i].value = Number(increaseCount[i].value)+1;
+            
+            // let price = Number(priceIncrease[i].textContent.substring(5));
+            // price += globalPrice;
+            // priceIncrease[i].innerHTML =  `Rs: £${price}`;
         })
     })
     decreaseValue.forEach((item,i)=>{
-    globalPrice = Number(priceIncrease[i].textContent.substring(5));
+    // globalPrice = Number(priceIncrease[i].textContent.substring(5));
         item.addEventListener("click",(e)=>{
             if(Number(increaseCount[i].value) <= 0){
-                increaseCount[i].value = 0;
+                
+
+                    increaseCount[i].value = 0;
+                
             }
             else{
-                increaseCount[i].value = `${Number(increaseCount[i].value)-1}`;
-                let price = Number(priceIncrease[i].textContent.substring(5));
-            price -= globalPrice;
-            priceIncrease[i].innerHTML =  `Rs: £${price}`;
+                
+
+                    increaseCount[i].value = `${Number(increaseCount[i].value)-1}`;
+                
+                // let price = Number(priceIncrease[i].textContent.substring(5));
+            // price -= globalPrice;
+            // priceIncrease[i].innerHTML =  `Rs: £${price}`;
             }
         })
     })
 }
-cartCounter();
+// cartCounter();
 
 
 // total cost
@@ -259,13 +272,14 @@ function totalCost(unique){
 function showingsavedProduct(){
 
     const oneItemSelect = document.querySelector("main");
-
+    
     let xml1 = new XMLHttpRequest();
     xml1.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 200){
-            console.log(this.responseText);
+            // console.log(this.responseText);
            let items = JSON.parse(this.responseText);
             // console.log(items);
+            let arr = [];
             items.forEach((item,i)=>{
                 let productName = item[0];
                 let productPrice = item[1];
@@ -276,6 +290,8 @@ function showingsavedProduct(){
                 let productImage2 = item[6];
                 let productId = item[7];
                 let productssaved = item[8];
+                arr.push(item[1]);
+                console.log(productPrice);
                 // let cookieQ = document.cookie;
                 let cookieid = document.querySelector('.idcookie')?.value;
                 let quantcookie = document.querySelector(".idquant")?.value;
@@ -315,7 +331,7 @@ function showingsavedProduct(){
                     </div>
                     <div class="price--qty">
                         <div class="wish_price_del">
-                            <p>Rs: £${productPrice}</p>
+                            <p>£${productPrice}</p>
                             <div>
                             <input class="getProid" type='hidden' value=${productId}>
                                 <i data-love='0' class="fa-regular fa-heart"></i>
@@ -325,15 +341,135 @@ function showingsavedProduct(){
                         </div>
                         <div class="countitem">
                             <button class="decrease">-</button>
-                          <input type="text" value="${productssaved??arr1[i]}">
+                          <input type="number" value="${productssaved??arr1[i]}">
                           <button class="increase">+</button>
                         </div>
                     </div>
                 </div>
             </section>
                 `;
+            
+
+
             })
-            preventTyping();
+            function itemPlus(arr){
+                let inputValue = document.querySelectorAll('.countitem input');
+                let price = document.querySelectorAll(".wish_price_del>p");
+                
+                // console.log(inputValue[i]);
+                // console.log(inputValue[i]);
+                let quant = inputValue;
+                let pricefinal = arr;
+                console.log(quant, pricefinal); 
+                // console.log(price);
+                // console.log(quant);
+                price.forEach((item,i)=>{
+                    price[i].textContent = `£${Number(quant[i].value)*pricefinal[i]}`;
+                })
+                let totalsummary = document.querySelector(".ordersummary .ordercost");
+                let totalprice = 0;
+                // console.log(Number(price[0].textContent.slice(1)));
+                for(let j=0; j<inputValue.length; j++){
+                    totalprice += Number(price[j].textContent.slice(1));
+                }
+                totalsummary.textContent = `£${totalprice}`;
+                
+                inputValue.forEach((item,i)=>{
+                    item.oninput = function(){
+                        // console.log(inputValue[i]);
+                        let quant = Number(inputValue[i].value);
+                        let price1 = Number(pricefinal[i]);
+                        // console.log(price);
+                        // console.log(quant);
+                        price[i].textContent = `£${quant*price1}`;
+                        let totalprice = 0;
+                        // console.log(Number(price[0].textContent.slice(1)));
+                        for(let j=0; j<inputValue.length; j++){
+                            totalprice += Number(price[j].textContent.slice(1));
+                        }
+                        let totalinput = 0;
+                        for(let j=0; j<inputValue.length; j++){
+                            totalinput += Number(inputValue[j].value);
+                        }
+                        console.log(totalinput);
+                        if(totalinput>=20){
+                            inputValue[i].value = 0;
+                            alert("Total cart should have not more than 20 items!!");
+                        }
+                        // console.log(totalprice);
+                        totalsummary.textContent = `£${totalprice}`;
+                    }
+                })
+                
+                let decreaseVal = document.querySelectorAll(".countitem .decrease");
+                let increaseVal = document.querySelectorAll(".countitem .increase");
+                increaseVal.forEach((item,i)=>{
+                    item.addEventListener("click",()=>{
+                        let quant = Number(inputValue[i].value);
+                        let price1 = Number(pricefinal[i]);
+                        // console.log(price);
+                        // console.log(quant);
+                        // console.log(quant);
+                        // console.log(price1);
+                        price[i].textContent = `£${(quant+1)*price1}`;
+                        let totalprice = 0;
+                        // console.log(Number(price[0].textContent.slice(1)));
+                        for(let j=0; j<inputValue.length; j++){
+                            totalprice += Number(price[j].textContent.slice(1));
+                        }
+                        let totalinput = 0;
+                        for(let j=0; j<inputValue.length; j++){
+                            totalinput += Number(inputValue[j].value);
+                        }
+                        console.log(totalinput);
+                        if(totalinput>=20){
+                            inputValue[i].value = 0;
+                            alert("Total cart should have not more than 20 items!!");
+                        }
+                        // console.log(totalprice);
+                        totalsummary.textContent = `£${totalprice}`;
+                    })
+                })
+                
+                decreaseVal.forEach((item,i)=>{
+                    item.addEventListener("click",()=>{
+                        let quant = Number(inputValue[i].value);
+                        let price1 = Number(pricefinal[i]);
+                        // console.log(price);
+                        // console.log(quant);
+                        // console.log(quant);
+                        // console.log(price1);
+                        let price2 = (quant-1)*price1;
+                        if(price2<0){
+                            price2 = 0;
+                        }
+                        price[i].textContent = `£${price2}`;
+                        let totalprice = 0;
+                        // console.log(Number(price[0].textContent.slice(1)));
+                        for(let j=0; j<inputValue.length; j++){
+                            totalprice += Number(price[j].textContent.slice(1));
+                        }
+                        // let totalinput = 0;
+                        // for(let j=0; j<inputValue.length; j++){
+                        //     totalinput += inputValue[j].value;
+                        // }
+                        // console.log(totalinput);
+                        // if(totalinput>20){
+                        //     inputValue[i].value = 0;
+                        //     alert("Total cart should have not more than 20 items!!");
+                        // }
+                        // console.log(totalprice);
+                        totalsummary.textContent = `£${totalprice}`;
+                    })
+                })
+                
+            }
+            itemPlus(arr);
+            
+            
+            // getTotal();
+            
+            // preventTyping();
             trashCart();
             // selectboxMain();
             addingToOrders();
@@ -354,7 +490,6 @@ function showingsavedProduct(){
                         xml.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status == 200){
                                 location.reload(); 
-                                // console.log(this.responseText);
                             }
                         }
                         xml.open("POST", `deleteCartItem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
@@ -433,7 +568,7 @@ function heartItem(){
 
 let checkout = document.querySelector(".checkout");
 checkout.addEventListener("click",()=>{
-    window.location.href = "../order_page/index.php";
+    window.location.href = "../order_page/index.php";                                                                                                                                                           
 })
 
 //total cost of order
@@ -447,7 +582,7 @@ function orderCost(){
             if(this.readyState == 4 && this.status == 200){
                 if(this.responseText != ""){
                     let response = JSON.parse(this.responseText);
-                    // console.log(this.responseText);
+                    console.log(this.responseText);                                 
                     
                     let sum = 0;
                     for(let i=0; i<response.length; i++){
@@ -510,23 +645,27 @@ function updateCartAndTotal(){
     const username = document.querySelector(".usernameFind")?.value;
     let decrease = document.querySelectorAll(".countitem .decrease");
     let increase = document.querySelectorAll(".countitem .increase");
+    let inputValue = document.querySelectorAll('.countitem input');
+
     if(username != null){
         checkBox.forEach((item,i)=>{
             // console.log(checkBox);
             let xml = new XMLHttpRequest();
             xml.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
-                    console.log(this.responseText);
+                    // console.log(this.responseText);
                     let arr = JSON.parse(this.responseText);
                     if(arr[0]==true){
+                    
                         // console.log("hee");
                         increase[i].addEventListener("click",()=>{
-                            let inputValue = document.querySelectorAll('.countitem input');
+                            // console.log("hello");
                             let xmlhttp = new XMLHttpRequest();
                             xmlhttp.onreadystatechange = function(){
                                 if(this.readyState == 4 && this.status == 200){
-                                    console.log(JSON.parse(this.responseText));
-                                    if(JSON.parse(this.responseText)[0]==false){
+                                    // console.log(this.responseText);
+                                    // console.log(JSON.parse(this.responseText));
+                                    if(JSON.parse(this?.responseText)[0]==false){
     
                                         inputValue[i].disabled = true;
                                     }
@@ -539,10 +678,31 @@ function updateCartAndTotal(){
                             xmlhttp.send();
                         })
                         decrease[i].addEventListener("click",()=>{
-                            let inputValue = document.querySelectorAll('.countitem input');
+                            // console.log("hello");
+                            let xmlhttp = new XMLHttpRequest();
+                            xmlhttp.onreadystatechange = function(){
+                                if(this.readyState == 4 && this.status == 200){
+                                    // console.log(this.responseText);
+                                    // console.log(JSON.parse(this.responseText));
+                                    if(JSON.parse(this?.responseText)[0]==false){
+    
+                                        inputValue[i].disabled = true;
+                                    }
+                                    else{
+                                        inputValue[i].disabled = false;
+                                    }
+                                }
+                            }
+                            xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
+                            xmlhttp.send();
+                        })
+                        
+                        inputValue[i].addEventListener("input",()=>{
                             let xmlhttp = new XMLHttpRequest();
                             xmlhttp.onreadystatechange = function(){
                                 if(this.readyState ==4 && this.status == 200){
+                                    // console.log(this.responseText);
+
                                     // console.log(JSON.parse(this.responseText));
                                     if(JSON.parse(this.responseText)[0]==false){
     
@@ -568,3 +728,7 @@ function updateCartAndTotal(){
     
 }
 updateCartAndTotal();
+
+// function getTotal(){
+    
+// }

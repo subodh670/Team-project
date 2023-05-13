@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $gender = $_GET['gender'];
     $address = $_GET['address'];
     // finding if email is changed
-    $sql1 = "SELECT C_EMAILADDRESS, C_USERNAME, C_MOBILE FROM CUSTOMER WHERE C_ID>$cid OR C_ID < $cid";
+    $sql1 = "SELECT EMAIL, USERNAME, MOBILE_NO FROM MART_USER WHERE USER_ID>$cid OR USER_ID < $cid";
     $array = oci_parse($conn, $sql1);
     oci_execute($array);
     $uniqueEmail = true;
@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         }
     }
     
-    $sql2 = "SELECT C_EMAILADDRESS FROM CUSTOMER WHERE C_ID = $cid";
+    $sql2 = "SELECT EMAIL FROM MART_USER WHERE USER_ID = $cid";
     $valueArr = oci_parse($conn, $sql2);
     oci_execute($valueArr);
     $changedEmail = true ? oci_fetch_array($valueArr)[0] != $email : false;
@@ -43,13 +43,13 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         $_SESSION['firstname'] = $firstname;
         $_SESSION['lastname'] = $lastname;
         
-        $sql = "UPDATE CUSTOMER SET C_USERNAME = '$name' , C_FIRSTNAME = '$firstname', C_LASTNAME = '$lastname', C_MOBILE = $mobile, C_EMAILADDRESS = '$email', C_GENDER = '$gender', C_ADDRESS = '$address' WHERE C_ID = $cid";
+        $sql = "UPDATE MART_USER SET USERNAME = '$name' , FIRST_NAME = '$firstname', LAST_NAME = '$lastname', MOBILE_NO = $mobile, EMAIL = '$email', GENDER = '$gender', ADDRESS = '$address' WHERE USER_ID = $cid";
         $arr = oci_parse($conn, $sql);
         oci_execute($arr);
         if($changedEmail == true){
             $_SESSION['email'] = $email;
             $otpvalue = rand(100000,999999);
-            $sql = "UPDATE CUSTOMER SET C_OTP = '$otpvalue', C_REGISTEREDEMAIL = 'no'";
+            $sql = "UPDATE MART_USER SET OTP = '$otpvalue', REGISTERED_EMAIL = 'no'";
             $array = oci_parse($conn, $sql);
             oci_execute($array);
             oci_close($conn);

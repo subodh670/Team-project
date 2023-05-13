@@ -22,7 +22,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         oci_execute($arr3);
     }
     else{
-        $sql2 = "INSERT INTO REVIEW(RATE,FK_PRODUCT_ID,FK_USER_ID) VALUES('$ratings', $proid, $c_id)";
+        echo $ratings."<br>";
+        echo $proid."<br>";
+        echo $c_id."<br>";
+        $sql2 = "INSERT INTO REVIEW(REVIEW_DESCRIPTION, RATE,FK_PRODUCT_ID,FK_USER_ID,STATUS ) VALUES('Thanks for your service.(This is the default review for rating)','$ratings', $proid, $c_id,1)";
         $arr2 = oci_parse($conn, $sql2);
         oci_execute($arr2);
 

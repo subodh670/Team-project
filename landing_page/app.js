@@ -13,18 +13,18 @@ const faTimes = document.querySelector(".fa-times");
 bars.addEventListener("click",(e)=>{
     cat.classList.toggle("show-cat");
 });
-search.addEventListener("click",()=>{
-    searchBar.classList.toggle("show-searchbar");
-    login.classList.toggle("show-login");
-    cart.classList.toggle("show-cart");
-    search.classList.toggle("show-search");
-})
-faTimes.addEventListener("click",()=>{
-    searchBar.classList.toggle("show-searchbar");
-    login.classList.toggle("show-login");
-    cart.classList.toggle("show-cart");
-    search.classList.toggle("show-search");
-})
+// search.addEventListener("click",()=>{
+//     searchBar.classList.toggle("show-searchbar");
+//     login.classList.toggle("show-login");
+//     cart.classList.toggle("show-cart");
+//     search.classList.toggle("show-search");
+// })
+// faTimes.addEventListener("click",()=>{
+//     searchBar.classList.toggle("show-searchbar");
+//     login.classList.toggle("show-login");
+//     cart.classList.toggle("show-cart");
+//     search.classList.toggle("show-search");
+// })
 
 
 
@@ -131,7 +131,7 @@ setTimeout(()=>{
 // ajax for landing page items
 const seeMore = document.querySelector(".loader h1");
 
-function gettingProduct(type, items){
+function gettingProduct(type, items, item1=null){
     let itemsContainer = document.querySelector(".items-container");
     const xmlhttp = new XMLHttpRequest();
     const loaderItem = document.querySelector(".loader span");
@@ -140,7 +140,17 @@ function gettingProduct(type, items){
     let content = itemsContainer.innerHTML;
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            const item = JSON.parse(this.responseText);
+            let item = JSON.parse(this.responseText);
+            if(item1 == null){
+                item = JSON.parse(this.responseText);
+            }
+            else if(item1===null){
+                item = JSON.parse(this.responseText);
+            }
+            else{
+                item = item1;
+            }
+            // console.log(item);
             let pId = item['PRODUCT_ID'];
             // console.log(pId);
             let pName = item['NAME'];
@@ -157,6 +167,7 @@ function gettingProduct(type, items){
             let prevPrice = [];    
             itemsContainer.innerHTML = ""
                 for(let i=0; i<pId.length; i++){
+                    console.log(i);
                     prevPrice.push(parseInt(Number(pPrice[i]) + (Number(pDiscount[i])*Number(pPrice[i]))/100));
                     if(type === null){
                         itemsContainer.innerHTML = content;
@@ -186,6 +197,7 @@ function gettingProduct(type, items){
                     
                     }
                 }
+            // filtershops();
             const prices = document.querySelectorAll(".price");
             prices.forEach((price,i)=>{
                 price.addEventListener("mouseover",(e)=>{
@@ -205,7 +217,7 @@ function gettingProduct(type, items){
     xmlhttp.open("POST", "product.php", true);
     xmlhttp.send();
 }
-gettingProduct(null, 9);
+gettingProduct('load', 9);
 
 // price cut discount and viewing items in columnn and rows
 
@@ -245,3 +257,125 @@ seeMore.addEventListener("click",()=>{
     gettingProduct("load", noItems);
 })
 
+
+
+//filter shops
+
+function filtershops(){
+    const shopRadio = document.querySelectorAll('.radio-select input');
+    const radioSubmit = document.querySelector(".radio-select button");
+    let dateform = document.querySelector(".radio-select .datefrom").value;
+    let dateto = document.querySelector(".radio-select .dateto").value;
+    // console.log(dateform);
+    let value = 'all';
+    shopRadio.forEach((item)=>{
+        item.addEventListener("change",()=>{
+            if(item.checked){
+                value = item.value;
+                let dateform = document.querySelector(".radio-select .datefrom").value;
+
+                // console.log(dateform);
+                // console.log(value);
+                // console.log(dateform,dateto);
+            }
+        })
+    })
+    radioSubmit.onclick = function(){
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                let item = JSON.parse(this.responseText);
+                console.log(this.responseText);
+                gettingProduct("load", 9, item);
+
+            }
+        }
+        xml.open("POST", `filtershop.php?value=${value}&datefrom=${dateform}&dateto=${dateto}`, true);
+        xml.send();
+        
+    }
+    
+}
+filtershops();
+
+
+function moreFilter(){
+    // let minRange = document.querySelector(".pricerange .minrange").value;
+    // let maxRange = document.querySelector(".pricerange .maxrange").value;
+    let sort = document.querySelector(".sort #sortby");
+    let apply = document.querySelector(".sort button");
+    let sortValue = 1;
+    sort.addEventListener("change",()=>{
+        sortValue = sort.options[sort.selectedIndex].value;
+        // console.log(sortvalue);
+    })
+    apply.addEventListener("click",()=>{
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log(this.responseText);
+                let items = JSON.parse(this.responseText);
+                gettingProduct("load", 9, items);
+            }
+        }
+        xml.open("POST", `morefilter.php?sort=${sortValue}`, true);
+        xml.send();
+    })
+    
+
+}
+moreFilter();
+
+function priceRangeChange(){
+    let minRange = document.querySelector(".pricerange .minrange");
+    let maxRange = document.querySelector(".pricerange .maxrange");
+    let applyrangebtn = document.querySelector(".pricerange .applyrange");
+    let minrangevalue = Number(minRange?.value);
+    let maxrangevalue = Number(maxRange?.value);
+    if(!isNaN(minrangevalue) && !isNaN(maxrangevalue)){
+        applyrangebtn.addEventListener("click",()=>{
+           let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log(this.responseText);
+                let items = JSON.parse(this.responseText);
+                // console.log(items[0]);
+                gettingProduct("load", 9, items);
+                
+            }
+        }
+        xml.open("POST", `rangefilter.php?min=${minRange?.value}&max=${maxRange?.value}`, true);
+        xml.send();
+       })
+                
+            
+            
+
+    }   
+    
+
+}
+priceRangeChange();
+
+function searchanything(){
+   
+    let searchBtn = document.querySelector('.item-search button');
+    searchBtn.addEventListener("click",()=>{
+        let search = document.querySelector('.item-search input').value;
+        // console.log(search);
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                let items = JSON.parse(this.responseText);
+                // console.log(this.responseText);
+                gettingProduct("load", 9, items);
+            }
+        }
+        xml.open("POST", `searchanything.php?search=${search}`, true);
+        xml.send();
+    })
+
+
+}
+
+searchanything();

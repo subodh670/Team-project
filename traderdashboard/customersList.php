@@ -3,7 +3,7 @@
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     include("../connectionPHP/connect.php");
     $trader = $_GET['trader'];
-    $sql = "SELECT PRODUCT_NAME, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = $trader";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRODUCT_ID FROM PRODUCT,SHOP,MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  MART_USER.USER_ID = $trader";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     $result = array();

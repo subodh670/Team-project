@@ -23,16 +23,16 @@
             <?php 
             // $username = $_SESSION['username'];
             include("../connectionPHP/connect.php");
-            $sql = "SELECT * FROM TRADER WHERE TRADER_USERNAME = 'arnold34'";
+            $sql = "SELECT * FROM MART_USER WHERE USERNAME = 'bakery' AND ROLE = 'trader'";
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             while($rows = oci_fetch_array($arr)){
                 $username = $rows[3];
                 $firstname = $rows[1];
                 $lastname = $rows[2];
-                $mobile = $rows[4];
-                $email = $rows[5];
-                $gender = $rows[6];
+                $mobile = $rows[6];
+                $email = $rows[4];
+                $gender = $rows[8];
                 $address = $rows[7];
                 $tid = $rows[0];
 
@@ -423,16 +423,20 @@
      <h1>Disable Product</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED FROM PRODUCT WHERE TRADER_ID = 3003";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
+      $productDiscountID = $rows[5];
+      $sql = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $productDiscount = oci_fetch_array($arr)[0];
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
       $productDesc = $rows[3];
       $productCategory = $rows[4];  
-      $productDiscount = $rows[5];
       $productAllergy = $rows[6];
       $productImage = $rows[7];
       $productStatus = $rows[8];
@@ -470,16 +474,20 @@
    <h1>Enable Product</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED FROM PRODUCT WHERE TRADER_ID = 3003";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
+      $productDiscountID = $rows[5];
+      $sql = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $productDiscount = oci_fetch_array($arr)[0];
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
       $productDesc = $rows[3];
       $productCategory = $rows[4];  
-      $productDiscount = $rows[5];
       $productAllergy = $rows[6];
       $productImage = $rows[7];
       $productStatus = $rows[8];
@@ -567,16 +575,22 @@
    <h3 style="color: var(--secondary-color); margin-top: 2em;">Edit Product</h3>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED, PRODUCT.PRODUCT_ID FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
+    
+    // $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
+      $productDiscountID = $rows[5];
+      $sql = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $productDiscount = oci_fetch_array($arr)[0];
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
       $productDesc = $rows[3];
       $productCategory = $rows[4];  
-      $productDiscount = $rows[5];
       $productAllergy = $rows[6];
       $productImage = $rows[7];
       $productStatus = $rows[8];
@@ -619,16 +633,22 @@
 <h3 style="color: var(--secondary-color); margin-top: 2em;">Delete Product</h3>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
+    // $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 1029";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED, PRODUCT.PRODUCT_ID FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
+
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
+      $productDiscountID = $rows[5];
+      $sql = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $productDiscount = oci_fetch_array($arr)[0];
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
       $productDesc = $rows[3];
       $productCategory = $rows[4];  
-      $productDiscount = $rows[5];
       $productAllergy = $rows[6];
       $productImage = $rows[7];
       $productStatus = $rows[8];
@@ -702,13 +722,21 @@
     <div class="totaloffersgiven">
         <?php
         include("../connectionPHP/connect.php");
-      $sql = "SELECT PRODUCT_NAME, OFFER_PER, OFFER_VALID FROM PRODUCT, OFFER WHERE PRODUCT.PRODUCT_ID = OFFER.PRODUCT_ID";
+      // $sql = "SELECT PRODUCT_NAME, OFFER_PER, OFFER_VALID FROM PRODUCT, OFFER WHERE PRODUCT.PRODUCT_ID = OFFER.PRODUCT_ID";
+      $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT WHERE PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID";
       $arr = oci_parse($conn, $sql);
       oci_execute($arr);
       while($rows = oci_fetch_array($arr)){
         $pname = $rows[0];
-        $offerper = $rows[1];
-        $offerexpire = $rows[2];
+        $offerId = $rows[1];
+        $sql = "SELECT OFFER_PERCENTAGE, OFFER_VALID_DATE FROM OFFER WHERE OFFER_ID = '$offerId'";
+        $arr = oci_parse($conn, $sql);
+        oci_execute($arr);
+        $offerper = oci_fetch_array($arr)[0];
+        $offerexpire = oci_fetch_array($arr)[1];
+
+        // $offerper = $rows[1];
+        // $offerexpire = $rows[2];
 
         ?>
 <div class="productsq">
@@ -725,8 +753,12 @@
     <h3>Add or update offers</h3>
     <div class="addoffers">
         <div>
-          <label for="addinput">
+        <label for="offername">
             New offer(in %  )
+          </label>
+          <input type="text" id="offername" class="offername" placeholder="offername">
+          <label for="addinput">
+            Offer Percentage(in %  )
           </label>
           <input type="number" id="addinput" class="offeradd" placeholder="eg: 8%">
           <label for="expiredate">
@@ -754,13 +786,17 @@
   <h1>Update offers</h1>
   <?php
         include("../connectionPHP/connect.php");
-      $sql = "SELECT PRODUCT_NAME, OFFER_PER, OFFER_VALID FROM PRODUCT, OFFER WHERE PRODUCT.PRODUCT_ID = OFFER.PRODUCT_ID";
-      $arr = oci_parse($conn, $sql);
-      oci_execute($arr);
-      while($rows = oci_fetch_array($arr)){
-        $pname = $rows[0];
-        $offerper = $rows[1];
-        $offerexpire = $rows[2];
+        $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT WHERE PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID";
+        $arr = oci_parse($conn, $sql);
+        oci_execute($arr);
+        while($rows = oci_fetch_array($arr)){
+          $pname = $rows[0];
+          $offerId = $rows[1];
+          $sql = "SELECT OFFER_PERCENTAGE, OFFER_VALID_DATE FROM OFFER WHERE OFFER_ID = '$offerId'";
+          $arr = oci_parse($conn, $sql);
+          oci_execute($arr);
+          $offerper = oci_fetch_array($arr)[0];
+          $offerexpire = oci_fetch_array($arr)[1];
 
         ?>
 <div class="productsq">
@@ -774,14 +810,18 @@
         ?>
 <div class="addoffers">
         <div>
-          <label for="addinput">
+          <label for="offername">
             New offer(in %  )
           </label>
-          <input type="number" id="addinput" class="offeradd" placeholder="eg: 8%">
+          <input type="text" id="offername" class="offername1" placeholder="offername">
+          <label for="addinput">
+            Offer Percentage(in %  )
+          </label>
+          <input type="number" id="addinput" class="offeradd1" placeholder="eg: 8%">
           <label for="expiredate">
             Expiry date
           </label>
-          <input type="date" id="expiredate" class="offerdate" placeholder="eg: 02/02/2024">
+          <input type="date" id="expiredate" class="offerdate1" placeholder="eg: 02/02/2024">
         </div>
         <div class="selectproduct">
           <div class="pro1">
@@ -809,15 +849,17 @@
 <h3>Delete offer</h3>
 <?php
         include("../connectionPHP/connect.php");
-      $sql = "SELECT PRODUCT_NAME, OFFER_PER, OFFER_VALID, OFFER_ID FROM PRODUCT, OFFER WHERE PRODUCT.PRODUCT_ID = OFFER.PRODUCT_ID";
-      $arr = oci_parse($conn, $sql);
-      oci_execute($arr);
-      while($rows = oci_fetch_array($arr)){
-
-        $pname = $rows[0];
-        $offerper = $rows[1];
-        $offerexpire = $rows[2];
-        $offerid = $rows[3];
+        $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT WHERE PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID";
+        $arr = oci_parse($conn, $sql);
+        oci_execute($arr);
+        while($rows = oci_fetch_array($arr)){
+          $pname = $rows[0];
+          $offerId = $rows[1];
+          $sql = "SELECT OFFER_PERCENTAGE, OFFER_VALID_DATE FROM OFFER WHERE OFFER_ID = '$offerId'";
+          $arr = oci_parse($conn, $sql);
+          oci_execute($arr);
+          $offerper = oci_fetch_array($arr)[0];
+          $offerexpire = oci_fetch_array($arr)[1];
         if(!isset($rows[0])){
           echo "<h4>No data found!!</h4>";
         }
@@ -828,6 +870,9 @@
     $offerId = $_POST['deleteofferinput'];
     // echo $offerId;
     $sql1 = "DELETE FROM OFFER WHERE OFFER_ID = $offerId";
+    $arr1 = oci_parse($conn, $sql1);
+    oci_execute($arr1);
+    $sql1 = "DELETE FROM OFFER_PRODUCT WHERE OFFER_ID = $offerId";
     $arr1 = oci_parse($conn, $sql1);
     oci_execute($arr1);
     $_SESSION['offerdelete'] = true;
@@ -887,16 +932,16 @@
             // echo $_SESSION['username'];
 
             include("../connectionPHP/connect.php");
-            $sql = "SELECT * FROM TRADER WHERE TRADER_ID = 3003";
+            $sql = "SELECT * FROM MART_USER WHERE USER_ID = 1029 AND ROLE= 'trader'";
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             while($rows = oci_fetch_array($arr)){
                 $username = $rows[3];
                 $firstname = $rows[1];
                 $lastname = $rows[2];
-                $mobile = $rows[4];
-                $email = $rows[5];
-                $gender = $rows[6];
+                $mobile = $rows[6];
+                $email = $rows[4];
+                $gender = $rows[8];
                 $address = $rows[7];
                 ?>
             <div class='profile-header'>

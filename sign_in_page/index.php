@@ -71,34 +71,46 @@ session_start();
                     $quantity_cookie = $_COOKIE['quantity'];
                     $arrid = explode(" ", $id_cookie);
                     $quantarr = explode(" ", $quantity_cookie);
-                    // var_dump($quantarr);
+                    // var_dump($arrid);
                     $arr = array();
                     for($i = 0; $i<count($arrid); $i++){
                         $id = $arrid[$i];
+                        // echo $id;
+                        // echo $userid;
                         // $sql = "SELECT TOTAL_ITEMS FROM CART WHERE PRODUCT_ID = $id AND C_ID = $cid";
                         $sql = "SELECT TOTAL_ITEMS, CART_ID FROM CART WHERE FK_USER_ID = '$userid' AND CART_ID = (SELECT CART_ID FROM PRODUCT_CART WHERE PRODUCT_ID='$id')";
                         $result = oci_parse($conn, $sql);
                         oci_execute($result);
                         $outcome = oci_fetch_array($result);
-                        $cart_id = $outcome[1];
+                        $sql = "SELECT NAME FROM PRODUCT WHERE PRODUCT_ID = '$id'";
+                        $result = oci_parse($conn, $sql);
+                        oci_execute($result);
+                        $pname = oci_fetch_array($result)[0];
                         // $sum = 0;
                         if(isset($outcome[0])){
+                            $cart_id = $outcome[1];
                             $quantarr1 = intval($quantarr[$i]) + $outcome[0];
                             // $sql1 = "UPDATE CART SET P_QUANTITY = '$quantarr1' WHERE C_ID = $userid AND PRODUCT_ID = '$id'";
                             // $interSql = "SELECT CART_ID FROM CART "
-                            $sql1 = "UPDATE CART SET P_QUANTITY = '$quantarr1' WHERE CART_ID ='$cart_id'";
+                            $sql1 = "UPDATE CART SET TOTAL_ITEMS = '$quantarr1' WHERE CART_ID ='$cart_id'";
                             $res = oci_parse($conn, $sql1);
                             oci_execute($res);
-                            echo "hi";
+                            // echo "hi";
                         }
                         else{
                             $quantarr1 = intval($quantarr[$i]);
                             // $sql1 = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES($id, $cid, '$quantarr1')";
-                            $sql1 = "INSERT INTO CART(TOTAL_ITEMS, FK_USER_ID) VALUES('$quantarr1', '$userid')";
-                            $sql2 = "INSERT INTO PRODUCT_ID VALUES('$id') WHERE CART_ID = '$cart_id'";
+                            $sql1 = "INSERT INTO CART(TOTAL_ITEMS, FK_USER_ID, ITEMS) VALUES('$quantarr1', '$userid', '$pname')";
                             $res = oci_parse($conn, $sql1);
                             oci_execute($res);
-                            echo "hello";
+                            $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$userid' AND ITEMS = '$pname'";
+                            $result = oci_parse($conn, $sql);
+                            oci_execute($result);
+                            $cart_id = oci_fetch_array($result)[0];
+                            $sql2 = "INSERT INTO PRODUCT_CART(PRODUCT_ID , CART_ID) VALUES('$id', '$cart_id')";
+                            $res = oci_parse($conn, $sql2);
+                            oci_execute($res);
+                            // echo "hello";
                         }
                     }
                 }
@@ -123,8 +135,8 @@ session_start();
                                     $_SESSION['lastname'] = $row[4];
                                     $_SESSION['guest'] = true;
                                     $_SESSION['role'] =  $row[7];
-                                    $cid = $row[7];
-                                    insertCookie($userid);
+                                    $cid = $row[8];
+                                    insertCookie($cid);
                                     header("location: ../landing_page/index.php");
                                 }
                                 else{

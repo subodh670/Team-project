@@ -83,8 +83,20 @@ ul li a:active{
     color: var(--white);
     font-size: 1.5rem;
 }
-.search-bar{
-    position: absolute;
+.cart a span{
+    font-size: 1.1rem;
+    position: relative;
+    top: 0.4em;
+    color: var(--white);
+}
+.cart-quantity{
+    font-size: 1.1rem;
+    position: relative;
+    top: 0.4em;
+    color: var(--white);
+}
+/* .search-bar{
+    position: relative;
     margin-top: -0%;
     transition: 0.4s;
     display: flex;
@@ -107,7 +119,7 @@ ul li a:active{
 .cart span{
     font-size: 1.1rem;
     position: relative;
-    /* top: 0.4em; */
+    top: 0.4em;
     color: var(--white);
 }
 .show-search{
@@ -129,6 +141,29 @@ ul li a:active{
     font-size: 1.5rem;
     border-width: 0px;
 
+} */
+
+.main-item-sale{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 15%;
+    /* background-color: red; */
+}
+.item-search input{
+    padding: 0.3em;
+}
+.item-search button{
+    padding: 0.4em 1em;
+    background-color: yellow;
+    border-width: 0px;
+    transition: 0.4s;
+}
+.item-search button:hover{
+    color: white;
+    background-color: var(--secondary-color);
 }
 
 /* media queries for navbar */
@@ -753,11 +788,15 @@ ul li a:active{
     color: var(--white);
     cursor: pointer;
 }
-.pricerange .apply{
+.sort .apply{
     padding: 0.4em 1em;
     background-color: var(--tertiary-color);
     color: white;
     border-radius: 8px;
+    /* border-width: 0px */
+}
+.sort .apply:hover{
+    background-color: var(--secondary-color);
 }
 .pricerange input{
     padding: 0.3em;

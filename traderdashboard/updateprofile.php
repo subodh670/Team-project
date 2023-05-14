@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $gender = $_GET['gender'];
     $address = $_GET['address'];
     // finding if email is changed
-    $sql1 = "SELECT TRADER_EMAIL, TRADER_USERNAME, TRADER_MOBILE FROM TRADER WHERE TRADER_ID>$cid OR TRADER_ID < $tid";
+    $sql1 = "SELECT EMAIL, USERNAME, MOBILE_NO FROM MART_USER WHERE USER_ID = $tid";
     $array = oci_parse($conn, $sql1);
     oci_execute($array);
     $uniqueEmail = true;
@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         }
     }
     
-    $sql2 = "SELECT TRADER_EMAIL FROM TRADER WHERE TRADER_ID = $tid";
+    $sql2 = "SELECT EMAIL FROM MART_USER WHERE USER_ID = $tid";
     $valueArr = oci_parse($conn, $sql2);
     oci_execute($valueArr);
     $changedEmail = true ? oci_fetch_array($valueArr)[0] != $email : false;
@@ -43,13 +43,13 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         $_SESSION['firstname'] = $firstname;        
         $_SESSION['lastname'] = $lastname;
         
-        $sql = "UPDATE TRADER SET TRADER_USERNAME = '$name' , TRADER_FIRSTNAME = '$firstname', TRADER_LASTNAME = '$lastname', TRADER_MOBILE = $mobile, TRADER_EMAIL = '$email', TRADER_GENDER = '$gender', TRADER_ADDRESS = '$address' WHERE TRADER_ID = $tid";
+        $sql = "UPDATE MART_USER SET USERNAME = '$name' , FIRST_NAME = '$firstname', LAST_NAME = '$lastname', MOBILE_NO = $mobile, EMAIL = '$email', GENDER = '$gender', ADDRESS = '$address' WHERE USER_ID = $tid";
         $arr = oci_parse($conn, $sql);
         oci_execute($arr);
         if($changedEmail == true){
             $_SESSION['email'] = $email;
             $otpvalue = rand(100000,999999);
-            $sql = "UPDATE TRADER SET C_OTP = '$otpvalue', TRADER_REGISTEREDEMAIL = 'no'";
+            $sql = "UPDATE MART_USER SET OTP = '$otpvalue', REGISTERED_EMAIL = 'no'";
             $array = oci_parse($conn, $sql);
             oci_execute($array);
             oci_close($conn);

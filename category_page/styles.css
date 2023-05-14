@@ -86,7 +86,7 @@ ul li a:active{
     color: var(--white);
     font-size: 1.5rem;
 }
-.search-bar{
+/* .search-bar{
     position: absolute;
     margin-top: -0%;
     transition: 0.4s;
@@ -126,6 +126,28 @@ ul li a:active{
     font-size: 1.5rem;
     border-width: 0px;
 
+} */
+.main-item-sale{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 15%;
+    /* background-color: red; */
+}
+.item-search input{
+    padding: 0.3em;
+}
+.item-search button{
+    padding: 0.4em 1em;
+    background-color: yellow;
+    border-width: 0px;
+    transition: 0.4s;
+}
+.item-search button:hover{
+    color: white;
+    background-color: var(--secondary-color);
 }
 
 /* media queries for navbar */

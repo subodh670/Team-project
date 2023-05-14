@@ -110,11 +110,11 @@ function spawningProductDetails(id){
             let response = JSON.parse(this.responseText);
             console.log(response);
             response.forEach((item,i)=>{
-                    productname[i].value = item['PRODUCT_NAME'];
-                    productprice[i].value = "£"+item['PRODUCT_PRICE'];
-                    productQuant[i].value = item['PRODUCT_QUANTITY'];
-                    productdesc[i].value = item['PRODUCT_DESCRIPTION'];
-                    productAllergy[i].value = item['PRODUCT_ALLERGY_INFORMATION'];
+                    productname[i].value = item['NAME'];
+                    productprice[i].value = "£"+item['PRICE'];
+                    productQuant[i].value = item['STOCK_AVAILABLE'];
+                    productdesc[i].value = item['DESCRIPTION'];
+                    productAllergy[i].value = item['ALLERGY_INFORMATION'];
             })
         }
     }
@@ -136,18 +136,18 @@ function disableShop(){
             let result = JSON.parse(this.responseText);
             // console.log(result);
             result.forEach((item)=>{
-                if(item['SHOP_STATUS'] == 'enabled'){
+                if(item['SHOP_STATUS'] == 1){
                     disableShop.innerHTML += `<div class="shopDetail">
                     <p>${item['SHOP_NAME']}</p>
-                    <p>${item["SHOP_CATEGORY"]}</p>
+                    <p>${item["ADDRESS"]}</p>
                     <input type="hidden" class="activeInput" value=${item['SHOP_ID']}>
                     <button>Disable</button>
                   </div>`;
                 }
-                if(item['SHOP_STATUS'] == 'disabled'){
+                if(item['SHOP_STATUS'] == 0){
                     enableshop.innerHTML += `<div class="shopDetail">
                     <p>${item['SHOP_NAME']}</p>
-                    <p>${item['SHOP_CATEGORY']}</p>
+                    <p>${item['ADDRESS']}</p>
                     <input type="hidden" class="inactiveInput" value=${item['SHOP_ID']}>
                     <button>Enable</button>
                   </div>`;
@@ -177,7 +177,7 @@ function triggerenablebtn(){
                     disableShop();
                 }
             }
-            xml.open("POST", `triggershopstatus.php?status=enable&id=${inputId[i].value}`, true);
+            xml.open("POST", `triggershopstatus.php?status=1&id=${inputId[i].value}`, true);
             xml.send();
         })
     })
@@ -190,7 +190,7 @@ function triggerenablebtn(){
                     disableShop();
                 }
             }
-            xml.open("POST", `triggershopstatus.php?status=disable&id=${inputId2[i].value}`, true);
+            xml.open("POST", `triggershopstatus.php?status=0&id=${inputId2[i].value}`, true);
             xml.send();
         })
     })
@@ -213,21 +213,21 @@ function addofferoption(){
     // console.log(poffer.innerHTML);
     xml.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 200){
-            // console.log(this.responseText);
+            console.log(this.responseText);
             let response = JSON.parse(this.responseText);
             response.forEach((resp)=>{
                 poffer.innerHTML += ` 
-                <option value="${resp['PRODUCT_ID']}">${resp['PRODUCT_NAME']}</option>
+                <option value="${resp['PRODUCT_ID']}">${resp['NAME']}</option>
                 `;
                 poffer1.innerHTML += ` 
-                <option value="${resp['PRODUCT_ID']}">${resp['PRODUCT_NAME']}</option>
+                <option value="${resp['PRODUCT_ID']}">${resp['NAME']}</option>
                 `;
                 // document.querySelector('.hidcid').value = response['PRODUCT_ID'];
             })
-            
+                                        
         }
     }
-    xml.open("POST", `customersList.php?trader=${3003}`, true);
+    xml.open("POST", `customersList.php?trader=${1029}`, true);
     xml.send();
 
 }
@@ -236,21 +236,31 @@ addofferoption();
 
 function offerAdd(){
     let offerInput = document.querySelector('.offeradd');
+    let offername = document.querySelector('.offername');
+
     let offerDate = document.querySelector('.offerdate');
     // let 
     let poffer = document.querySelector(".pofferclass");
+    let pofferoption = document.querySelectorAll('#poffer option')[0];
     let offerBtn = document.querySelector('.offerbtn button');
+    // let offerProid =  pofferoption.value;
+    console.log(pofferoption);
+    poffer.onchange = function(){
+        offerProid = poffer.options[poffer.selectedIndex].value;
+    }
     offerBtn.addEventListener("click",()=>{
         let offer = offerInput.value;
+        console.log(offer);
+        offername = offername.value;
         let Date = offerDate.value
-        let offerProid = poffer.options[poffer.selectedIndex].value;
         let xml = new XMLHttpRequest();
         xml.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
-               location.reload();
+                console.log(this.responseText);
+            //    location.reload();
             }
         }
-        xml.open("POST", `addoffer.php?offer=${offer}&date=${Date}&offerPro=${offerProid}&traderid=${3003}`, true);
+        xml.open("POST", `addoffer.php?offername=${offername}&offer=${offer}&date=${Date}&offerPro=${offerProid}&traderid=${3003}`, true);
         xml.send();
 
         
@@ -293,7 +303,6 @@ function editCustPro(){
     const userlastname = document.querySelector(".editlastname input");
     const editmobile = document.querySelector('.editmobile input');
     const editgender = document.querySelector('.editgender select');
-    const gendervalue = editgender.options[editgender.selectedIndex].value;
     const editaddress = document.querySelector('.editaddress input');
     const updateBtn = document.querySelector(".updatebtn2 button");
     const tid = document.querySelector(".chidden");
@@ -301,6 +310,10 @@ function editCustPro(){
     const erroremail = document.querySelector(".erroremail");
     const errormobile = document.querySelector(".errormobile");
     // console.log(updateBtn);
+    let gendervalue = 'male';
+    editgender.onchange=function(){
+        gendervalue = editgender.options[editgender.selectedIndex].value;    
+    }
     updateBtn.addEventListener("click",()=>{
         console.log(updateBtn);
         let xmlHttp = new XMLHttpRequest();

@@ -87,18 +87,14 @@
                         }
                     }
                     ?>
-                    <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
+                    <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span class='cart-quantity'><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
                     <?php
                 ?>        
              </div>
              <div class="search">
-                <i class="fa fa-search"></i>
+                <a href="#search-me"><i class="fa fa-search"></i></a>
              </div>
-                <form method="POST" action="" class="search-bar show-searchbar">
-                    <input type="text" name="search" class="search-item">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                    <button class="search-result"><i class="fa fa-search"></i></button>
-                 </form>
+                
             
         </div>
     </header>
@@ -220,16 +216,16 @@
             </div>
             <hr>
             <h1>Shops</h1>
-            <form class="radio-select" method="POST" action="">
+            <form class="radio-select">
                 <?php
         $sql = "SELECT * FROM SHOP";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
         while($row = oci_fetch_array($array)){
             $S_ID = $row[0];
-            $S_Cat = $row[1];
-            $S_Name = $row[2];
-            $Trader_ID = $row[3];
+            // $S_Cat = $row[1];
+            $S_Name = $row[1];
+            // $Trader_ID = $row[3];
             ?>
                 <div>
                     <input type="radio" id="label1" value="<?php echo $S_Name; ?>" name="brand">
@@ -241,12 +237,12 @@
         }
                 ?>
                 
-            <h1>Date</h1>
+            <h1>Expiry date</h1>
                 <p>From</p>
                 <input type="date" class="datefrom">
                 <p>To</p>
                 <input type="date" class="dateto">
-                <button name='radiosubmit'>Submit</button>
+                <button type="button" name='radiosubmit'>Submit</button>
             </form>
         </div>
         <div class="addfilter">
@@ -255,9 +251,11 @@
                     <div class="pricefilter">
                         <div class="pricerange">
                             <label for="pricerange">Price Range</label>
-                            <input type="text" placeholder="min">
-                            <input type="text" placeholder="max">
-                            <button class="apply">Apply</button>
+                            <input type="number" placeholder="min" class="minrange">
+                            <input type="number" placeholder="max" class="maxrange">
+                            <button class="applyrange">Apply</button>
+
+                            
                         </div>
                         <div class="view-range">
                             <label for="" class="view">View</label>
@@ -269,16 +267,24 @@
                         <label for="sortby">SortBy</label>
                         <select name="sortby" id="sortby">
                             <option value="1" selected>Popularity</option>
-                            <option value="1">Price: low to high</option>
-                            <option value="1">Price: high to low</option>
-                            <option value="1">Newest first</option>
+                            <option value="2">Price: low to high</option>
+                            <option value="3">Price: high to low</option>
+                            <option value="4">Newest first</option>
                         </select>
+                        <button class="apply">Apply</button>
                     </div>
             </div>
 
 
         <div class="items">
-            <h1>Flash Sale </h1>
+            <div class="main-item-sale" id='search-me'>
+                <h1>Flash Sale </h1>
+                <div class="item-search" >
+                    <input type="text" name="search" class="search-item" placeholder="search anything">
+                    <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+                    <button class="search-result"><i class="fa fa-search"></i></button>
+                 </div>
+            </div>
             <div class="items-container">
                 <?php
         $sql = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME FROM PRODUCT,CATEGORY WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND ROWNUM <= 9";

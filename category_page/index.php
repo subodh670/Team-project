@@ -53,7 +53,7 @@
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT P_QUANTITY FROM CART,CUSTOMER WHERE CART.C_ID= CUSTOMER.C_ID AND C_USERNAME = '$username'";
+                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
@@ -76,22 +76,13 @@
                         }
                     }
                     ?>
-                    <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
+                    <a href="../cart_page/index.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a><span class='cart-quantity'><?php if(isset($totalnum)) echo $totalnum; else echo "0"; ?></span>
                     <?php
-                    
-                    
-                    
-
-                ?>
+                ?>      
              </div>
              <div class="search">
-                <i class="fa fa-search"></i>
+                <a href="#search-me"><i class="fa fa-search"></i></a>
              </div>
-                <form method="POST" action="" class="search-bar show-searchbar">
-                    <input type="text" name="search" class="search-item">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                    <button class="search-result"><i class="fa fa-search"></i></button>
-                 </form>
             
         </div>
     </header>
@@ -110,15 +101,18 @@
             <h1>Categories</h1>
             <form class="radio-select" method="POST" action="">
             <?php
+            $cat = $_GET['cat'];
+            ?>
+            <input type="hidden" class="catnamehidden" value="<?php echo $cat; ?>">
+            <?php
             include("../connectionPHP/connect.php");
         $sql = "SELECT * FROM SHOP";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
         while($row = oci_fetch_array($array)){
             $S_ID = $row[0];
-            $S_Cat = $row[1];
-            $S_Name = $row[2];
-            $Trader_ID = $row[3];
+            // $S_Cat = $row[1];
+            $S_Name = $row[1];
             ?>
                 <div>
                     <input type="radio" id="label1" value="<?php echo $S_Name; ?>" name="brand">
@@ -145,7 +139,7 @@
                             <label for="pricerange">Price Range</label>
                             <input type="text" placeholder="min">
                             <input type="text" placeholder="max">
-                            <button class="apply">Apply</button>
+                            <button class="applyrange">Apply</button>
                         </div>
                         <div class="view-range">
                             <label for="" class="view">View</label>
@@ -161,46 +155,48 @@
                             <option value="1">Price: high to low</option>
                             <option value="1">Newest first</option>
                         </select>
+                        <button class="apply">Apply</button>
+
                     </div>
             </div>
 
 
         <div class="items">
-            <h1>Flash Sale</h1>
+            <div class='main-item-sale' id="search-me">
+                <h1>Flash Sale</h1>
+                <div class="item-search" >
+                    <input type="text" name="search" class="search-item" placeholder="search anything">
+                    <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+                    <button class="search-result"><i class="fa fa-search"></i></button>
+                 </div>
+
+            </div>
             <div class="items-container">
                    <?php 
                    include("../connectionPHP/connect.php");     
                    $cat = $_GET['cat'];
-        $sql = "SELECT * FROM PRODUCT WHERE PRODUCT_CATEGORY = '$cat'";
+        $sql = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME FROM PRODUCT,CATEGORY WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND CATEGORY.CATEGORY_NAME = '$cat' AND ROWNUM <= 9";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
         while($row = oci_fetch_array($array)){
             $pId = $row[0];
             $pName = $row[1];
-            $pPrice = $row[2];
-            $pQuantity = $row[3];
-            $pDesc = $row[4];
-            $pCategory = $row[5];
+            $pPrice = $row[3];
+            $pQuantity = $row[4];
+            $pDesc = $row[2];
+            $pCategory = $row[9];
             $pDiscount = $row[6];
-            $pAllergy = $row[7];
-            $pImage1 = $row[8];
-            $pImage2 = $row[9];
-            $pImage3 = $row[10];
+            $pAllergy = $row[5];
+            $pImage1 = $row[6];
+            $pImage2 = $row[7];
+            $pImage3 = $row[8];
             ?>
-            <div class="item">
-                    <img src="<?php echo "../productsImage/".$pImage2; ?>" alt="productImage">
-                    <div>
-                        <h1><?php echo $pName; ?></h1>
-                        <p><?php echo $pDesc; ?></p>
-                        <div class="btn_rate">
-                            <div class="btn"><a href="<?php echo "../item_page/index.php?id=$pId"; ?>">View More</a></div>
-                            <p class="price"><?php echo "£".$pPrice; ?></p>
-                        </div>
-                    </div>
-                </div>
+            
             <?php
             
         }
+        ?>
+        <?php
 
 ?>
 
@@ -320,7 +316,8 @@
 -->
             </div>
             <div class="loader">
-                <h1>See More</h1>
+                <h1 style="border: 1px solid black; padding: 0.3em 0.8em; background-color: var(--tertiary-color); color: white; cursor: pointer;">See More</h1>
+                <span style="font-size: 1.5rem;">0 Items remaining</span>
             </div>
         </div>
     </div>

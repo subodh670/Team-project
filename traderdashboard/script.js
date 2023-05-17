@@ -34,6 +34,11 @@ function submenuClick(keyel){
     const navItem = document.querySelectorAll(`.${keyel} .nav-item a`);
     // console.log(pages);
     pages[0].style.display = 'block';
+    pages.forEach((item,i)=>{
+        if(i>0){
+            pages[i].style.display = 'none';
+        }
+    })
     navItem[0].style.fontWeight = "bolder";
     navItem.forEach((item, i)=>{
         item.addEventListener("click",()=>{
@@ -43,6 +48,7 @@ function submenuClick(keyel){
 
             for(let j=0; j<pages.length; j++){
                 if(j!=i){
+                    // console.log(pages[j]);
                     navItem[j].style.fontWeight = "normal";
                     pages[j].style.display = 'none';
                 }
@@ -203,32 +209,40 @@ function addofferoption(){
     let selectProd = document.querySelector('.selectproduct');
     let poffer = document.querySelectorAll(".selectproduct #poffer")[0];
     let poffer1 = document.querySelectorAll(".selectproduct #poffer1")[0];
-
+    console.log(poffer);
+    console.log(poffer1);
     let labeloffer = document.querySelectorAll(".selectproduct label")[0];
     let pro1 = document.querySelectorAll(".selectproduct .pro1")[0];
     let xml = new XMLHttpRequest();
-    poffer.innerHTML = "";
-    poffer1.innerHTML = "";
+    if(poffer != null || poffer1 != null){
+        poffer.innerHTML = "";
+        if(poffer1!=null)
+            poffer1.innerHTML = "";
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log(this.responseText);
+                let response = JSON.parse(this.responseText);
+                response.forEach((resp)=>{
+                    poffer.innerHTML += ` 
+                    <option value="${resp['PRODUCT_ID']}">${resp['NAME']}</option>
+                    `;
+                    if(poffer1!=null)
+                        poffer1.innerHTML += ` 
+                        <option value="${resp['PRODUCT_ID']}">${resp['NAME']}</option>
+                        `;
+                    // document.querySelector('.hidcid').value = response['PRODUCT_ID'];
+                })
+                offerAdd();
+    
+                                            
+            }
+        }
+        xml.open("POST", `customersList.php?trader=${1029}`, true);
+        xml.send();
+    }
 
     // console.log(poffer.innerHTML);
-    xml.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-            console.log(this.responseText);
-            let response = JSON.parse(this.responseText);
-            response.forEach((resp)=>{
-                poffer.innerHTML += ` 
-                <option value="${resp['PRODUCT_ID']}">${resp['NAME']}</option>
-                `;
-                poffer1.innerHTML += ` 
-                <option value="${resp['PRODUCT_ID']}">${resp['NAME']}</option>
-                `;
-                // document.querySelector('.hidcid').value = response['PRODUCT_ID'];
-            })
-                                        
-        }
-    }
-    xml.open("POST", `customersList.php?trader=${1029}`, true);
-    xml.send();
+   
 
 }
 addofferoption();
@@ -241,26 +255,26 @@ function offerAdd(){
     let offerDate = document.querySelector('.offerdate');
     // let 
     let poffer = document.querySelector(".pofferclass");
-    let pofferoption = document.querySelectorAll('#poffer option')[0];
+    let pofferoption = document.querySelectorAll('.addoffers .selectproduct #poffer option')[0];
     let offerBtn = document.querySelector('.offerbtn button');
     // let offerProid =  pofferoption.value;
-    console.log(pofferoption);
+    let offerProid = pofferoption.value;
     poffer.onchange = function(){
         offerProid = poffer.options[poffer.selectedIndex].value;
     }
     offerBtn.addEventListener("click",()=>{
         let offer = offerInput.value;
-        console.log(offer);
+        // console.log(offer);
         offername = offername.value;
         let Date = offerDate.value
         let xml = new XMLHttpRequest();
         xml.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
                 console.log(this.responseText);
-            //    location.reload();
+               location.reload();
             }
         }
-        xml.open("POST", `addoffer.php?offername=${offername}&offer=${offer}&date=${Date}&offerPro=${offerProid}&traderid=${3003}`, true);
+        xml.open("POST", `addoffer.php?offername=${offername}&offer=${offer}&date=${Date}&offerPro=${offerProid}&traderid=${1029}`, true);
         xml.send();
 
         
@@ -268,7 +282,6 @@ function offerAdd(){
 
 }
 
-offerAdd();
 
 
 
@@ -345,3 +358,34 @@ function editCustPro(){
     )
 }
 editCustPro();
+
+
+function modaladdoffers(){
+    const offerBtn = document.querySelectorAll('.Updateoffer');
+    let addoffers = document.querySelectorAll('.addoffers1');
+    const backdrop = document.querySelector(".backdrop");
+    offerBtn.forEach((item,i)=>{
+        item.addEventListener('click',()=>{
+            addoffers[i].classList.remove('updateoffer');
+            backdrop.classList.remove('hidebackdrop');
+        })
+        backdrop.addEventListener("click",()=>{
+            addoffers[i].classList.add('updateoffer');
+            backdrop.classList.add('hidebackdrop');
+        })
+    })
+    const addoffer = document.querySelector(".addoffer");
+    const addoffersmodal = document.querySelector(".addoffers");
+    addoffer.addEventListener("click",()=>{
+        addoffersmodal.classList.remove('hideaddoffer');
+        backdrop.classList.remove('hidebackdrop');
+        // addofferoption();
+    })
+    backdrop.addEventListener("click",()=>{
+        addoffersmodal.classList.add('hideaddoffer');
+        backdrop.classList.add('hidebackdrop');
+    })
+
+}
+
+modaladdoffers();

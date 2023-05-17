@@ -1,0 +1,888 @@
+@import url(../colors_font/color_font.css);
+*{
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+html{
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+.menu-dash{
+    width: 100%;
+    height: 100vh;
+} 
+.menu-dash .row .col-2{
+    height: 200vh;
+    /* position: fixed; */
+    background-color: #ac3e31;
+    color: white;
+}
+.menu-column{
+    height: 100vh;
+}
+.list-group-flush1{
+    margin-top: 4em;
+    border-width: 0px;
+
+}
+.list-group-flush1 li{
+    margin-bottom: 4em;
+    background-color: transparent;
+    color: white;
+    border-width: 0px;
+    cursor: pointer;
+
+}
+
+.list-group-flush1 li:hover{
+    border-right: 5px solid black;
+    color: black;
+}
+.shops-manage .nav-item a{
+    color: white;   
+} 
+.shops-manage a{
+    color: white;   
+}
+.showdesc{
+    display: none;
+}
+.showdesc .nav-item a{
+    color: white;
+}
+.container-fluid .navbar-brand{
+    color: white;
+}
+.col-2 ul li:nth-child(1){
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+/* basic css ended */
+.menu-dash .col-2 img{
+    width: 55%;
+    margin-top: 1.2em;
+    /* margin-bottom: 0em; */
+}
+.showdesc section > div{
+    display: none;
+}
+
+@media(max-width: 600px){
+    .col-2{
+        width: 30px !important;
+    }
+}
+
+
+
+/* add products */
+
+.addproduct{
+    width: 100%;
+    background-color: var(--selected);
+    padding: 1em;
+}
+.addproduct h1{
+    margin-top: 1em;
+    font-size: 1.5rem;
+    margin-bottom: 1em;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+@keyframes formanimate {
+    from{
+        transform: translateX(70%);
+    }
+    to{
+        transform: translateX(0%);
+    }
+}
+.addproduct form{
+    animation-name: formanimate;
+    animation-duration: 0.6s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+    gap: 1.5em;
+    width: 80%;
+    background-color: white;
+    margin: 0 auto;
+    padding: 1em;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+.addproduct form>div{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}
+.addproduct input{
+    outline: none !important;
+    border-width: 0px;
+    border-bottom: 1px solid black;
+}
+.productname label, .productprice label{
+    margin-bottom: 1em;
+}
+.addproduct form .collection1, .addproduct form .collection2, .collection3{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex-direction: row !important;
+    background-color: whitesmoke;
+    padding: 1em;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+.addproduct form .collection3{
+    flex-direction: column !important;
+    gap: 1em;
+}
+.productquantity , .proDescription, .productallergy, .shop{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1em;
+}
+.collection3 .image1 label,.collection3 .image3 label, .collection3 .image2 label{
+    margin-bottom: 1em;
+    margin-right: 1em;
+}
+.btnaddpro{
+    width: 50%;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+.btnaddpro button{
+    padding: 0.5em 0.8em;
+    border-width: 0px;
+    background-color: var(--tertiary-color);
+    color: white;
+    margin: 0 auto;
+}
+.btnaddpro button:hover{
+    background-color: var(--secondary-color);
+}
+.addproduct label{
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+/* add product finished */
+/* flash error message add products */
+@keyframes addproductflash {
+    from{
+        top: -30px;
+    }
+    to{
+        top: 30px;
+    }
+}
+#onelink p{
+    position: relative;
+    background-color: var(--primary-color);
+    padding: 0.6em;
+    color: white;
+    margin: 0 auto;
+    width: 50%;
+    margin-bottom: 0.5em;
+    animation-duration: 0.6s;
+    animation-name: addproductflash;
+}
+
+
+/* to disable */
+/* products list */
+.productenabled{
+    animation-name: formanimate;
+    animation-duration: 0.6s;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--selected);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    padding: 2em;
+    gap: 2em;
+}
+.disableproduct{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    margin: 0 auto;
+}
+.disableproduct h1{
+    font-size: 1.3rem;
+    margin-top: 2em;
+}
+.enableproduct{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    margin: 0 auto;
+}
+.enableproduct h1{
+    font-size: 1.3rem;
+    margin-top: 2em;
+}
+.editproduct{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    margin: 0 auto;
+}
+.editproduct h3{
+    color: var(--secondary-color);
+}
+.img--info .info p{
+    margin-bottom: 1em;
+}
+.img--info{
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.img--info img{
+    width: 40%;
+    object-fit: cover;
+    object-position: center;
+}
+.qty--price{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 20%;
+}
+.qty--price button{
+    border-width: 0px;
+    background-color: var(--tertiary-color);
+    padding: 0.3em 1em;
+    transition: 0.6s;
+    color: white;
+}
+.qty--price button:hover{
+    background-color: var(--secondary-color);
+}
+ /* products disable, edit showing section finished */
+
+ /* editing modal for editing product */
+
+ .threelink2{
+    position: relative;
+ }
+ @keyframes animatepanel {
+    from{
+        transform: translate(-100%, -45%);
+    }
+    to{
+        transform: translateX(-40%, -45%);
+    }
+ }
+ .editingpanelpro{
+    width: 70%;
+    position: fixed;
+    background-color: var(--secondary-color);
+    /* margin: 0 auto; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-40%,-45%);
+    left: 50%;
+    top: 50%;
+    height: 90vh;
+    z-index: 5;
+    border-radius: 8px;
+    animation-duration: 0.6s;
+    animation-name: animatepanel;
+ }
+ .hidemodal{
+    display: none;
+ }
+ .editingpanelpro h1{
+    font-size: 1.3rem;
+    color: white;
+    width: 100%;
+    margin: 0 auto;
+ }
+ .editingpanelpro form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1.5em;
+ }
+ .editingpanelpro .collect0, .editingpanelpro .collect1, .editingpanelpro .collect2, .editingpanelpro .collect3{
+    width: 70%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+ }
+ .collect0 .productname, .collect0 .productprice{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+ }
+ .collect0 input, .collect1 input, .collect2 input, .collect3 input{
+    outline: none;
+    border-width: 0px;
+    border-bottom: 1px solid white;
+    background-color: var(--secondary-color);
+    color: white;
+ }
+.btnaddpro .editproduct{
+    width: 40%;
+    margin: 0 auto;
+}
+.editingpanelpro .cross{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.editingpanelpro .cross i{
+    font-size: 2rem;
+    color: white;
+}
+.backdrop{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+}
+.hidebackdrop{
+    display: none;
+}
+/* delete product */
+.deleteproduct h1{
+    font-size: 1.3rem;
+    margin-bottom: 2em;
+}
+#fourlink2 .deleteproduct{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+}
+/* add shops */
+
+.addshop{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 3em;
+    gap: 2em;
+}
+.addshop h3{
+    color: var(--secondary-color);
+    font-weight: bolder;
+}
+.addshop p{
+    color: var(--tertiary-color);
+}
+.addshop form{
+    width: 60%;
+    background-color: var(--selected);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+    padding: 2em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+.addshop .shop-name, .addshop .shop-category{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 1em;
+    flex-direction: column;
+}
+.addshop input{
+    outline: none;
+    border-width: 0px;
+    border-bottom: 1px solid black;
+    background-color: var(--selected);
+}
+.addshopbtn button{
+    padding: 0.5em 0.8em;
+    border-width: 0px;
+    background-color: var(--tertiary-color);
+    color: white;
+    transition: 0.6s;
+}
+.addshopbtn button:hover{
+    background-color: var(--secondary-color);
+}
+
+/* shop dashboard */
+
+#twolink1, #threelink1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    width: 100%;
+}
+#twolink1 h3, #threelink1 h3{
+    font-size: 1.2rem;
+    margin-top: 4em;
+    margin-bottom: 4em;
+    color: var(--secondary-color);
+}
+
+#twolink1 .disableshop, #twolink1 .enableshop, #threelink1 .deleteshop{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 5em;
+}
+
+.shopDetail{
+    width: 20%;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    background-color: var(--selected);
+}
+.shopDetail button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: white;
+}
+.shopDetail button:hover{
+    background-color: var(--secondary-color);
+}
+
+
+/* adding offers */
+
+
+#onelink3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* position: relative; */
+}
+#onelink3 h3{
+    font-weight: bolder;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    font-size: 1.3rem;
+    color:var(--secondary-color);
+}
+@keyframes animatepanel2 {
+    from{
+        transform: translate(-100%, -50%);
+    }
+    to{
+        transform: translateX(-45%, -50%);
+    }
+}
+.addoffers{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    width: 60%;
+    /* margin: 0 auto; */
+    gap: 6em;
+    position: absolute;
+    transform: translate(-40%,-50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    padding: 3em;
+    color: white;
+    z-index: 5;
+    animation-name: animatepanel2;
+    animation-duration: 0.8s;
+}
+.hideaddoffer{
+    display: none;
+}
+.addoffers>div{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 1em;
+    flex-direction: column;
+    margin: 0 auto;
+}
+.addoffers1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    width: 60%;
+    /* margin: 0 auto; */
+    gap: 6em;
+    position: absolute;
+    transform: translate(-40%,-50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    padding: 3em;
+    color: white;
+    z-index: 5;
+    animation-name: animatepanel2;
+    animation-duration: 0.8s;
+}
+.updateoffer{
+    display: none;
+}
+.addoffers1>div{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 1em;
+    flex-direction: column;
+    margin: 0 auto;
+}
+.addsign i, .deletesign i{
+    font-size: 2rem;
+}
+.selectproduct{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.selectproduct .pro1{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+}
+.totaloffersgiven{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+}
+.addoffer{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: white; 
+}
+.addoffer:hover{
+    background-color: var(--secondary-color);
+}
+.offerbtn button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: white;
+}
+.offerbtn button:hover{
+    background-color: var(--secondary-color);
+
+}
+#twolink3{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+    /* position: relative; */
+}
+.productsq{
+    margin: auto;
+    width: 80%;
+    background-color:var(--selected);
+    padding: 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* flex-direction: row; */
+    gap: 1em;
+    font-size: 0.8rem;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.productsq p{
+    font-size: 1rem;
+}
+.productsq button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: white;
+}
+.productsq button:hover{
+    background-color: var(--secondary-color);
+
+}
+
+/* user profile edit */
+@keyframes animateprofile {
+    from{
+        left: 70%;
+
+    }
+    to{
+        left: 0%;
+    }
+    
+}
+.profile-section{
+    position: relative;
+    animation-name: animateprofile;
+    animation-duration: 0.6s;
+    margin-top: 3em;
+    width: 90%;
+    padding: 2em;
+    margin: 0 auto;
+    background-color: var(--selected);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+.profile-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1em;
+}
+.profile-header button{
+    background-color: var(--tertiary-color);
+    padding: 0.5em 0.8em;
+    border-width: 0px;
+    color: white;
+
+}
+.profile-header button:hover{
+    background-color: var(--secondary-color);
+}
+
+.showuserdetail{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+}
+.userdetail{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.showuserdetail .password{
+    align-items: start;
+}
+.showuserdetail .password div{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    flex-direction: column;
+}
+.password button{
+    background-color: var(--tertiary-color);
+    padding: 0.5em 0.8em;
+    border-width: 0px;
+    color: white;
+}
+.password button:hover{
+    background-color: var(--primary-color);
+}
+
+
+/* modal edit profile */
+.backdrop{
+    backdrop-filter: blur(10px);
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    z-index: 3;
+}
+.hidebackdrop{
+    display: none;
+}
+@keyframes animateprofileedit {
+    from{
+        left: 0%;
+    }
+    to{
+        left: 50%;
+    }
+}
+.editprofile{
+    width: 100%;
+    animation-duration: 0.6s;
+    animation-name: animateprofileedit;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    z-index: 5;
+}
+.hideEditprofile{
+    display: none;
+}
+.editprofile form{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+}
+.editprofile form>h3{
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+.editprofile form >div i{
+    color: var(--white);
+    margin-right: 1.2em;
+    font-size: 1.5rem;
+}
+
+.editprofile form >div input{
+    width: 250px;
+    padding: 0.5em;
+    border-width: 0px;
+    border-bottom: 2px solid white;
+    background-color: var(--secondary-color);
+    outline: none;
+    color: white;
+}
+.editprofile form > div button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: var(--white);
+}
+form .xmark{
+    width: 120%;
+    text-align: right;
+    position: relative;
+    top: 1em;
+}
+form .xmark i{
+    font-size: 4rem;
+    cursor: pointer;
+}
+form .xmark i:hover{
+    color: black;
+}
+.erroremail, .errormobile, .errorusername{
+    font-size: 0.8em;
+    margin-left: 5em;
+    color: red;
+    margin-top: 1em;
+}
+/* modal password */
+
+.updatepass{
+     width: 100%;
+    animation-duration: 0.6s;
+    animation-name: animateprofileedit;
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    z-index: 5;
+}
+.hidepass{
+    display: none;
+}
+.updatepass form{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    gap: 1.5em;
+    padding: 1em;
+}
+.updatepass form>h3{
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+.updatepass form >div i{
+    color: var(--white);
+    margin-right: 1.2em;
+    font-size: 1.5rem;
+}
+
+.updatepass form >div input{
+    width: 250px;
+    padding: 0.5em;
+    border-width: 0px;
+    border-bottom: 2px solid white;
+    background-color: var(--secondary-color);
+    outline: none;
+    color: white;
+}
+.updatepass form > div button{
+    background-color: var(--tertiary-color);
+    border-width: 0px;
+    padding: 0.5em 1em;
+    color: var(--white);
+}
+form .xmark1{
+    width: 120%;
+    text-align: right;
+    position: relative;
+    top: 1em;
+}
+form .xmark i{
+    font-size: 4rem;
+    cursor: pointer;
+}

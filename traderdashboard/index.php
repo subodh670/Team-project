@@ -723,40 +723,42 @@
         <?php
         include("../connectionPHP/connect.php");
       // $sql = "SELECT PRODUCT_NAME, OFFER_PER, OFFER_VALID FROM PRODUCT, OFFER WHERE PRODUCT.PRODUCT_ID = OFFER.PRODUCT_ID";
-      $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT WHERE PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID";
+      $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT,SHOP, MART_USER WHERE SHOP.SHOP_ID = PRODUCT.FK_SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID AND MART_USER.USER_ID = '1029'";
       $arr = oci_parse($conn, $sql);
       oci_execute($arr);
       while($rows = oci_fetch_array($arr)){
         $pname = $rows[0];
         $offerId = $rows[1];
-        $sql = "SELECT OFFER_PERCENTAGE, OFFER_VALID_DATE FROM OFFER WHERE OFFER_ID = '$offerId'";
-        $arr = oci_parse($conn, $sql);
-        oci_execute($arr);
-        $offerper = oci_fetch_array($arr)[0];
-        $offerexpire = oci_fetch_array($arr)[1];
-
+        $sql1 = "SELECT OFFER_PERCENTAGE, OFFER_VALID_DATE, OFFER_NAME FROM OFFER WHERE OFFER_ID = '$offerId'";
+        $arr1 = oci_parse($conn, $sql1);
+        oci_execute($arr1);
+        $offer = oci_fetch_array($arr1);
+        $offerper = $offer[0];
+        $offerexpire = $offer[1];
+        $offername = $offer[2];
         // $offerper = $rows[1];
         // $offerexpire = $rows[2];
 
         ?>
 <div class="productsq">
-          <h4><?php echo $pname ?></h4>
-          <h4><?php echo $offerper; ?></h4>
-          <h4><?php echo $offerexpire; ?> </h4>
+          <?php echo "<p>offer name: ".$offername."</p>" ?>
+          <?php echo "<p>offer percentage: ".$offerper."%</p>"; ?>
+          <?php echo "<p>offer expires in: ".$offerexpire."</p>"; ?> 
         </div>
-
 <?php
       }
         ?>
         
     </div>
-    <h3>Add or update offers</h3>
-    <div class="addoffers">
+    <button style="margin-top: 5em;" class="addoffer">Add new offer</button>
+
+    <div class="addoffers hideaddoffer">
+      
         <div>
         <label for="offername">
-            New offer(in %  )
+            New offer Name
           </label>
-          <input type="text" id="offername" class="offername" placeholder="offername">
+          <input type="text" id="offername" class="offername" placeholder="christmas offer">
           <label for="addinput">
             Offer Percentage(in %  )
           </label>
@@ -786,42 +788,41 @@
   <h1>Update offers</h1>
   <?php
         include("../connectionPHP/connect.php");
-        $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT WHERE PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID";
+        $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT,SHOP, MART_USER WHERE SHOP.SHOP_ID = PRODUCT.FK_SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID AND MART_USER.USER_ID = '1029'";
         $arr = oci_parse($conn, $sql);
         oci_execute($arr);
         while($rows = oci_fetch_array($arr)){
           $pname = $rows[0];
           $offerId = $rows[1];
-          $sql = "SELECT OFFER_PERCENTAGE, OFFER_VALID_DATE FROM OFFER WHERE OFFER_ID = '$offerId'";
-          $arr = oci_parse($conn, $sql);
-          oci_execute($arr);
-          $offerper = oci_fetch_array($arr)[0];
-          $offerexpire = oci_fetch_array($arr)[1];
+          $sql1 = "SELECT OFFER_NAME, OFFER_PERCENTAGE, OFFER_VALID_DATE FROM OFFER WHERE OFFER_ID = '$offerId'";
+          $arr1 = oci_parse($conn, $sql1);
+          oci_execute($arr1);
+          $offer = oci_fetch_array($arr1);
+          $offername = $offer[0];
+          $offerper = $offer[1];
+          $offerexpire = $offer[2];
 
         ?>
 <div class="productsq">
-          <h4><?php echo $pname ?></h4>
-          <h4><?php echo $offerper; ?></h4>
-          <h4><?php echo $offerexpire; ?> </h4>
+          <?php echo "<p>offer name: ".$offername."</p>" ?>
+          <?php echo "<p>offer percentage: ".$offerper."%</p>"; ?>
+          <?php echo "<p>offer expires in: ".$offerexpire."</p>"; ?> 
+          <button class="Updateoffer">Update</button>
         </div>
-
-<?php
-      }
-        ?>
-<div class="addoffers">
+        <div class="addoffers1 updateoffer">
         <div>
           <label for="offername">
-            New offer(in %  )
+            New offer name
           </label>
-          <input type="text" id="offername" class="offername1" placeholder="offername">
+          <input type="text" id="offername" class="offername1" value="<?php echo $offername; ?>">
           <label for="addinput">
             Offer Percentage(in %  )
           </label>
-          <input type="number" id="addinput" class="offeradd1" placeholder="eg: 8%">
+          <input type="number" id="addinput" class="offeradd1" placeholder="eg: 8%" value="<?php echo $offerper; ?>">
           <label for="expiredate">
             Expiry date
           </label>
-          <input type="date" id="expiredate" class="offerdate1" placeholder="eg: 02/02/2024">
+          <input type="date" id="expiredate" class="offerdate1" placeholder="eg: 02/02/2024" value="<?php echo $offerexpire; ?>">
         </div>
         <div class="selectproduct">
           <div class="pro1">
@@ -835,31 +836,30 @@
         <div class="offerbtn">
           <button>Update offer</button>
         </div>
-
-
-
-
-
-
-
     </div>
+<?php
+      }
+        ?>
+
 
 </div>
 <div id="threelink3">
 <h3>Delete offer</h3>
 <?php
         include("../connectionPHP/connect.php");
-        $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT WHERE PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID";
+        $sql = "SELECT PRODUCT.NAME, OFFER_PRODUCT.OFFER_ID FROM PRODUCT, OFFER_PRODUCT,SHOP, MART_USER WHERE SHOP.SHOP_ID = PRODUCT.FK_SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.PRODUCT_ID = OFFER_PRODUCT.PRODUCT_ID AND MART_USER.USER_ID = '1029'";
         $arr = oci_parse($conn, $sql);
         oci_execute($arr);
         while($rows = oci_fetch_array($arr)){
           $pname = $rows[0];
           $offerId = $rows[1];
-          $sql = "SELECT OFFER_PERCENTAGE, OFFER_VALID_DATE FROM OFFER WHERE OFFER_ID = '$offerId'";
-          $arr = oci_parse($conn, $sql);
-          oci_execute($arr);
-          $offerper = oci_fetch_array($arr)[0];
-          $offerexpire = oci_fetch_array($arr)[1];
+          $sql1 = "SELECT OFFER_PERCENTAGE, OFFER_VALID_DATE FROM OFFER WHERE OFFER_ID = '$offerId'";
+          $arr1 = oci_parse($conn, $sql1);
+          oci_execute($arr1);
+          $offer = oci_fetch_array($arr1);
+          $offerper = $offer[0];
+          $offerexpire = $offer[1];
+          // echo $offerId;
         if(!isset($rows[0])){
           echo "<h4>No data found!!</h4>";
         }
@@ -867,12 +867,12 @@
         <form action="#" method="POST">
         <?php
   if(isset($_POST['deleteoffer'])){
-    $offerId = $_POST['deleteofferinput'];
+    // $offerId = $_POST['deleteofferinput'];
     // echo $offerId;
-    $sql1 = "DELETE FROM OFFER WHERE OFFER_ID = $offerId";
+    $sql1 = "DELETE FROM OFFER WHERE OFFER_ID = '$offerId'";
     $arr1 = oci_parse($conn, $sql1);
     oci_execute($arr1);
-    $sql1 = "DELETE FROM OFFER_PRODUCT WHERE OFFER_ID = $offerId";
+    $sql1 = "DELETE FROM OFFER_PRODUCT WHERE OFFER_ID = '$offerId'";
     $arr1 = oci_parse($conn, $sql1);
     oci_execute($arr1);
     $_SESSION['offerdelete'] = true;
@@ -883,9 +883,9 @@
 
 ?>
 <div class="productsq">
-          <h4><?php echo $pname ?></h4>
-          <h4><?php echo $offerper; ?></h4>
-          <h4><?php echo $offerexpire; ?> </h4>
+<?php echo "<p>offer name: ".$offername."</p>" ?>
+          <?php echo "<p>offer percentage: ".$offerper."%</p>"; ?>
+          <?php echo "<p>offer expires in: ".$offerexpire."</p>"; ?> 
           <input type="hidden" name="deleteofferinput" value="<?php echo $offerid; ?>">
           <button type="submit" name="deleteoffer">Delete offer</button>
         </div>

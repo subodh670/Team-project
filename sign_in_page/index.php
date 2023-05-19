@@ -62,7 +62,7 @@ session_start();
     <div class="wrapper">
         <span class="icon-close"><ion-icon name="close-outline"></ion-icon></span>
         <div class="form-box login1">
-            <h2>Signin</h2>
+            <h2>Sign In</h2>
             <form action="" method="POST">
                 <?php
                 function insertCookie($userid){

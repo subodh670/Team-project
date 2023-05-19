@@ -106,16 +106,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-link="onelink" href="#onelink">Reports</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-link="twolink" href="#twolink">Dashboard Item 1</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-link="threelink" href="#threelink">Dashboard Item 2</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-link="fourlink" href="#fourlink">Dashboard Item 3</a>
+          <a class="nav-link" data-link="onelink" href="#onelink">Statistics</a>
         </li>
       </ul>
       
@@ -216,7 +207,10 @@
       }
 
       ?>
-
+      <h2>Welcome trader Butcher</h2>
+      <div class="welcometrader">
+      The trader dashboard provides traders with real-time market data, advanced charting tools, and access to market news and research. Traders can place orders, monitor their portfolio, manage positions, and set risk parameters. The dashboard also offers administrative features, educational resources, and customer support. It is a comprehensive platform that enables traders to make informed decisions, execute trades, and effectively manage their trading activities.
+      </div>
 </div>
 <div id="twolink">sales items</div>
 <div id="threelink">sales items</div>
@@ -266,7 +260,11 @@
         </div>
         <div class="shop-category">
           <label for="shop--category">Shop Category</label>
-          <input type="text" name="shop--category" id="shop--category" placeholder="eg: curd">
+          <input type="text" name="shop--category" id="shop--category" placeholder="eg: bigdairy">
+        </div>
+        <div class="shop-contact">
+          <label for="shop--contact">Shop Contact Number</label>
+          <input type="text" name="shop--contact" id="shop--contact" placeholder="eg: 9841000000">
         </div>
         <div class="addshopbtn">
           <button name="addshop">Add Shop</button>
@@ -305,12 +303,12 @@
 <div id="threelink1">
   <h3>Delete shop</h3>
   <div class="deleteshop">
-  <div class="shopDetail">
-          <p>Shop1</p>
-          <p>Category</p>
-          <input type="hidden" class="deleteInput">
-          <button>Delete</button>
-  </div>
+    <div class="shopDetail">
+            <p>Shop1</p>
+            <p>Category</p>
+            <input type="hidden" class="deleteInput">
+            <button>Delete</button>
+    </div>
   </div>
   
 </div>
@@ -372,6 +370,18 @@
         </div>
         </div>
         <div class="collection2">
+        <div class="productmanudate">
+            <label for="pmanudate">Product Manufacture Date</label>
+            <input type="text" name="pmanudate" id="pmanudate" placeholder="eg: DD/MM/YYYY">
+        </div>
+        <div class="productexpiredate">
+            <label for="pexpiredate">
+                Product Expiry Date
+            </label>
+            <input type="text" name="pexpiredate" id="pexpiredate" placeholder="eg: eg: DD/MM/YYYY">
+        </div>
+        </div>
+        <div class="collection3">
         <div class="productallergy">
             <label for="pallergy">Product Allergy(*)</label>
             <input type="text" name="pallergy" id="pallergy" placeholder="eg: lactose allergy">
@@ -385,7 +395,7 @@
             </select>
         </div>
         </div>
-        <div class="collection3">
+        <div class="collection4">
             <div class="image1">
                 <label for="image1">
                 First image(*)
@@ -423,15 +433,15 @@
      <h1>Disable Product</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029 AND PRODUCT.STATUS = 1";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
       $productDiscountID = $rows[5];
-      $sql = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
-      $arr = oci_parse($conn, $sql);
-      oci_execute($arr);
-      $productDiscount = oci_fetch_array($arr)[0];
+      $sql1 = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $arr1 = oci_parse($conn, $sql1);
+      oci_execute($arr1);
+      $productDiscount = oci_fetch_array($arr1)[0];
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
@@ -474,15 +484,15 @@
    <h1>Enable Product</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029 AND PRODUCT.STATUS = 0";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
       $productDiscountID = $rows[5];
-      $sql = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
-      $arr = oci_parse($conn, $sql);
-      oci_execute($arr);
-      $productDiscount = oci_fetch_array($arr)[0];
+      $sql1 = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $arr1 = oci_parse($conn, $sql1);
+      oci_execute($arr1);
+      $productDiscount = oci_fetch_array($arr1)[0];
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];

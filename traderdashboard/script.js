@@ -130,11 +130,36 @@ function spawningProductDetails(id){
 
 // disable shops
 
-function disableShop(){
+function addShop(){
+    const shopname = document.querySelector(".shop-name input");
+    const shopcategory = document.querySelector(".shop-name input");
+    const shopcontact = document.querySelector(".shop-contact input");
+
+    const shopBtn = document.querySelector(".addshopbtn button");
+    shopBtn.addEventListener("click",()=>{
+        let xml = new XMLHttpRequest();
+    xml.onreadystatechange = function(){    
+        if(this.readyState == 4 && this.status == 200){ 
+            showShop();
+            location.reload();
+            // console.log(this.responseText);
+        }
+    }
+    xml.open("POST", `addshop.php?name=${shopname.value}&category=${shopcategory.value}&contact=${shopcontact.value}`, true);
+    xml.send();
+    })
+
+}
+addShop();
+
+
+function showShop(){
     const disableShop = document.querySelector(".disableshop");
     const enableshop = document.querySelector(".enableshop");
-    disableShop.innerHTML = "";
-    enableshop.innerHTML = "";
+    const allshops = document.querySelector(".deleteshop");
+    disableShop.innerHTML = "<div class='shoptitle'><p>Name</p><p>Address</p><p>Contact Number</p><p></p></div>";
+    enableshop.innerHTML = "<div class='shoptitle'><p>Name</p><p>Address</p><p>Contact Number</p><p></p></div>";
+    allshops.innerHTML = "<div class='shoptitle'><p>Name</p><p>Address</p><p>Contact Number</p><p></p></div>";
     let xml = new XMLHttpRequest();
     xml.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 200){
@@ -144,30 +169,39 @@ function disableShop(){
             result.forEach((item)=>{
                 if(item['SHOP_STATUS'] == 1){
                     disableShop.innerHTML += `<div class="shopDetail">
-                    <p>${item['SHOP_NAME']}</p>
+                    <p>${item['NAME']}</p>
                     <p>${item["ADDRESS"]}</p>
+                    <p>${item['CONTACT_NUMBER']}</p>
                     <input type="hidden" class="activeInput" value=${item['SHOP_ID']}>
                     <button>Disable</button>
                   </div>`;
                 }
                 if(item['SHOP_STATUS'] == 0){
                     enableshop.innerHTML += `<div class="shopDetail">
-                    <p>${item['SHOP_NAME']}</p>
+                    <p>${item['NAME']}</p>
                     <p>${item['ADDRESS']}</p>
+                    <p>${item['CONTACT_NUMBER']}</p>
                     <input type="hidden" class="inactiveInput" value=${item['SHOP_ID']}>
                     <button>Enable</button>
                   </div>`;
                 }
+                allshops.innerHTML += `<div class="shopDetail">
+                <p>${item['NAME']}</p>
+                <p>${item['ADDRESS']}</p>
+                <p>${item['CONTACT_NUMBER']}</p>
+                <input type="hidden" class="deleteInput" value=${item['SHOP_ID']}>
+                <button>Delete</button>
+              </div>`;
             })
             triggerenablebtn();
-            
+            triggerDeleteBtn();
         }
     }
-    xml.open("POST", `enableshop.php?trader=${3003}`, true);
+    xml.open("POST", `enableshop.php?trader=${1029}`, true);
     xml.send();
 }
 
-disableShop();
+showShop();
 
 function triggerenablebtn(){
     const disabledBtn = document.querySelectorAll(".disableshop button");
@@ -180,7 +214,7 @@ function triggerenablebtn(){
             let xml = new XMLHttpRequest();
             xml.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
-                    disableShop();
+                    showShop();
                 }
             }
             xml.open("POST", `triggershopstatus.php?status=1&id=${inputId[i].value}`, true);
@@ -193,7 +227,7 @@ function triggerenablebtn(){
             let xml = new XMLHttpRequest();
             xml.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
-                    disableShop();
+                    showShop();
                 }
             }
             xml.open("POST", `triggershopstatus.php?status=0&id=${inputId2[i].value}`, true);
@@ -201,8 +235,31 @@ function triggerenablebtn(){
         })
     })
 }
-triggerenablebtn();
+// triggerenablebtn();
 
+function triggerDeleteBtn(){
+    const deleteshop = document.querySelectorAll(".deleteshop button");
+    const inputId = document.querySelectorAll(".deleteshop .deleteInput");
+    // console.log(inputId);
+    console.log("HELLO");
+    console.log(deleteshop);
+    deleteshop.forEach((btn,i)=>{
+        btn.addEventListener("click",()=>{
+            console.log(inputId[i].value);
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    showShop();
+                    location.reload();
+                    // console.log(this.responseText);
+                }
+            }
+            xml.open("POST", `deleteshop.php?id=${inputId[i].value}`, true);
+            xml.send();
+        })
+    })
+}
+// triggerDeleteBtn();
 
 function addofferoption(){
     let selectProduct = document.querySelectorAll('.pro1')[0];

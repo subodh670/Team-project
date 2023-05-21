@@ -108,19 +108,23 @@ function spawningProductDetails(id){
     const productdesc = document.querySelectorAll(".editproduct .proDescription textarea");
     const productAllergy = document.querySelectorAll(".editproduct .productallergy input");
     const shopname = document.querySelectorAll('.editproduct .shop select');
-
+    const pidupdate = document.querySelectorAll(".pidupdate");
 
     const xml = new XMLHttpRequest();
     xml.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 200){
             let response = JSON.parse(this.responseText);
-            console.log(response);
+            // console.log(response);
+            // console.log(response[0]['MANUFACTURE_DATE']);
+
             response.forEach((item,i)=>{
                     productname[i].value = item['NAME'];
-                    productprice[i].value = "£"+item['PRICE'];
+                    productprice[i].value = item['PRICE'];
                     productQuant[i].value = item['STOCK_AVAILABLE'];
                     productdesc[i].value = item['DESCRIPTION'];
                     productAllergy[i].value = item['ALLERGY_INFORMATION'];
+                    pidupdate[i].value = item['PRODUCT_ID'];
+                    // console.log(manudate[0].value);
             })
         }
     }
@@ -152,6 +156,70 @@ function addShop(){
 }
 addShop();
 
+function addProduct(){
+    const pname = document.querySelector('.productname input');
+    const pprice = document.querySelector(".productprice input");
+    const pquant = document.querySelector(".productquantity input");
+    const prodesc = document.querySelector(".proDescription input");
+    const promanu = document.querySelector('.productmanudate input');
+    const proexpire = document.querySelector(".productexpiredate input");
+    const productallergy = document.querySelector(".productallergy input");
+    const shopName = document.querySelector('.shop #shopname');
+    const image1 = document.querySelector(".image1 input");
+    const image2 = document.querySelector(".image2 input");
+    const image3 = document.querySelector(".image3 input");
+    const button = document.querySelector(".btnaddpro button");
+    shopName.addEventListener("change",()=>{
+        shopName = shopName.options[shopName.selectedIndex].value;
+    })
+    button.addEventListener("click",()=>{
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log(this.responseText);
+            }
+        }
+        xml.open("POST", `addproduct.php?pname=${pname.value}&pprice=${pprice.value}&pquant=${pquant.value}&prodesc=${prodesc.value}&promanu=${promanu.value}&proexpire=${proexpire.value}&proallergy=${productallergy}&shopid=${shopName.value}&image1=${image1.value}&image2=${image2.value}&image3=${image3.value}`, true);
+        xml.send();
+    })
+
+
+}
+
+function addshopoption(){
+    let pshop = document.querySelector(".shop #shopname");
+    let pshop1 = document.querySelector(".shop #shopname1");
+
+    // let pshop1 = document.querySelector(".shop #pshop1");
+    // let labeloffer = document.querySelectorAll(".selectproduct label")[0];
+    // let pro1 = document.querySelectorAll(".selectproduct .pro1")[0];
+    let xml = new XMLHttpRequest();
+    if(pshop != null){
+        pshop.innerHTML = "";
+        pshop1.innerHTML = "";
+        // if(pshop1!=null)
+        //     pshop1.innerHTML = "";
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log(this.responseText);
+                let response = JSON.parse(this.responseText);
+                response.forEach((resp)=>{
+                    pshop.innerHTML += ` 
+                    <option value="${resp['SHOP_ID']}">${resp['NAME']}</option>
+                    `;
+                    pshop1.innerHTML += ` 
+                    <option value="${resp['SHOP_ID']}">${resp['NAME']}</option>
+                    `;
+                    // document.querySelector('.hidcid').value = response['PRODUCT_ID'];
+                })
+                // offerAdd();                               
+            }
+        }
+        xml.open("POST", `shoplist.php?trader=${1029}`, true);
+        xml.send();
+    }
+}
+addshopoption();
 
 function showShop(){
     const disableShop = document.querySelector(".disableshop");
@@ -289,9 +357,7 @@ function addofferoption(){
                         `;
                     // document.querySelector('.hidcid').value = response['PRODUCT_ID'];
                 })
-                offerAdd();
-    
-                                            
+                offerAdd();                               
             }
         }
         xml.open("POST", `customersList.php?trader=${1029}`, true);
@@ -340,12 +406,6 @@ function offerAdd(){
 }
 
 
-
-
-
-
-
-
 const triggerEditBtn = document.querySelector(".editbtntrigger");
 const editprofilemodal = document.querySelector(".editprofile");
 const xmarkClose = document.querySelector(".xmark i");
@@ -366,7 +426,7 @@ const backdrop = document.querySelector(".backdrop");
         backdrop.classList.add("hidebackdrop");
     })
 
-function editCustPro(){
+function edittraderPro(){
     const username = document.querySelector(".editusername input");
     const useremail = document.querySelector(".editemail input");
     const userfirstname = document.querySelector(".editfirstname input");
@@ -414,7 +474,7 @@ function editCustPro(){
     }
     )
 }
-editCustPro();
+edittraderPro();
 
 
 function modaladdoffers(){
@@ -446,3 +506,89 @@ function modaladdoffers(){
 }
 
 modaladdoffers();
+
+function selectcategory(){
+    let pcategory = document.querySelector(".categoryselect #category");
+    // let pcategory1 = document.querySelector(".shop #pcategory1");
+    // let labeloffer = document.querySelectorAll(".selectproduct label")[0];
+    // let pro1 = document.querySelectorAll(".selectproduct .pro1")[0];
+    let xml = new XMLHttpRequest();
+    if(pcategory != null){
+        pcategory.innerHTML = "";
+        // if(pcategory1!=null)
+        //     pcategory1.innerHTML = "";
+        xml.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                console.log(this.responseText);
+                let response = JSON.parse(this.responseText);
+                response.forEach((resp)=>{
+                    pcategory.innerHTML += ` 
+                    <option value="${resp['CATEGORY_ID']}">${resp['CATEGORY_NAME']}</option>
+                    `;
+                    // document.querySelector('.hidcid').value = response['PRODUCT_ID'];
+                })
+                pcategory.innerHTML += ` <option value="others" class='othercategory'>others</option>`
+                // offerAdd();  
+                otherCategory();                             
+            }
+        }
+        xml.open("POST", `categorylist.php?trader=${1029}`, true);
+        xml.send();
+    }
+}
+selectcategory();
+
+function otherCategory(){
+    let pcategory = document.querySelector(".categoryselect #category");
+    let othercat = document.querySelector(".categoryselect input");
+    pcategory.addEventListener("change",()=>{
+        pcategory = pcategory.options[pcategory.selectedIndex].value;
+        if(pcategory === 'others'){
+            othercat.type = 'text';
+        }
+        else{
+            console.log("hello");
+            othercat.type = 'hidden';
+        }
+    })
+}
+// otherCategory();
+const changepassbtn = document.querySelector(".changepassbtn");
+const updatepassdiv = document.querySelector('.updatepass');
+const xmarkClose1 = document.querySelector(".xmark1 i");
+changepassbtn.addEventListener("click",()=>{
+    updatepassdiv.classList.remove('hidepass');
+    backdrop.classList.remove("hidebackdrop");
+})
+xmarkClose1.addEventListener("click",(e)=>{
+    updatepassdiv.classList.add('hidepass');
+    backdrop.classList.add("hidebackdrop");
+})
+backdrop.addEventListener("click",()=>{
+    updatepassdiv.classList.add('hidepass');
+    backdrop.classList.add("hidebackdrop");
+})
+const errorsflash = document.querySelector(".errorsflash");
+setTimeout(()=>{
+    errorsflash.style.display = 'none';
+},6000);
+
+
+
+const traderpic = document.querySelector(".changetraderpicture");
+const traderpicbtn = document.querySelector(".changetraderpicture button");
+
+const uploadpic = document.querySelector(".uploadpicture");
+traderpic.addEventListener("click",()=>{
+        uploadpic.style.display = 'flex';
+        traderpicbtn.style.display = 'none';
+
+})
+const cancel = document.querySelectorAll(".uploadpicture button")[1];
+if(cancel != null){
+    cancel.addEventListener("click",()=>{
+        uploadpic.style.display = 'none';
+        traderpicbtn.style.display = 'block';
+
+    })
+}

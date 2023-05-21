@@ -20,7 +20,13 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $uniqueMobile = true;
     $changedEmail = false;
 
-
+    $sql1 = "SELECT EMAIL, USERNAME, MOBILE_NO FROM MART_USER WHERE USER_ID>$tid OR USER_ID < $tid";
+    $array = oci_parse($conn, $sql1);
+    oci_execute($array);
+    $uniqueEmail = true;
+    $uniqueName = true;
+    $uniqueMobile = true;
+    $changedEmail = false;
     while($row = oci_fetch_array($array)){
         if($email == $row[0]){
             $uniqueEmail = false;

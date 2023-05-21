@@ -14,6 +14,163 @@
   <div class="backdrop hidebackdrop">
     
   </div>
+
+  <?php
+  $errornewPass = "";
+  $errorconfirmpass = "";
+  $flashvalidated = "";
+  $errornotmatch = "";
+  function validatePass($pass){
+      $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
+      if(preg_match($password_regex, $pass)){
+          return true;
+      }
+      else{
+          return false;   
+      }
+  } 
+  if(isset($_POST['updatepassbtn'])){
+      include("../connectionPHP/connect.php");
+      // $username = $_SESSION['username'];
+      $username = 'ADMIN';
+      $sql = "SELECT PASSWORD FROM MART_USER WHERE USERNAME = '$username'";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $pass = oci_fetch_array($arr)[0];
+      $oldpass = $_POST['oldpass'];
+      $newpass = $_POST['newpass'];
+      $cpass = $_POST['cpass'];
+      if($pass == $oldpass){
+          if(validatePass($newpass) == true){
+              if($newpass == $cpass){
+                  $newpass1 = $newpass;
+                  $sql = "UPDATE MART_USER SET PASSWORD = '$newpass1' WHERE USERNAME = '$username'";
+                  $array = oci_parse($conn, $sql);
+                  oci_execute($array);
+                  $_SESSION['password'] = $newpass1;
+                  $flashvalidated = "<p>Password updated!!</p>";
+              }
+              else{
+                  // $_SESSION['errorconfirm'] = true;
+                  $errorconfirmpass = "<p>Error: Passwords do not match</p>";
+
+              }
+          }
+          else{
+              // $_SESSION['errorvalidpass'] = true;
+              $errornewPass = "<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>";
+
+
+          }
+      }   
+      else{
+          // $_SESSION['matchpass'] = true;
+          $errornotmatch = "<p>Passwords do not match with the database!!</p>";
+          
+      }
+
+  }
+  ?>
+
+  <div class="updatepass hidepass" >
+        <form action="" method="POST">
+            <div class="xmark1">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            
+            <h3>Update password</h3>
+            <div class="oldpassword">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="oldpass" placeholder="old password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="newpassword">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="newpass" placeholder="new password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="confirmpass">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="cpass" placeholder="confirm password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="updatebtn">
+                <button type="submit" name="updatepassbtn">Update</button>
+            </div>
+
+        </form>
+    </div>
+  <div class="editprofile hideEditprofile">
+        <form method="POST" action="">
+        <div class="xmark">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+            <h3>Update Profile</h3>
+            <?php 
+            // $username = $_SESSION['username'];
+            include("../connectionPHP/connect.php");
+            $sql = "SELECT * FROM MART_USER WHERE USER_ID = '7' AND ROLE = 'admin'";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            while($rows = oci_fetch_array($arr)){
+                $username = $rows[3];
+                $firstname = $rows[1];
+                $lastname = $rows[2];
+                $mobile = $rows[6];
+                $email = $rows[4];
+                $gender = $rows[8];
+                $address = $rows[7];
+                $aid = $rows[0];
+
+                ?>
+            <div class="editusername">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="username" placeholder="username" value="<?php echo $username ?>">
+                <p class='errorusername'></p>
+
+            </div>
+            <input type="hidden" class='chidden' value="<?php echo $aid; ?>">
+            <div class="editemail">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="text" name="useremail" placeholder="email"  value="<?php echo $email ?>">
+                <p class='erroremail'></p>
+
+            </div>
+            <div class="editfirstname">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="firstname" placeholder="firstname"  value="<?php echo $firstname ?>">
+            </div>
+            <div class="editlastname">
+                <i class="fa-regular fa-user"></i>
+                <input type="text" name="lastname" placeholder="lastname"  value="<?php echo $lastname ?>">
+            </div>
+            <div class="editmobile">
+                <i class="fa-solid fa-phone"></i>
+                <input type="number" name="mobile" placeholder="mobile number"  value="<?php echo $mobile ?>">
+                <p class='errormobile'></p>
+
+            </div>
+            <div class="editgender">
+                <i class="fa-regular fa-user"></i>
+                <select name="gender" id="gender">
+                    <option value="male">male</option>
+                    <option value="female">female</option>
+                </select>
+            </div>
+            <div class="editaddress">
+                <i class="fa-solid fa-house"></i>
+                <input type="text" name="address" placeholder="address"  value="<?php echo $address ?>">
+            </div>
+            <div class="updatebtn2">
+                <button type="button" name="update">Update Details</button>
+            </div>
+
+                <?php
+            }
+
+            ?>
+        </form>
+    </div>
 <div class="container-fluid text-center menu-dash">
   <div class="row">
     <div class="col-2 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-xl-2">
@@ -51,13 +208,136 @@
 <!-- pages -->
 
 
-<div id="onelink" class="reports">
+<div id="onelink" class="welcome">
+
+
+
+
+<?php
+  include("../connectionPHP/connect.php");
+    if(isset($_POST['uploadpic'])){
+      if(!empty($_FILES['adminpic1']['name'])){
+        $target_dir = "../images/";
+        $target_file = $target_dir . basename($_FILES["adminpic1"]["name"]);
+        $image = basename($_FILES["adminpic1"]["name"]);
+        if (move_uploaded_file($_FILES["adminpic1"]["tmp_name"], $target_file)) {
+          echo "<p>The file ". htmlspecialchars( basename( $_FILES["adminpic1"]["name"])). " has been uploaded.</p>";
+      } else {
+          echo "<p>Error: Sorry, there was an error uploading your file.</p>";
+          $image = null;
+      }
+      $sql = "UPDATE MART_USER SET IMAGE = '$image' WHERE USER_ID = 7";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      }
+      else{
+        echo "<p>Please specify the image path</p>";
+      }
+    }
+    
+
+?>
+<section class="errorsflash">
+    <?php
+        if($errornewPass != "" || $errorconfirmpass != "" || $flashvalidated!= "" || $errornotmatch != "" ){
+            echo $errornewPass;
+            echo $errorconfirmpass;
+            echo $flashvalidated;
+            echo $errornotmatch;
+        }
+
+?>
+    </section>
+  <?php  
+  include("../connectionPHP/connect.php");
+    if(isset($_POST['activatetrader'])){
+      $id = $_POST['hidactivtrader'];
+      // echo $id;
+      $sql = "UPDATE MART_USER SET  STATUS = '1' WHERE USER_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['deactivatetrader'])){
+      $id = $_POST['hiddeactivtrader'];
+      // echo $id;
+      $sql = "UPDATE MART_USER SET STATUS = '0' WHERE USER_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['approvetrader'])){
+      $id = $_POST['hidapprovetrader'];
+      // echo $id;
+      $sql = "UPDATE MART_USER SET STATUS = '1' WHERE USER_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['deletetrader'])){
+      $id = $_POST['hiddeletetrader'];
+      // echo $id;
+      $sql = "DELETE FROM MART_USER WHERE USER_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['activatecust'])){
+      $id = $_POST['hidactivatecust'];
+      // echo $id;
+      $sql = "UPDATE MART_USER SET  STATUS = '1' WHERE USER_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['deactivatecust'])){
+      $id = $_POST['hiddeactivatecust'];
+      // echo $id;
+      $sql = "UPDATE MART_USER SET  STATUS = '0' WHERE USER_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['deletecust'])){
+      $id = $_POST['hidedeletecust'];
+      // echo $id;
+      $sql = "DELETE FROM MART_USER WHERE USER_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['deactivatepro'])){
+      $id = $_POST['hidedeactivateproduct'];
+      // echo $id;
+      $sql = "UPDATE PRODUCT SET  STATUS = '0' WHERE PRODUCT_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['activatepro'])){
+      $id = $_POST['hideactivateproduct'];
+      // echo $id;
+      $sql = "UPDATE PRODUCT SET  STATUS = '1' WHERE PRODUCT_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['deletepro'])){
+      $id = $_POST['hidedeleteproduct'];
+      // echo $id;
+      $sql = "DELETE FROM PRODUCT_ID WHERE PRODUCT_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+
+
+  ?>
   <h2>Welcome Admin in CleckHFmart Admin Panel!!</h2>
   <div class='unity'>
   <i class="fa-solid fa-hand-fist"></i>
   </div>
   <div class="welcomeadmin">
       An admin dashboard is a centralized web-based interface that provides administrators with a comprehensive overview and control of an application, system, or website. It serves as a control panel where administrators can access and manage various functionalities and data to effectively monitor and maintain the platform.
+  </div>
+  <div class="supportedadmin">
+    <h1>Our Admins</h1>
+    <p>Subodh Acharya<span><i class="fa-brands fa-square-twitter"></i></span><span><i class="fa-brands fa-square-facebook"></i></span><span><i class="fa-brands fa-linkedin"></i></span></p>
+    <p>Nitesh Kumar Chaudhary<span><i class="fa-brands fa-square-twitter"></i></span><span><i class="fa-brands fa-square-facebook"></i></span><span><i class="fa-brands fa-linkedin"></i></span></p>
+    <p>Ravi Prakash Yadav<span><i class="fa-brands fa-square-twitter"></i></span><span><i class="fa-brands fa-square-facebook"></i></span><span><i class="fa-brands fa-linkedin"></i></span></p>
+    <p>Nisha Sunuwar<span><i class="fa-brands fa-square-twitter"></i></span><span><i class="fa-brands fa-square-facebook"></i></span><span><i class="fa-brands fa-linkedin"></i></span></p>
+    <p>Rabindra Prasad Singh<span><i class="fa-brands fa-square-twitter"></i></span><span><i class="fa-brands fa-square-facebook"></i></span><span><i class="fa-brands fa-linkedin"></i></span></p>
+
   </div>
 </div>
 <div id="twolink">sales items</div>
@@ -100,7 +380,7 @@
 <h3 style="color: var(--secondary-color); margin-top: 2em;">Approve Trader</h3>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE FROM MART_USER WHERE ROLE='trader' AND REGISTERED_EMAIL = 'yes' AND STATUS = '2'";
+    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE, USER_ID FROM MART_USER WHERE ROLE='trader' AND REGISTERED_EMAIL = 'yes' AND STATUS = '2'";
     echo "<div class='title-items'>
     <p>Profile image</p>
       <p>Username</p><p>Full Name</p><p>Email</p><p>Mobile</p><p>Address</p><p>Gender</p><p>Date created</p><p></p>
@@ -118,6 +398,7 @@
       $gender = $rows[6];
       $datecreated = $rows[7];
       $lastname = $rows[2];
+      $traderid = $rows[9];
       ?>
       <div class="items-horizontal">
               <img src="<?php echo "../images/".$traderimage; ?>" alt="">
@@ -128,7 +409,10 @@
               <p><?php echo "$address"; ?></p>
               <p><?php echo "$gender"; ?></p>
               <p><?php echo "$datecreated"; ?></p>
-              <div><button>Approve</button></div>
+              <form method="POST" action="">
+                <input type="hidden" value="<?php echo $traderid; ?>" name="hidapprovetrader">
+                <button type="submit" name="approvetrader" class="approvetrader">Activate</button>
+            </form>
             </div>
       
 
@@ -142,7 +426,7 @@
 <h3 style="color: var(--secondary-color); margin-top: 2em;">Activate Trader</h3>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE FROM MART_USER WHERE ROLE='trader' AND REGISTERED_EMAIL = 'yes' AND STATUS = '0'";
+    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE, USER_ID FROM MART_USER WHERE ROLE='trader' AND REGISTERED_EMAIL = 'yes' AND STATUS = '0'";
     echo "<div class='title-items'>
     <p>Profile image</p>
       <p>Username</p><p>Full Name</p><p>Email</p><p>Mobile</p><p>Address</p><p>Gender</p><p>Date created</p><p></p>
@@ -161,6 +445,7 @@
       $gender = $rows[6];
       $datecreated = $rows[7];
       $lastname = $rows[2];
+      $traderid = $rows[9];
       $count++;
       ?>
       <div class="items-horizontal">
@@ -172,8 +457,12 @@
               <p><?php echo "$address"; ?></p>
               <p><?php echo "$gender"; ?></p>
               <p><?php echo "$datecreated"; ?></p>
-              <div><button>Activate</button></div>
+              <form method="POST" action="">
+                <input type="hidden" value="<?php echo $traderid; ?>" name="hidactivtrader">
+                <button type="submit" name="activatetrader" class="activatetrader">Activate</button>
+            </form>
             </div>
+            
       
 
       <?php
@@ -186,7 +475,7 @@
     <h3 style="color: var(--secondary-color); margin-top: 2em;">Deactivate Trader</h3>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE FROM MART_USER WHERE ROLE='trader' AND REGISTERED_EMAIL = 'yes' AND STATUS = '1'";
+    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE, USER_ID FROM MART_USER WHERE ROLE='trader' AND REGISTERED_EMAIL = 'yes' AND STATUS = '1'";
     echo "<div class='title-items'>
     <p>Profile image</p>
       <p>Username</p><p>Full Name</p><p>Email</p><p>Mobile</p><p>Address</p><p>Gender</p><p>Date created</p><p></p>
@@ -205,6 +494,7 @@
       $gender = $rows[6];
       $datecreated = $rows[7];
       $lastname = $rows[2];
+      $traderid = $rows[9];
       $count1++;
       ?>
       <div class="items-horizontal">
@@ -216,7 +506,8 @@
               <p><?php echo "$address"; ?></p>
               <p><?php echo "$gender"; ?></p>
               <p><?php echo "$datecreated"; ?></p>
-              <div><button>Deactivate</button></div>
+              <form method="POST" action=""> <input type="hidden" value="<?php echo $traderid; ?>" name="hiddeactivtrader">
+                <button type="submit" name="deactivatetrader" class="deactivatetrader">Deactivate</button></form>
             </div>
       
 
@@ -232,7 +523,7 @@
 <h3 style="color: var(--secondary-color); margin-top: 2em;">Delete Trader</h3>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE FROM MART_USER WHERE ROLE='trader' AND REGISTERED_EMAIL = 'yes' AND STATUS = '1' OR STATUS = '2' OR STATUS = '3'";
+    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE, USER_ID FROM MART_USER WHERE ROLE='trader' AND REGISTERED_EMAIL = 'yes' AND STATUS = '1' OR STATUS = '2' OR STATUS = '3'";
     echo "<div class='title-items'>
     <p>Profile image</p>
       <p>Username</p><p>Full Name</p><p>Email</p><p>Mobile</p><p>Address</p><p>Gender</p><p>Date created</p><p></p>
@@ -251,6 +542,7 @@
       $gender = $rows[6];
       $datecreated = $rows[7];
       $lastname = $rows[2];
+      $traderid = $rows[9];
       $count1++;
       ?>
       <div class="items-horizontal">
@@ -262,14 +554,17 @@
               <p><?php echo "$address"; ?></p>
               <p><?php echo "$gender"; ?></p>
               <p><?php echo "$datecreated"; ?></p>
-              <div><button>Delete</button></div>
+              <form method="POST" action="">
+                <input type="hidden" value="<?php echo $traderid; ?>" name="hiddeletetrader">
+                <button type="submit" name="deletetrader" class="deletetrader">Delete</button>
+            </form>
             </div>
       
 
       <?php
     }
     if($count1 == 0){
-      echo "<p>No traders to deactivate</p>";
+      echo "<p>No traders to delete</p>";
     }
     ?>
 </div>
@@ -308,7 +603,7 @@
 
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE FROM MART_USER WHERE ROLE='customer' AND REGISTERED_EMAIL = 'yes' AND STATUS = '0'";
+    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE, USER_ID FROM MART_USER WHERE ROLE='customer' AND REGISTERED_EMAIL = 'yes' AND STATUS = '0'";
     
     echo "<div class='title-items'>
     <p>Profile image</p>
@@ -328,6 +623,7 @@
       $gender = $rows[6];
       $datecreated = $rows[7];
       $lastname = $rows[2];
+      $custId = $rows[9];
       $count++;
       ?>
      <div class="items-horizontal">
@@ -339,14 +635,17 @@
               <p><?php echo "$address"; ?></p>
               <p><?php echo "$gender"; ?></p>
               <p><?php echo "$datecreated"; ?></p>
-              <div><button>Activate</button></div>
+              <form method="POST" action="">
+                <input type="hidden" value="<?php echo $custId; ?>" name="hidactivatecust">
+                <button type="submit" name="activatecust" class="activatecust">Activate</button>
+            </form>
             </div>  
       
 
       <?php
     }
     if($count == 0){
-      echo "<p>No traders to activate</p>";
+      echo "<p>No customers to activate</p>";
     }
 
     ?>
@@ -354,7 +653,7 @@
     <?php  
     
     include("../connectionPHP/connect.php");
-    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE FROM MART_USER WHERE ROLE='customer' AND REGISTERED_EMAIL = 'yes' AND STATUS = '1'";
+    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE, USER_ID FROM MART_USER WHERE ROLE='customer' AND REGISTERED_EMAIL = 'yes' AND STATUS = '1'";
     
     // $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
     $arr = oci_parse($conn, $sql);
@@ -375,6 +674,8 @@
       $gender = $rows[6];
       $datecreated = $rows[7];
       $lastname = $rows[2];
+      $custId = $rows[9];
+
       $count1++;
       ?>
        <div class="items-horizontal">
@@ -386,14 +687,17 @@
               <p><?php echo "$address"; ?></p>
               <p><?php echo "$gender"; ?></p>
               <p><?php echo "$datecreated"; ?></p>
-              <div><button>Deactivate</button></div>
+              <form method="POST" action="">
+                <input type="hidden" value="<?php echo $custId; ?>" name="hiddeactivatecust">
+                <button type="submit" name="deactivatecust" class="deactivatecust">Deactivate</button>
+            </form>
             </div>
       
 
       <?php
     }
     if($count1 == 0){
-      echo "<p>No traders to deactivate</p>";
+      echo "<p>No customers to deactivate</p>";
     }
     ?>
 
@@ -406,7 +710,7 @@
 <?php  
     
     include("../connectionPHP/connect.php");
-    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE FROM MART_USER WHERE ROLE='customer' AND REGISTERED_EMAIL = 'yes' AND STATUS = '1' OR STATUS = '0'";
+    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, MOBILE_NO, ADDRESS, GENDER, DATE_CREATED, IMAGE, USER_ID FROM MART_USER WHERE ROLE='customer' AND REGISTERED_EMAIL = 'yes' AND STATUS = '1' OR STATUS = '0'";
     
     // $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
     $arr = oci_parse($conn, $sql);
@@ -427,6 +731,7 @@
       $gender = $rows[6];
       $datecreated = $rows[7];
       $lastname = $rows[2];
+      $custId = $rows[9];
       $count1++;
       ?>
             <div class="items-horizontal">
@@ -438,14 +743,17 @@
               <p><?php echo "$address"; ?></p>
               <p><?php echo "$gender"; ?></p>
               <p><?php echo "$datecreated"; ?></p>
-              <div><button>Delete</button></div>
+              <form method="POST" action="">
+                <input type="hidden" value="<?php echo $custId; ?>" name="hidedeletecust">
+                <button type="submit" name="deletecust" class="deletecust">Deactivate</button>
+            </form>
             </div>
       
 
       <?php
     }
     if($count1 == 0){
-      echo "<p>No traders to deactivate</p>";
+      echo "<p>No customers to delete</p>";
     }
     ?>
 
@@ -481,18 +789,25 @@
 
 <div id="onelink3">
 <div class="disableproduct">
-     <h1>Deactivate Product</h1>
+     <h1>Deactivate Products</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND PRODUCT.STATUS = 1";
+    // $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND PRODUCT.STATUS = 1";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, PRODUCT.PRODUCT_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID  AND MART_USER.ROLE = 'trader' AND PRODUCT.STATUS = 1";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
-      $productDiscountID = $rows[5];
-      $sql1 = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $productId = $rows[5];
+      $sql1 = "SELECT OFFER_PERCENTAGE
+      FROM OFFER
+      INNER JOIN OFFER_PRODUCT ON OFFER.OFFER_ID = OFFER_PRODUCT.OFFER_ID WHERE OFFER_PRODUCT.PRODUCT_ID = '$productId'";
       $arr1 = oci_parse($conn, $sql1);
       oci_execute($arr1);
-      $productDiscount = oci_fetch_array($arr1)[0];
+      $productDiscount = oci_fetch_array($arr1);
+      if(isset($productDiscount[0]))
+        $productDiscount = $productDiscount[0];
+      else
+        $productDiscount = "No offer given";
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
@@ -520,7 +835,10 @@
                 </div>
                 <div class="qty--price">
                     <p>Price: £<?php echo $productPrice; ?></p>
-                    <button>Deactivate</button>
+                    <form method="POST" action="">
+                        <input type="hidden" value="<?php echo $productId; ?>" name="hidedeactivateproduct">
+                        <button type="submit" name="deactivatepro" class="deactivatepro">Deactivate</button>
+                    </form>
                 </div>
             </div>
       
@@ -534,15 +852,23 @@
      <h1>Activate Product</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND PRODUCT.STATUS = 0";
+    // $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND PRODUCT.STATUS = 0";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, PRODUCT.PRODUCT_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID  AND MART_USER.ROLE = 'trader' AND PRODUCT.STATUS = 0";
+
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
-      $productDiscountID = $rows[5];
-      $sql1 = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $productId = $rows[5];
+      $sql1 = "SELECT OFFER_PERCENTAGE
+      FROM OFFER
+      INNER JOIN OFFER_PRODUCT ON OFFER.OFFER_ID = OFFER_PRODUCT.OFFER_ID WHERE OFFER_PRODUCT.PRODUCT_ID = '$productId'";
       $arr1 = oci_parse($conn, $sql1);
       oci_execute($arr1);
-      $productDiscount = oci_fetch_array($arr1)[0];
+      $productDiscount = oci_fetch_array($arr1);
+      if(isset($productDiscount[0]))
+        $productDiscount = $productDiscount[0];
+      else
+        $productDiscount = "No offer given";
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
@@ -570,7 +896,10 @@
                 </div>
                 <div class="qty--price">
                     <p>Price: £<?php echo $productPrice; ?></p>
-                    <button>Activate</button>
+                    <form method="POST" action="">
+                        <input type="hidden" value="<?php echo $productId; ?>" name="hideactivateproduct">
+                        <button type="submit" name="activatepro" class="activatepro">Activate</button>
+                    </form>
                 </div>
             </div>
       
@@ -586,15 +915,23 @@
      <h1>Delete Product</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader'";
+    // $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader'";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, PRODUCT.PRODUCT_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID  AND MART_USER.ROLE = 'trader'";
+
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
-      $productDiscountID = $rows[5];
-      $sql1 = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $productId = $rows[5];
+      $sql1 = "SELECT OFFER_PERCENTAGE
+      FROM OFFER
+      INNER JOIN OFFER_PRODUCT ON OFFER.OFFER_ID = OFFER_PRODUCT.OFFER_ID WHERE OFFER_PRODUCT.PRODUCT_ID = '$productId'";
       $arr1 = oci_parse($conn, $sql1);
       oci_execute($arr1);
-      $productDiscount = oci_fetch_array($arr1)[0];
+      $productDiscount = oci_fetch_array($arr1);
+      if(isset($productDiscount[0]))
+        $productDiscount = $productDiscount[0];
+      else
+        $productDiscount = "No offer given";
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
@@ -622,7 +959,10 @@
                 </div>
                 <div class="qty--price">
                     <p>Price: £<?php echo $productPrice; ?></p>
-                    <button>Disable</button>
+                    <form method="POST" action="">
+                        <input type="hidden" value="<?php echo $productId; ?>" name="hidedeleteproduct">
+                        <button type="submit" name="deletepro" class="deletepro">Delete</button>
+                    </form>
                 </div>
             </div>
       
@@ -661,6 +1001,26 @@
 
 
 <div id="onelink4">
+  <div class="adminimage">
+    <h3 style="color: white;">Our team</h3>
+    <?php
+      include("../connectionPHP/connect.php");
+      $sql = "SELECT IMAGE FROM MART_USER WHERE USER_ID = 7";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $imagepath = oci_fetch_array($arr)[0];
+    ?>
+    <img src="../images/<?php echo $imagepath;?>" alt="admin">
+    <form class="uploadpicture" method="POST" action="" enctype="multipart/form-data" >
+      <input type="file" class='adminpic' name="adminpic1">
+      <button class="uploadpic" name="uploadpic">Upload picture</button>
+      <button type="button" class="cancelupload">Cancel</button>
+    </form>
+    <div class="changeadminpicture">
+      <button>Change picture</button>
+    </div>
+    
+  </div>
 <div class="profile-section">
   <?php 
             // $username = $_SESSION['username'];

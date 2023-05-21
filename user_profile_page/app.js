@@ -190,3 +190,22 @@ function wishtocart(){
     })
 }
 wishtocart();
+
+
+const custpic = document.querySelector(".changecustpicture");
+const custpicbtn = document.querySelector(".changecustpicture button");
+
+const uploadpic = document.querySelector(".uploadpicture");
+custpic.addEventListener("click",()=>{
+        uploadpic.style.display = 'flex';
+        custpicbtn.style.display = 'none';
+
+})
+const cancel = document.querySelectorAll(".uploadpicture button")[1];
+if(cancel != null){
+    cancel.addEventListener("click",()=>{
+        uploadpic.style.display = 'none';
+        custpicbtn.style.display = 'block';
+
+    })
+}

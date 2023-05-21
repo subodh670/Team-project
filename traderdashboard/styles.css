@@ -126,7 +126,7 @@ html{
 .productname label, .productprice label{
     margin-bottom: 1em;
 }
-.addproduct form .collection1, .addproduct form .collection2, .collection3{
+.addproduct form .collection1, .addproduct form .collection2,.addproduct form .collection3, .addproduct form .collection4{
     width: 80%;
     margin: 0 auto;
     display: flex;
@@ -138,11 +138,11 @@ html{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
 }
-.addproduct form .collection3{
+.addproduct form .collection5{
     flex-direction: column !important;
-    gap: 1em;
+    gap: 2em;
 }
-.productquantity , .proDescription, .productallergy, .shop{
+.productquantity , .proDescription, .productallergy, .shop, .categoryselect{
     display: flex;
     justify-content: center;
     align-items: start;
@@ -154,7 +154,7 @@ html{
     margin-right: 1em;
 }
 .btnaddpro{
-    width: 50%;
+    width: 40%;
     padding: 1em;
     display: flex;
     justify-content: center;
@@ -292,10 +292,10 @@ html{
  }
  @keyframes animatepanel {
     from{
-        transform: translate(-100%, -45%);
+        transform: translate(-100%, -53%);
     }
     to{
-        transform: translateX(-40%, -45%);
+        transform: translateX(-40%, -53%);
     }
  }
  .editingpanelpro{
@@ -306,10 +306,10 @@ html{
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translate(-40%,-45%);
+    transform: translate(-40%,-53%);
     left: 50%;
     top: 50%;
-    height: 90vh;
+    height: 110vh;
     z-index: 5;
     border-radius: 8px;
     animation-duration: 0.6s;
@@ -327,12 +327,12 @@ html{
  .editingpanelpro form{
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: start;
     flex-direction: column;
     gap: 1.5em;
  }
- .editingpanelpro .collect0, .editingpanelpro .collect1, .editingpanelpro .collect2, .editingpanelpro .collect3{
+ .editingpanelpro .collect0, .editingpanelpro .collect1, .editingpanelpro .collect2, .editingpanelpro .collect3, .editingpanelpro .collect4{
     width: 70%;
     margin: auto;
     display: flex;
@@ -406,7 +406,7 @@ html{
 .addshop p{
     color: var(--tertiary-color);
 }
-.addshop form{
+.addshop .shopnew{
     width: 60%;
     background-color: var(--selected);
     margin: 0 auto;
@@ -935,11 +935,11 @@ form .xmark i{
     margin-top: 2em;
     width: 70%;
     margin: auto;
-    font-size: 1.4rem;
-    margin-top: 2em;
+    font-size: 1rem;
+    margin-top: 2em; 
     background-color: var(--primary-color);
     color: white;
-    padding: 2em;
+    padding: 1em;
     border-radius: 8px;
     animation-name: animationwelcome;
     animation-duration: 0.6s;
@@ -948,4 +948,73 @@ form .xmark i{
 }
 #onelink{
     padding: 3em;
+}
+
+/* trader picture */
+
+@keyframes imageanim {
+    from{
+        transform: translateX(70%);
+    }
+    to{
+        transform: translateX(0%);
+    }
+}
+
+.traderimage{
+    width: 50%;
+    margin: auto;
+    padding: 2em;
+    border: 2px solid var(--primary-color);
+    background-color: var(--primary-color);
+    margin-top: 2em;
+    margin-bottom: 2em;
+    animation-name: imageanim;
+    animation-duration: 0.4s;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    border-radius: 12px;
+
+}
+.traderimage img{
+    width: 90%;
+    min-height: 100px;
+}
+.changetraderpicture{
+    width: 40%;
+    margin: auto;
+    margin-top: 1em;
+}
+.changetraderpicture button, .uploadpicture button{
+    background-color: var(--tertiary-color);
+    padding: 0.4em 0.6em;
+    border-width: 0px;
+    color: white;
+    transition: 0.6s;
+}
+.changetraderpicture button:hover, .uploadpicture button:hover{
+    background-color: var(--secondary-color);
+}
+.uploadpicture{
+    margin-top: 1em;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 2em;
+}
+.uploadpicture .cancelupload{
+    width: 50%;
+    background-color: var(--tertiary-color);
+    padding: 0.4em 0.6em;
+    border-width: 0px;
+    color: white;
+    transition: 0.6s;
+}
+.uploadpicture input, .uploadpicture button{
+    width: 50%;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+
 }

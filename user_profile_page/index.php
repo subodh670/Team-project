@@ -62,7 +62,7 @@ include("../connectionPHP/inc_session.php");
                         }
                         else{
                             // $_SESSION['errorconfirm'] = true;
-                            $errorconfirmpass = "<p>Error: Passwords do not match with the database</p>";
+                            $errorconfirmpass = "<p>Error: Passwords do not match</p>";
 
                         }
                     }
@@ -75,7 +75,7 @@ include("../connectionPHP/inc_session.php");
                 }   
                 else{
                     // $_SESSION['matchpass'] = true;
-                    $errornotmatch = "<p>Passwords do not match!!</p>";
+                    $errornotmatch = "<p>Passwords do not match with database!!</p>";
                     
                 }
     
@@ -86,6 +86,7 @@ include("../connectionPHP/inc_session.php");
     <div class="backdrop hidebackdrop">
 
     </div>
+   
     <div class="updatepass hidepass" >
         <form action="" method="POST">
             <div class="xmark1">
@@ -236,17 +237,60 @@ include("../connectionPHP/inc_session.php");
 
 
     <section class="userInfo">
+    <?php
+    $imageupload = "";
+    $imageuploaded = "";
+    $imagepath = "";
+    $username = $_SESSION['username'];
+  include("../connectionPHP/connect.php");
+    if(isset($_POST['uploadpic'])){
+      if(!empty($_FILES['custpic1']['name'])){
+        $target_dir = "../images/";
+        $target_file = $target_dir . basename($_FILES["custpic1"]["name"]);
+        $image = basename($_FILES["custpic1"]["name"]);
+        if (move_uploaded_file($_FILES["custpic1"]["tmp_name"], $target_file)) {
+          $imageuploaded = "<p>The file ". htmlspecialchars( basename( $_FILES["custpic1"]["name"])). " has been uploaded.</p>";
+      } else {
+          $imageupload = "<p>Error: Sorry, there was an error uploading your file.</p>";
+        //   $image = null;
+      }
+      $sql = "UPDATE MART_USER SET IMAGE = '$image' WHERE USERNAME = '$username'";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $_SESSION['image'] = $image;
+      }
+      else{
+        $imagepath = "<p>Please specify the image path</p>";
+      }
+    }
+    
+
+?>
         <p>Hello, <?php echo $_SESSION['firstname']." ".$_SESSION['lastname']; ?></p>
         <h1>Manage my Account</h1>
+        <div class="processtoupload">
         <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="">
+        <form class="uploadpicture" method="POST" action="" enctype="multipart/form-data" >
+      <input type="file" class='custpic' name="custpic1">
+      <button class="uploadpic" name="uploadpic">Upload picture</button>
+      <button type="button" class="cancelupload">Cancel</button>
+    </form>
+    <div style="width: 100%; display: flex; justify-content: right; align-items: center; " class="changecustpicture">
+      <button>Change picture</button>
+    </div>
+        </div>
+        
     </section>
     <section class="errorsflash">
     <?php
-        if($errornewPass != "" || $errorconfirmpass != "" || $flashvalidated!= "" || $errornotmatch != "" ){
+        if($errornewPass != "" || $errorconfirmpass != "" || $flashvalidated!= "" || $errornotmatch != "" || $imageupload != "" || $imageuploaded != "" || $imagepath != "" ){
             echo $errornewPass;
             echo $errorconfirmpass;
             echo $flashvalidated;
             echo $errornotmatch;
+            echo $imageupload;
+            echo $imageuploaded;
+            echo $imagepath;
         }
 
 ?>

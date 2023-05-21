@@ -14,6 +14,90 @@
   <div class="backdrop hidebackdrop">
     
   </div>
+  <?php
+  $errornewPass = "";
+  $errorconfirmpass = "";
+  $flashvalidated = "";
+  $errornotmatch = "";
+  function validatePass($pass){
+      $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/";
+      if(preg_match($password_regex, $pass)){
+          return true;
+      }
+      else{
+          return false;   
+      }
+  } 
+  if(isset($_POST['updatepassbtn'])){
+      include("../connectionPHP/connect.php");
+      // $username = $_SESSION['username'];
+      // $username = 'ADMIN';
+      $sql = "SELECT PASSWORD FROM MART_USER WHERE USER_ID = 1029";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $pass = oci_fetch_array($arr)[0];
+      $oldpass = sha1($_POST['oldpass']);
+      $newpass = $_POST['newpass'];
+      $cpass = $_POST['cpass'];
+      if($pass == $oldpass){
+          if(validatePass($newpass) == true){
+              if($newpass == $cpass){
+                  $newpass1 = sha1($newpass);
+                  $sql = "UPDATE MART_USER SET PASSWORD = '$newpass1' WHERE USER_ID = '1029'";
+                  $array = oci_parse($conn, $sql);
+                  oci_execute($array);
+                  $_SESSION['password'] = $newpass1;
+                  $flashvalidated = "<p>Password updated!!</p>";
+              }
+              else{
+                  // $_SESSION['errorconfirm'] = true;
+                  $errorconfirmpass = "<p>Error: Passwords do not match</p>";
+
+              }
+          }
+          else{
+              // $_SESSION['errorvalidpass'] = true;
+              $errornewPass = "<p>Error: Password must be 8 characters, one uppercase, one lowercase, one digit and one special character!!</p>";
+
+
+          }
+      }   
+      else{
+          // $_SESSION['matchpass'] = true;
+          $errornotmatch = "<p>Passwords do not match with database!!</p>";
+          
+      }
+
+  }
+  ?>
+    <div class="updatepass hidepass" >
+        <form action="" method="POST">
+            <div class="xmark1">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            
+            <h3>Update password</h3>
+            <div class="oldpassword">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="oldpass" placeholder="old password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="newpassword">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="newpass" placeholder="new password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="confirmpass">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="password" name="cpass" placeholder="confirm password">
+                <p class='errorpass'></p>
+            </div>
+            <div class="updatebtn">
+                <button type="submit" name="updatepassbtn">Update</button>
+            </div>
+
+        </form>
+    </div>
   <div class="editprofile hideEditprofile">
         <form method="POST" action="">
         <div class="xmark">
@@ -121,22 +205,140 @@
 
 
 <div id="onelink" class="reports">
+  
   <?php
-  // session_start();
-// if(isset($_SESSION['offerdelete'])){
-//   echo "<p>Offer is deleted!!</p>";
-//   unset($_SESSION['offerdelete']);
+  include("../connectionPHP/connect.php");
+    if(isset($_POST['uploadpic'])){
+      if(!empty($_FILES['traderpic1']['name'])){
+        $target_dir = "../images/";
+        $target_file = $target_dir . basename($_FILES["traderpic1"]["name"]);
+        $image = basename($_FILES["traderpic1"]["name"]);
+        if (move_uploaded_file($_FILES["traderpic1"]["tmp_name"], $target_file)) {
+          echo "<p>The file ". htmlspecialchars( basename( $_FILES["adminpic1"]["name"])). " has been uploaded.</p>";
+      } else {
+          echo "<p>Error: Sorry, there was an error uploading your file.</p>";
+          $image = null;
+      }
+      $sql = "UPDATE MART_USER SET IMAGE = '$image' WHERE USER_ID = 7";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      }
+      else{
+        echo "<p>Please specify the image path</p>";
+      }
+    }
+    
+
+?>
+<section class="errorsflash">
+    <?php
+        if($errornewPass != "" || $errorconfirmpass != "" || $flashvalidated!= "" || $errornotmatch != "" ){
+            echo $errornewPass;
+            echo $errorconfirmpass;
+            echo $flashvalidated;
+            echo $errornotmatch;
+        }
+
+?>
+    </section>
+  <?php
+  $pquanterror = false;
+  $ppriceError = false;
+  $pdescerror = false;
+  
+  if(isset($_POST['updateproduct'])){
+  //   echo $_POST['pname1'];
+  // echo $_POST['pprice1'];
+  // echo $_POST['pquant1'];
+  // echo $_POST['prodesc1'];
+  // echo $_POST['pallergy1'];
+  // echo $_POST['shopname1'];
+  // echo  $_POST['pmanudate1'];
+  // echo  $_POST['pexpiredate1'];
+    if(!empty($_POST['pname1']) && !empty($_POST['pprice1']) && !empty($_POST['pquant1']) && !empty($_POST['prodesc1']) && !empty($_POST['pallergy1']) && !empty($_POST['shopname1']) && !empty($_POST['pmanudate1']) && !empty($_POST['pexpiredate1'])){
+      $pname = $_POST['pname1'];
+      $pprice = $_POST['pprice1'];
+      $pquant = $_POST['pquant1'];
+      $pdesc = $_POST['prodesc1'];
+      $pallergy = $_POST['pallergy1'];
+      $pshop = $_POST['shopname1'];
+      $pmanudate = $_POST['pmanudate1'];
+      $pexpiredate = $_POST['pexpiredate1'];
+      $pid = $_POST['pidupdate'];
+      echo $pid;
+      if(is_numeric($pquant)){
+        $pquanterror = false;
+      }
+      else{
+        $pquanterror = true;
+      }
+      if(is_numeric($pprice)){
+        $ppriceError = false;
+      }
+      else{
+        $ppriceError = true;
+      }
+      $splittedDesc = explode(" ", $pdesc);
+      $count = count($splittedDesc);
+      echo $count;
+      if($count >= 20 && $count <= 50){
+        $pdescerror = false;
+      }
+      else{
+        $pdescerror = true;
+      }
+    if($pquanterror == false && $pdescerror == false && $ppriceError == false){
+      $sql = "UPDATE PRODUCT SET NAME = '$pname', PRICE = '$pprice', STOCK_AVAILABLE ='$pquant', DESCRIPTION = '$pdesc', MINIMUM_ORDER = '20', ALLERGY_INFORMATION = '$pallergy', FK_SHOP_ID = '$pshop', STATUS = '1',PRODUCT_REGISTERED = 'no', MANUFACTURE_DATE = TO_DATE(:pmanudate, 'YYYY-MM-DD'), EXPIRY_DATE = TO_DATE(:pexpiredate, 'YYYY-MM-DD')  WHERE PRODUCT_ID = '$pid'";   
+      $arr = oci_parse($conn, $sql);
+      oci_bind_by_name($arr, ':pmanudate', $pmanudate);
+      oci_bind_by_name($arr, ':pexpiredate', $pexpiredate);
+      oci_execute($arr);
+    }
+    else{
+      if($pquanterror == true){
+        echo "<p>Quantity must be in number</p>";
+      }
+      if($ppriceError == true){
+        echo "<p>Price must be in number</p>";
+      }
+      if($pdescerror == true){
+        echo "<p>Description should be between 20 and 50 words!!</p>";
+      }
+    }
+  }
+  else{
+    echo "<p>No fields can be empty</p>";
+  }
+  }
 // }
   ?>
 <?php
       if(isset($_POST['addproduct'])){
-        if(!empty($_POST['pname']) && !empty($_POST['pprice']) && !empty($_POST['pquant']) && !empty($_POST['prodesc']) && !empty($_POST['pallergy']) && !empty($_POST['shopname'])){
+        if(!empty($_POST['pname']) && !empty($_POST['pprice']) && !empty($_POST['pquant']) && !empty($_POST['prodesc']) && !empty($_POST['pallergy']) && !empty($_POST['shopname']) && !empty($_POST['pmanudate']) && !empty($_POST['pexpiredate']) && !empty($_POST['categorypro'])){
           $pname = $_POST['pname'];
           $pprice = $_POST['pprice'];
           $pquant = $_POST["pquant"];
           $pdesc = $_POST['prodesc'];
           $pallergy = $_POST['pallergy'];
+          $pmanudate = $_POST['pmanudate'];
+          $pexpiredate = $_POST['pexpiredate'];
+          $categoryproduct = $_POST['categorypro'];
+          $categoryothers = $_POST['othercategory'];
+          // $pmanudate = $_POST['p']
           $pshop = $_POST['shopname'];
+          if($categoryproduct == 'others'){
+            if(!empty($categoryothers)){
+              $cat = $categoryothers;
+              $pcaterror = false;
+            }
+            else{
+              $pcaterror = true;
+            }
+          }
+          else{
+            $cat = $categoryproduct;
+            $pcaterror = false;
+          }
           if(is_numeric($pquant)){
             $pquanterror = false;
           }
@@ -185,9 +387,44 @@
             echo "<p>Error: Sorry, there was an error uploading your third image.</p>";
             $image3 = null;
           }
-          if($pquanterror == false && $pdescerror == false && $ppriceError == false && $image1 != null && $image2 != null && $image3 != null){
-              $sql = "INSERT INTO PRODUCT(PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, ) VALUES()";
-              echo "hello";
+          if($pquanterror == false && $pdescerror == false && $ppriceError == false && $image1 != null && $image2 != null && $image3 != null && $pcaterror == false){
+            if($categoryproduct != 'others'){
+              $sql = "INSERT INTO PRODUCT(NAME, PRICE, STOCK_AVAILABLE, DESCRIPTION, MINIMUM_ORDER, ALLERGY_INFORMATION, MANUFACTURE_DATE, EXPIRY_DATE, IMAGE1, IMAGE2, IMAGE3, FK_CATEGORY_ID, FK_SHOP_ID, STATUS,PRODUCT_REGISTERED ) VALUES('$pname', '$pprice', '$pquant', '$pdesc', '20', '$pallergy', TO_DATE(:pmanudate, 'YYYY-MM-DD'), TO_DATE(:pexpiredate, 'YYYY-MM-DD'), '$image1', '$image2', '$image3','$cat','$pshop' , '1', 'yes')";
+              $arr = oci_parse($conn, $sql);
+              oci_bind_by_name($arr, ':pmanudate', $pmanudate);
+              oci_bind_by_name($arr, ':pexpiredate', $pexpiredate);
+              oci_execute($arr);
+            }
+            else{
+              $sql = "SELECT CATEGORY_NAME, CATEGORY_ID FROM CATEGORY WHERE CATEGORY_NAME = '$cat' AND FK_USER_ID = 1029";
+              $arr = oci_parse($conn, $sql);
+              oci_execute($arr);
+              $uniquecat = oci_fetch_array($arr);
+              if(isset($uniquecat[0])){
+                $cat_id = $uniquecat[1];
+                $sql = "INSERT INTO PRODUCT(NAME, PRICE, STOCK_AVAILABLE, DESCRIPTION, MINIMUM_ORDER, ALLERGY_INFORMATION, MANUFACTURE_DATE, EXPIRY_DATE, IMAGE1, IMAGE2, IMAGE3, FK_CATEGORY_ID, FK_SHOP_ID, STATUS,PRODUCT_REGISTERED ) VALUES('$pname', '$pprice', '$pquant', '$pdesc', '20', '$pallergy', TO_DATE(:pmanudate, 'YYYY-MM-DD'), TO_DATE(:pexpiredate, 'YYYY-MM-DD'), '$image1', '$image2', '$image3','$cat_id','$pshop', '1', 'yes')";
+                $arr = oci_parse($conn, $sql);
+                oci_bind_by_name($arr, ':pmanudate', $pmanudate);
+                oci_bind_by_name($arr, ':pexpiredate', $pexpiredate);
+                oci_execute($arr);
+              }
+              else{
+                $sql = "INSERT INTO CATEGORY(CATEGORY_NAME, CATEGORY_DESCRIPTION, STATUS, FK_USER_ID) VALUES('$cat', 'Category for trader 1029', 1 , 1029)";
+                $arr = oci_parse($conn, $sql);
+                oci_execute($arr);
+                $sql = "SELECT CATEGORY_ID FROM CATEGORY WHERE CATEGORY_NAME = '$cat' AND FK_USER_ID = '1029'";
+                $arr = oci_parse($conn, $sql);
+                oci_execute($arr);
+                $cat_id = oci_fetch_array($arr)[0];
+                $sql = "INSERT INTO PRODUCT(NAME, PRICE, STOCK_AVAILABLE, DESCRIPTION, MINIMUM_ORDER, ALLERGY_INFORMATION, MANUFACTURE_DATE, EXPIRY_DATE, IMAGE1, IMAGE2, IMAGE3, FK_CATEGORY_ID, FK_SHOP_ID, STATUS,PRODUCT_REGISTERED ) VALUES('$pname', '$pprice', '$pquant', '$pdesc', '20', '$pallergy', TO_DATE(:pmanudate, 'YYYY-MM-DD'), TO_DATE(:pexpiredate, 'YYYY-MM-DD'), '$image1', '$image2', '$image3','$cat_id','$pshop', '1', 'yes')";
+                $arr = oci_parse($conn, $sql);
+                oci_bind_by_name($arr, ':pmanudate', $pmanudate);
+                oci_bind_by_name($arr, ':pexpiredate', $pexpiredate);
+                oci_execute($arr);
+              }
+              
+            }
+            // echo "hello";
           }
           else{
             if($pquanterror == true){
@@ -198,6 +435,9 @@
             }
             if($pdescerror == true){
               echo "<p>Description should be between 20 and 50 words!!</p>";
+            }
+            if($pcaterror == true){
+              echo "<p>product category field is empty!!</p>";
             }
           }
         }
@@ -253,7 +493,7 @@
     <div class="addshop">
       <h3>Add Shop</h3>
       <p>According to cleckhfmart rules and regulations only two shops can be allowed per trader.</p>
-      <form class="shopnew" method="POST" action="">
+      <div class="shopnew" method="POST" action="">
         <div class="shop-name">
           <label for="shop--name">Shop Name</label>
           <input type="text" name="shop--name" id="shop--name" placeholder="eg: dairy"> 
@@ -269,7 +509,7 @@
         <div class="addshopbtn">
           <button name="addshop">Add Shop</button>
         </div>
-      </form>
+      </div>
     </div>
 </div>
 <!-- finished first page add product -->
@@ -372,13 +612,13 @@
         <div class="collection2">
         <div class="productmanudate">
             <label for="pmanudate">Product Manufacture Date</label>
-            <input type="text" name="pmanudate" id="pmanudate" placeholder="eg: DD/MM/YYYY">
+            <input type="date" name="pmanudate" id="pmanudate" placeholder="eg: DD/MM/YYYY">
         </div>
         <div class="productexpiredate">
             <label for="pexpiredate">
                 Product Expiry Date
             </label>
-            <input type="text" name="pexpiredate" id="pexpiredate" placeholder="eg: eg: DD/MM/YYYY">
+            <input type="date" name="pexpiredate" id="pexpiredate" placeholder="eg: eg: DD/MM/YYYY">
         </div>
         </div>
         <div class="collection3">
@@ -390,12 +630,24 @@
             <label for="shopname">
                 Shop(*)
             </label>
-            <select name="shopname[]" id="shopname">
+            <select name="shopname" id="shopname">
                 <option value="">Butchers</option>
             </select>
         </div>
         </div>
         <div class="collection4">
+        <div class="categoryselect">
+            <label for="categoryselect">
+                Category(*)
+            </label>
+            <select name="categorypro" id="category">
+                <option value="">category1</option>
+            </select>
+            <!-- <label for="othercat">Add your own category</label> -->
+            <input id='othercat' type="hidden" name="othercategory" placeholder='add your own category'>
+        </div>
+        </div>
+        <div class="collection5">
             <div class="image1">
                 <label for="image1">
                 First image(*)
@@ -411,7 +663,7 @@
             <div class="image3">
                 <label for="image3">
                 Third image(*)
-            </label>
+           </label>
             <input type="file" name="image3" id="image3">
             </div>
             
@@ -433,15 +685,22 @@
      <h1>Disable Product</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029 AND PRODUCT.STATUS = 1";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, PRODUCT.PRODUCT_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID  AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029 AND PRODUCT.STATUS = 1";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
-      $productDiscountID = $rows[5];
-      $sql1 = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $productId = $rows[5];
+      
+      $sql1 = "SELECT OFFER_PERCENTAGE
+      FROM OFFER
+      INNER JOIN OFFER_PRODUCT ON OFFER.OFFER_ID = OFFER_PRODUCT.OFFER_ID WHERE OFFER_PRODUCT.PRODUCT_ID = '$productId'";
       $arr1 = oci_parse($conn, $sql1);
       oci_execute($arr1);
-      $productDiscount = oci_fetch_array($arr1)[0];
+      $productDiscount = oci_fetch_array($arr1);
+      if(isset($productDiscount[0]))
+        $productDiscount = $productDiscount[0];
+      else
+        $productDiscount = "No offer given";
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
@@ -468,7 +727,6 @@
 
                 </div>
                 <div class="qty--price">
-                    <p>Qty :<?php echo ""; ?></p>
                     <p>Price: £<?php echo $productPrice; ?></p>
                     <button>Disable</button>
                 </div>
@@ -484,15 +742,24 @@
    <h1>Enable Product</h1>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029 AND PRODUCT.STATUS = 0";
+    // $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029 AND PRODUCT.STATUS = 0";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, PRODUCT.PRODUCT_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID  AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029 AND PRODUCT.STATUS = 0";
+
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
-      $productDiscountID = $rows[5];
-      $sql1 = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
+      $productId = $rows[5];
+      
+      $sql1 = "SELECT OFFER_PERCENTAGE
+      FROM OFFER
+      INNER JOIN OFFER_PRODUCT ON OFFER.OFFER_ID = OFFER_PRODUCT.OFFER_ID WHERE OFFER_PRODUCT.PRODUCT_ID = '$productId'";
       $arr1 = oci_parse($conn, $sql1);
       oci_execute($arr1);
-      $productDiscount = oci_fetch_array($arr1)[0];
+      $productDiscount = oci_fetch_array($arr1);
+      if(isset($productDiscount[0]))
+        $productDiscount = $productDiscount[0];
+      else
+        $productDiscount = "No offer given";
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
@@ -519,7 +786,6 @@
 
                 </div>
                 <div class="qty--price">
-                    <p>Qty :<?php echo ""; ?></p>
                     <p>Price: £<?php echo $productPrice; ?></p>
                     <button>Enable</button>
                 </div>
@@ -536,7 +802,7 @@
 <div id="threelink2">
 <div class="editproduct">
   <div class="editingpanelpro hidemodal">
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
+    <form action="" method="POST" enctype="multipart/form-data">
       <h3>Edit Product</h3>
       <div class="cross">
         <i class="fa-solid fa-xmark"></i>
@@ -544,39 +810,53 @@
         <div class="collect0">
         <div class="productname">
             <label for="pname">Product Name(*)</label>
-            <input type="text" name="pname" id="pname" placeholder= "eg: salmon fish">
+            <input type="text" name="pname1" id="pname" placeholder= "eg: salmon fish">
         </div>
         <div class="productprice">
             <label for="pprice">Product Price(*)(in £) </label>
-            <input type="text" name="pprice" id="pprice" placeholder= "eg: 8">
+            <input type="text" name="pprice1" id="pprice" placeholder= "eg: 8">
         </div>
         </div>
         <div class="collect2">
         <div class="productquantity">
             <label for="pquant">Product Quantity(*)</label>
-            <input type="text" name="pquant" id="pquant" placeholder="eg: 6">
+            <input type="text" name="pquant1" id="pquant" placeholder="eg: 6">
         </div>
         <div class="proDescription">
             <label for="prodesc">Product Description(*)</label>
-            <textarea name="prodesc" id="prodesc" cols="20" rows="5"></textarea>
+            <textarea name="prodesc1" id="prodesc" cols="20" rows="5"></textarea>
         </div>
         </div>
         <div class="collect3">
-        <div class="productallergy">
-            <label for="pallergy">Product Allergy(*)</label>
-            <input type="text" name="pallergy" id="pallergy" placeholder="eg: lactose allergy">
-        </div>
+          <div class="productallergy">
+              <label for="pallergy">Product Allergy(*)</label>
+              <input type="text" name="pallergy1" id="pallergy" placeholder="eg: lactose allergy">
+          </div>
         <div class="shop">
+          <label for="shopname1">
                 Shop(*)
             </label>
-            <select name="shopname[]" id="shopname">
+            <select name="shopname1" id="shopname1">
                 <option value="">Butchers</option>
             </select>
         </div>
         </div>
+        <div class="collect4">
+          <div class="productmanudate">
+            <label for="pmanudate">Product Manufacture Date</label>
+            <input type="date" name="pmanudate1" id="pmanudate" placeholder="eg: DD/MM/YYYY">
+        </div>
+        <div class="productexpiredate">
+            <label for="pexpiredate">
+                Product Expiry Date
+            </label>
+            <input type="date" name="pexpiredate1" id="pexpiredate" placeholder="eg: eg: DD/MM/YYYY">
+        </div>
+        </div>
         
         <div class="btnaddpro">
-            <button type="submit" name="editproduct" class="editproduct">Add product</button>
+          <input type="hidden" name="pidupdate" class='pidupdate'>
+            <button type="submit" name="updateproduct" class="editproduct">Update</button>
         </div>
         
         
@@ -585,17 +865,25 @@
    <h3 style="color: var(--secondary-color); margin-top: 2em;">Edit Product</h3>
     <?php  
     include("../connectionPHP/connect.php");
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED, PRODUCT.PRODUCT_ID FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
+    // $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED, PRODUCT.PRODUCT_ID FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, PRODUCT.PRODUCT_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID  AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
+
     
     // $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
-      $productDiscountID = $rows[5];
-      $sql = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
-      $arr = oci_parse($conn, $sql);
-      oci_execute($arr);
-      $productDiscount = oci_fetch_array($arr)[0];
+      $productId = $rows[5];
+      $sql1 = "SELECT OFFER_PERCENTAGE
+      FROM OFFER
+      INNER JOIN OFFER_PRODUCT ON OFFER.OFFER_ID = OFFER_PRODUCT.OFFER_ID WHERE OFFER_PRODUCT.PRODUCT_ID = '$productId'";
+      $arr1 = oci_parse($conn, $sql1);
+      oci_execute($arr1);
+      $productDiscount = oci_fetch_array($arr1);
+      if(isset($productDiscount[0]))
+        $productDiscount = $productDiscount[0];
+      else
+        $productDiscount = "No offer given";
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
@@ -605,7 +893,7 @@
       $productImage = $rows[7];
       $productStatus = $rows[8];
       $productRegistered = $rows[9];
-      $productId = $rows[10];
+      // $productId = $rows[10];
       ?>
       <div class="productenabled">
                 <div class="img--info">
@@ -624,7 +912,6 @@
 
                 </div>
                 <div class="qty--price">
-                    <p>Qty :<?php echo ""; ?></p>
                     <p>Price: £<?php echo $productPrice; ?></p>
                     <button class="edittriggerpro">Edit product</button>
                 </div>
@@ -644,16 +931,23 @@
     <?php  
     include("../connectionPHP/connect.php");
     // $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 1029";
-    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED, PRODUCT.PRODUCT_ID FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
-
+    // $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED, PRODUCT.PRODUCT_ID FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, PRODUCT.PRODUCT_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID  AND MART_USER.ROLE = 'trader' AND MART_USER.USER_ID = 1029";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     while($rows = oci_fetch_array($arr)){
-      $productDiscountID = $rows[5];
-      $sql = "SELECT OFFER_PERCENTAGE FROM OFFER WHERE OFFER_ID = '$productDiscountID'";
-      $arr = oci_parse($conn, $sql);
-      oci_execute($arr);
-      $productDiscount = oci_fetch_array($arr)[0];
+      $productId = $rows[5];
+      
+      $sql1 = "SELECT OFFER_PERCENTAGE
+      FROM OFFER
+      INNER JOIN OFFER_PRODUCT ON OFFER.OFFER_ID = OFFER_PRODUCT.OFFER_ID WHERE OFFER_PRODUCT.PRODUCT_ID = '$productId'";
+      $arr1 = oci_parse($conn, $sql1);
+      oci_execute($arr1);
+      $productDiscount = oci_fetch_array($arr1);
+      if(isset($productDiscount[0]))
+        $productDiscount = $productDiscount[0];
+      else
+        $productDiscount = "No offer given";
       $productName = $rows[0];
       $productPrice = $rows[1];
       $productQuant = $rows[2];
@@ -663,7 +957,7 @@
       $productImage = $rows[7];
       $productStatus = $rows[8];
       $productRegistered = $rows[9];
-      $productId = $rows[10];
+      // $productId = $rows[10];
       ?>
       <div class="productenabled">
                 <div class="img--info">
@@ -682,7 +976,6 @@
 
                 </div>
                 <div class="qty--price">
-                    <p>Qty :<?php echo ""; ?></p>
                     <p>Price: £<?php echo $productPrice; ?></p>
                     <button class="edittriggerpro">Delete product</button>
                 </div>
@@ -936,6 +1229,26 @@
 
 
 <div id="onelink4">
+<div class="traderimage">
+    <h3 style="color: white;">Our team</h3>
+    <?php
+      include("../connectionPHP/connect.php");
+      $sql = "SELECT IMAGE FROM MART_USER WHERE USER_ID = 1029";
+      $arr = oci_parse($conn, $sql);
+      oci_execute($arr);
+      $imagepath = oci_fetch_array($arr)[0];
+    ?>
+    <img src="../images/<?php echo $imagepath;?>" alt="trader">
+    <form class="uploadpicture" method="POST" action="" enctype="multipart/form-data" >
+      <input type="file" class='traderpic' name="traderpic1">
+      <button class="uploadpic" name="uploadpic">Upload picture</button>
+      <button type="button" class="cancelupload">Cancel</button>
+    </form>
+    <div class="changetraderpicture">
+      <button>Change picture</button>
+    </div>
+    
+  </div>
   <div class="profile-section">
   <?php 
             // $username = $_SESSION['username'];

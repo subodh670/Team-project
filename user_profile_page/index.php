@@ -210,12 +210,16 @@ include("../connectionPHP/inc_session.php");
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
+                        $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        $cid = oci_fetch_array($array)[0];
+                        $sql = "SELECT PRODUCT_CART.CART_ID, PRODUCT_CART.TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
                         while($numbers = oci_fetch_array($array)){
-                            $totalnum += $numbers[0];
+                            $totalnum += $numbers[1];
                         }
                     
                     }
@@ -267,7 +271,17 @@ include("../connectionPHP/inc_session.php");
 
 ?>
         <p>Hello, <?php echo $_SESSION['firstname']." ".$_SESSION['lastname']; ?></p>
-        <h1>Manage my Account</h1>
+        <h1 style="color: var(--secondary-color);">Manage my Account</h1>
+
+        <div class="btn-holder">
+            <div class="btn-circle"></div>
+            <input type="checkbox" class="checkbox">
+        </div>
+        <span style="color: var(--secondary-color);">light mode</span>
+        <?php
+        // $_SESSION['color'] = 
+        ?>
+
         <div class="processtoupload">
         <img src="<?php echo '../images/'.$_SESSION['image']; ?>" alt="">
         <form class="uploadpicture" method="POST" action="" enctype="multipart/form-data" >
@@ -439,7 +453,7 @@ include("../connectionPHP/inc_session.php");
                     </div>
                     <h3><?php echo $productPrice;  ?></h3>
                     <?php
-                    $sql1 = "SELECT CART_ID FROM CART WHERE ITEMS = '$productName' AND FK_USER_ID = '$cid'";
+                    $sql1 = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid'";
                     $arr1 = oci_parse($conn, $sql1);
                     oci_execute($arr1);
                     $wishtocartexist = oci_fetch_array($arr1);

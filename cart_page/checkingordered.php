@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     oci_execute($arr);
     $c_id = oci_fetch_array($arr)[0];
     $pid = $_GET['pid'];
-    $sql = "SELECT CART_ID FROM CART, PRODUCT WHERE CART.ITEMS = PRODUCT.NAME AND CART.FK_USER_ID = '$c_id' AND PRODUCT.PRODUCT_ID = '$pid'";
+    $sql = "SELECT CART_ID FROM CART WHERE CART.FK_USER_ID = '$c_id'";
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     $cart_id = oci_fetch_array($arr)[0];

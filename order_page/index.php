@@ -13,9 +13,99 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="backdrop">
+    <div class="backdrop hidebackdrop">
 
     </div>
+    <div class="invoice hideinvoice">
+    <h2>Invoice</h2>
+    <div class="cross">
+    <i class="fa-solid fa-xmark"></i>
+    </div>
+    
+    <div class="item-row">
+      <div class="item-name"><strong>Item Name</strong></div>
+      <div class="item-quantity"><strong>Quantity</strong></div>
+      <div class="item-price"><strong>Price</strong></div>
+      <div class="item-total"><strong>Total</strong></div>
+    </div>
+    
+
+    <?php
+    include("../connectionPHP/connect.php");
+    $username = $_SESSION['username'];
+    $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+    $arr = oci_parse($conn, $sql);
+    oci_execute($arr);
+    $c_id = oci_fetch_array($arr)[0];
+    $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$c_id'";
+    $arr = oci_parse($conn, $sql);
+    oci_execute($arr);
+    $cartId = oci_fetch_array($arr)[0];
+        //   $query = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE FROM PRODUCT_ORDER,PRODUCT,CATEGORY,CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
+          $query = "SELECT ORDERED_PRODUCT.ORDER_ID, ORDERED_PRODUCT.TOTAL_COST, ORDERED_PRODUCT.PRODUCT_ID, ORDERED_PRODUCT.QUANTITY FROM ORDERED_PRODUCT INNER JOIN PRODUCT_ORDER ON ORDERED_PRODUCT.ORDER_ID=PRODUCT_ORDER.ORDER_ID AND FK_CART_ID = $cartId";
+          $arr2 = oci_parse($conn, $query);
+          oci_execute($arr2);
+          while($row = oci_fetch_array($arr2)){
+            $pid = $row[2];
+            $sql = "SELECT NAME, PRICE FROM PRODUCT WHERE PRODUCT_ID = '$pid'";
+            $arr2 = oci_parse($conn, $sql);
+            oci_execute($arr2);
+            $result = oci_fetch_array($arr2);
+            $pname = $result[0];
+            $pprice = $result[1];
+
+            ?>
+    <div class="item-row">
+        <div class="item-name"><?php echo $pname;  ?></div>
+        <div class="item-quantity"><?php echo $row[3];  ?></div>
+        <div class="item-price"><?php echo $pprice;  ?></div>
+        <div class="item-total"><?php echo $row[1];  ?></div>
+    </div>
+            <?php
+          }
+
+    ?>
+    <!-- <div class="item-row">
+      <div class="item-name">Product 1</div>
+      <div class="item-quantity">2</div>
+      <div class="item-price">$10.00</div>
+      <div class="item-total">$20.00</div>
+    </div>
+    
+    <div class="item-row">
+      <div class="item-name">Product 2</div>
+      <div class="item-quantity">1</div>
+      <div class="item-price">$15.00</div>
+      <div class="item-total">$15.00</div>
+    </div> -->
+    <?php
+    // $query = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE FROM PRODUCT_ORDER,PRODUCT,CATEGORY,CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
+    $query = "SELECT DISTINCT ORDERED_PRODUCT.ORDER_ID, ORDERED_PRODUCT.TOTAL_COST FROM ORDERED_PRODUCT INNER JOIN PRODUCT_ORDER ON ORDERED_PRODUCT.ORDER_ID=PRODUCT_ORDER.ORDER_ID AND FK_CART_ID = $cartId";
+    $arr2 = oci_parse($conn, $query);
+    oci_execute($arr2);
+    $sum = 0;
+    while($row = oci_fetch_array($arr2)){
+        $sum += $row[1];
+    }
+    ?>
+    <div class="total-row">
+      <div class="total-label">Subtotal: </div>
+      <div class="total-value"><?php echo $sum; ?></div>
+    </div>
+    <div class="total-row">
+      <div class="total-label">Tax (0%):</div>
+      <div class="total-value">0</div>
+    </div>
+    
+    <div class="total-row">
+      <div class="total-label">Total:</div>
+      <div class="total-value"><?php echo $sum; ?></div>
+    </div>
+    <?php
+    include('../payment/testpaypal.php');
+?> 
+    
+  </div>
     <header>
         <div class="logo">
             <a href="../landing_page/index.php">
@@ -58,12 +148,16 @@
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
+                        $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        $cid = oci_fetch_array($array)[0];
+                        $sql = "SELECT PRODUCT_CART.CART_ID, PRODUCT_CART.TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
                         while($numbers = oci_fetch_array($array)){
-                            $totalnum += $numbers[0];
+                            $totalnum += $numbers[1];
                         }
                     
                     }
@@ -115,7 +209,9 @@
             $c_id = oci_fetch_array($arr)[0];
             // echo $c_id;
             // $sql = "SELECT CART_ID"
-            $sql = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM PRODUCT_ORDER,PRODUCT,CATEGORY, CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
+            // $sql = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM PRODUCT_ORDER,PRODUCT,CATEGORY, CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
+            $sql = "SELECT ORDERED_PRODUCT.QUANTITY, PRODUCT.NAME, ORDERED_PRODUCT.TOTAL_COST, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM ORDERED_PRODUCT,PRODUCT,CATEGORY, CART, PRODUCT_ORDER WHERE ORDERED_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID AND CART.FK_USER_ID = '$c_id'";
+                  
             // $sql = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM PRODUCT, CATEGORY INNER JOIN PRODUCT_ORDER, CART ON "
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
@@ -159,8 +255,6 @@
                 <p class="totalpayment">Total payment: £35</p>
                 <p class="tax">All taxes included</p>
                 <button class="orderbtn">Place order</button>
-           
-
         </div>
     </div>
 </section>

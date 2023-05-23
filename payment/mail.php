@@ -1,8 +1,10 @@
 <?php
-if(mail("gcgintl.00@gmail.com","email","dhgjhcg"))
+if(mail("harogya21@tbc.edu.np","Test email from localhost", "I am message body for the email" ))
 {
-    echo"mail.sent";
+echo "Mail Sent";
 }
-else{
-    echo"invakid";
-}?>
+else
+{
+echo "Unable to send email";
+}
+?>

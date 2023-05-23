@@ -115,56 +115,76 @@ checkingItems();
 // adding checked item to database
 
 
+
+
+
 function addingToOrders(){
     const checkBoxItems = document.querySelectorAll(".productselect .onlyone input");
     const getproductid = document.querySelectorAll(".getproductid");
     const quantities = document.querySelectorAll('.countitem input');
     const slots = document.querySelector('.slots #slotscollection');
     const username = document.querySelector(".usernameFind");
-    let day = new Date(slots.value).getDay();
     let price = document.querySelectorAll(".wish_price_del> p");
     let pName = document.querySelectorAll(".product-desc .desc .itempro");
     // console.log(pName[1].textContent);
-    let slotsValue = slots.value;
     // console.log(day);
     // let slotsValue = "10-13";
     // slots.addEventListener("change",()=>{
     //     slotsValue = slots.options[slots.selectedIndex].value;
     // })
     // console.log(slotsValue);
+    // var z = null;
+    let x = false;
     checkBoxItems.forEach((checkitem,i)=>{
         let productIdValue = getproductid[i];
         let btnIncrease = document.querySelectorAll(".countitem .increase");
         let btnDecrease = document.querySelectorAll(".countitem .decrease");
         checkitem.addEventListener("change",(e)=>{
-            console.log(day);
+            let day = "";
+            let slotsValue = "";
+            // console.log(slots.value);
+            if(slots.value != ""){
+                 slotsValue = slots.value;
+                day = new Date(slots?.value).getDay() + 1;
+            }
+            // console.log(slotsValue);
+            // console.log(day);
             // console.log(slotsValue);
             let isChecked = e.target.matches(':checked'); 
             if(isChecked === true){
+                x = true;
+                console.log(day);
+                // console.log(price[i].textContent);
+                let price1 = price[i].textContent;
+                
                 let xml1 = new XMLHttpRequest();
                 xml1.onreadystatechange = function addXml(){
                     if(this.readyState == 4 && this.status == 200){
                         if(this.responseText != ""){
                             console.log(this.responseText);
                         }
-                        else{
+                        
                             orderCost();
-                        }
                     }
                 }
-                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price[i].textContent.slice(6)}&pname=${pName[i].textContent}`, true);
+                console.log(slotsValue);
+
+                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price1.slice(1)}&pname=${pName[i].textContent}`, true);
                 xml1.send();
             }
             else if(isChecked === false || isChecked === null){
+                x = false;
                 let xml2 = new XMLHttpRequest();
                 xml2.onreadystatechange = function(){
                     if(this.readyState == 4 && this.status == 200){
+                        // console.log(this.responseText);
                         orderCost();
                     }
                 }
                 xml2.open("POST", `deleteorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&pname=${pName[i].textContent}`, true);
                 xml2.send();
             }
+            // var y = x;
             btnIncrease[i].addEventListener("click",()=>{
                 setTimeout(()=>{
                     addingToOrders();
@@ -176,13 +196,72 @@ function addingToOrders(){
                 },1000)
             })
         })
+        // var z = y;
+        btnIncrease[i].addEventListener("click",()=>{
+            // console.log("hello");
+            let y = true;
+            y = x;
+            if(x===false)
+                y = false;
+            let day = "";
+            if(slots.value != ""){
+                day = new Date(slots?.value).getDay() + 1;
+            }
+            let slotsValue = slots.value;
+            if(y===true){
+                let price1 = price[i].textContent;
+                
+                let xml1 = new XMLHttpRequest();
+                xml1.onreadystatechange = function addXml(){
+                    if(this.readyState == 4 && this.status == 200){
+                        if(this.responseText != ""){
+                            console.log(this.responseText);
+                        }
+                        else{
+                            orderCost();
+                        }
+                    }
+                }
+                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price1.slice(1)}&pname=${pName[i].textContent}`, true);
+                xml1.send();
+            }
+            // console.log(price[i]);
+            // price1 = price[i].textContent;
+        })
+        btnDecrease[i].addEventListener("click",()=>{
+            // console.log("hello");
+            let y = true;
+            y = x;
+            if(x===false)
+                y = false;
+            let day = "";
+            if(slots.value != ""){
+                day = new Date(slots?.value).getDay() + 1;
+            }
+            let slotsValue = slots.value;
+            if(y===true){
+                let price1 = price[i].textContent;
+                
+                let xml1 = new XMLHttpRequest();
+                xml1.onreadystatechange = function addXml(){
+                    if(this.readyState == 4 && this.status == 200){
+                        if(this.responseText != ""){
+                            console.log(this.responseText);
+                        }
+                        else{
+                            orderCost();
+                        }
+                    }
+                }
+                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price1.slice(1)}&pname=${pName[i].textContent}`, true);
+                xml1.send();
+            }
+        })
+        // })
     })
+    
 
 }
-
-
-
-
 
 
 //  increasing prices
@@ -276,7 +355,7 @@ function showingsavedProduct(){
     let xml1 = new XMLHttpRequest();
     xml1.onreadystatechange = function(){
         if(this.readyState == 4 && this.status == 200){
-            // console.log(this.responseText);
+            console.log(this.responseText);
            let items = JSON.parse(this.responseText);
             // console.log(items);
             let arr = [];
@@ -341,7 +420,7 @@ function showingsavedProduct(){
                         </div>
                         <div class="countitem">
                             <button class="decrease">-</button>
-                          <input type="number" value="${productssaved??arr1[i]}">
+                          <input type="number" value="${productssaved}">
                           <button class="increase">+</button>
                         </div>
                     </div>
@@ -473,13 +552,14 @@ function showingsavedProduct(){
             trashCart();
             // selectboxMain();
             addingToOrders();
+            orderCost();
 
             checkingItems();
             cartCounter();
             heartItem();
             checkingIfordersHappened();
             updateCartAndTotal();
-
+            // trashOrder();
             function trashCart(){
                 const proidset = document.querySelectorAll(".getProid");
                 const username = document.querySelector(".usernameFind")?.value;
@@ -490,6 +570,7 @@ function showingsavedProduct(){
                         xml.onreadystatechange = function(){
                             if(this.readyState == 4 && this.status == 200){
                                 location.reload(); 
+                                // console.log(this.responseText);
                             }
                         }
                         xml.open("POST", `deleteCartItem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
@@ -498,6 +579,25 @@ function showingsavedProduct(){
                     })
                 })
                  
+            }
+            function trashOrder(){
+                const proidset = document.querySelectorAll(".getProid");
+                const username = document.querySelector(".usernameFind")?.value;
+                const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
+                trashIcon.forEach((trash,i)=>{
+                    trash.addEventListener("click",()=>{
+                        let xml = new XMLHttpRequest();
+                        xml.onreadystatechange = function(){
+                            if(this.readyState == 4 && this.status == 200){
+                                // location.reload(); 
+                                console.log(this.responseText);
+                            }
+                        }
+                        xml.open("POST", `deleteorderitem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
+                        xml.send();
+                        
+                    })
+                })
             }
             
 
@@ -567,8 +667,18 @@ function heartItem(){
 //checkout
 
 let checkout = document.querySelector(".checkout");
+
 checkout.addEventListener("click",()=>{
-    window.location.href = "../order_page/index.php";                                                                                                                                                           
+    const slots = document.querySelector('.slots #slotscollection');
+    console.log(slots.value);
+    if(slots.value != ""){
+        window.location.href = "../order_page/index.php";                                                                                                                                                           
+
+    }
+    else{
+        alert("Collection date is not chosen!!");
+    }
+
 })
 
 //total cost of order
@@ -581,8 +691,9 @@ function orderCost(){
         xml.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
                 if(this.responseText != ""){
+                    console.log(this.responseText);
                     let response = JSON.parse(this.responseText);
-                    console.log(this.responseText);                                 
+                    // console.log(this.responseText);                                 
                     
                     let sum = 0;
                     for(let i=0; i<response.length; i++){
@@ -605,7 +716,6 @@ function orderCost(){
     }
     
 }   
-orderCost();
 // console.log(costOfOrder);
 
 
@@ -617,6 +727,7 @@ function checkingIfordersHappened(){
         let xml = new XMLHttpRequest();
         xml.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
+                console.log(this.responseText);
                 let arr = JSON.parse(this.responseText);
                 // console.log(arr);
                 // console.log(itemName);
@@ -653,7 +764,7 @@ function updateCartAndTotal(){
             let xml = new XMLHttpRequest();
             xml.onreadystatechange = function(){
                 if(this.readyState == 4 && this.status == 200){
-                    // console.log(this.responseText);
+                    console.log(this.responseText);
                     let arr = JSON.parse(this.responseText);
                     if(arr[0]==true){
                     
@@ -663,7 +774,7 @@ function updateCartAndTotal(){
                             let xmlhttp = new XMLHttpRequest();
                             xmlhttp.onreadystatechange = function(){
                                 if(this.readyState == 4 && this.status == 200){
-                                    // console.log(this.responseText);
+                                    console.log(this.responseText);
                                     // console.log(JSON.parse(this.responseText));
                                     if(JSON.parse(this?.responseText)[0]==false){
     

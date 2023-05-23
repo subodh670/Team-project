@@ -209,3 +209,147 @@ if(cancel != null){
 
     })
 }
+
+
+// animated toggle button
+function togglebutton(xyz=null){
+    var allBtns = document.querySelectorAll('.btn-holder');
+    let span = document.querySelector(".userInfo span");
+for (let i =0; i<allBtns.length; i++) {
+    var btn = allBtns[i];
+
+    // btn.addEventListener('click', function () {
+        var allNodes = btn.children;
+
+        // find all childern and check them for add class and change checkbox state
+        for (let j = 0; j < allNodes.length; j++) {
+            var node = allNodes[j];
+            var isActive;
+            if(xyz==='dark'){
+                // if (!node.classList.contains('active')) {
+                    node.classList.add('active');
+                    isActive = true;
+
+                // } 
+            }
+            else if(xyz ==='light'){
+                // if (node.classList.contains('active')) {
+                    node.classList.remove('active');
+                        isActive = false;
+                // } 
+            }
+            else{
+                if (node.classList.contains('btn-circle')) {
+                    if (!node.classList.contains('active')) {
+                        node.classList.add('active');
+                        isActive = true;
+    
+                    } else {
+                        node.classList.remove('active');
+                        isActive = false;
+                    }
+                    
+                }
+            }
+            // check for btn circle and change it's css class
+            
+
+            // check for check box and change it's state
+            if (node.classList.contains('checkbox')) {
+                if (isActive) {
+                    node.checked = true;
+                    document.documentElement.style.setProperty('--primary-color', '#27374D');
+                    document.documentElement.style.setProperty('--secondary-color', '#526D82');
+                    document.documentElement.style.setProperty('--tertiary-color', '#9DB2BF');
+                    document.documentElement.style.setProperty('--black', '#000000');
+                    document.documentElement.style.setProperty('--white', '#DDE6ED');
+                    document.documentElement.style.setProperty('--selected', '#000000');
+                    document.documentElement.style.color = 'white';
+                    span.textContent = 'dark mode';
+                    setCookie('color', 'dark', '2');
+
+                } else {
+                    node.checked = false;
+                    document.documentElement.style.setProperty('--primary-color', '#D10000');
+                    document.documentElement.style.setProperty('--secondary-color', '#0C6980');
+                    document.documentElement.style.setProperty('--tertiary-color', '#228B22');
+                    document.documentElement.style.setProperty('--black', '#000000');
+                    document.documentElement.style.setProperty('--white', '#ffffff');
+                    document.documentElement.style.setProperty('--selected', '#D9D9D9');
+                    document.documentElement.style.color = 'black';
+                    span.textContent = 'light mode';
+                    setCookie('color', 'light', '2');
+
+
+
+                }
+            }
+        }
+    // })
+}
+
+}
+
+
+if(getCookie("color")===null){
+    var allBtns = document.querySelectorAll('.btn-holder');
+    allBtns.forEach((btn)=>{
+        btn.addEventListener("click",()=>{
+            togglebutton(null);
+        })
+    })
+}
+else if(getCookie("color")==='dark'){
+    document.documentElement.style.setProperty('--primary-color', '#27374D');
+    document.documentElement.style.setProperty('--secondary-color', '#526D82');
+    document.documentElement.style.setProperty('--tertiary-color', '#9DB2BF');
+    document.documentElement.style.setProperty('--black', '#000000');
+    document.documentElement.style.setProperty('--white', '#DDE6ED');
+    document.documentElement.style.setProperty('--selected', '#000000');
+    document.documentElement.style.color = 'white';
+    var allBtns = document.querySelectorAll('.btn-holder');
+    allBtns.forEach((btn)=>{
+        btn.addEventListener("click",()=>{
+            togglebutton(null);
+        })
+    })
+}
+else if(getCookie("color")==='light'){
+    document.documentElement.style.setProperty('--primary-color', '#D10000');
+    document.documentElement.style.setProperty('--secondary-color', '#0C6980');
+    document.documentElement.style.setProperty('--tertiary-color', '#228B22');
+    document.documentElement.style.setProperty('--black', '#000000');
+    document.documentElement.style.setProperty('--white', '#ffffff');
+    document.documentElement.style.setProperty('--selected', '#D9D9D9');
+    document.documentElement.style.color = 'black';
+    var allBtns = document.querySelectorAll('.btn-holder');
+    allBtns.forEach((btn)=>{
+        btn.addEventListener("click",()=>{
+            togglebutton(null);
+        })
+    })
+
+}
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";"+"SameSite=None; Secure;" + expires + ";path=/";
+  }
+
+  function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+

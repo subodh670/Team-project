@@ -757,3 +757,32 @@ footer{
     align-items: center; */
 
 }
+
+/* animated toggle button */
+.btn-holder {
+    width: 60px;
+    height: 26px;
+    border-radius: 18px;
+    background-color: #f7d6a3;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+  }
+  .btn-holder .btn-circle {
+    background-color: #6b5e8a;
+    transform: translateX(0px);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    transition: 300ms;
+  }
+  .btn-holder .active {
+    background-color: #da7250;
+    transform: translateX(30px);
+    transition: 300ms;
+  }
+  .btn-holder .checkbox {
+    display: none;
+  }

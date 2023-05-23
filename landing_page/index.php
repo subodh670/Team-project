@@ -38,7 +38,6 @@
         <div class="login_cart_search">
             <?php
         session_start();
-        
         if(isset($_SESSION['username']) && isset($_SESSION['password'])){
             ?>
             <div class="login custprofile">
@@ -64,12 +63,16 @@
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
+                        $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        $cid = oci_fetch_array($array)[0];
+                        $sql = "SELECT PRODUCT_CART.CART_ID, PRODUCT_CART.TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
                         while($numbers = oci_fetch_array($array)){
-                            $totalnum += $numbers[0];
+                            $totalnum += $numbers[1];
                         }
                     
                     }

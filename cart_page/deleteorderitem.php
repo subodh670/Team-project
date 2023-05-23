@@ -48,30 +48,12 @@
             // $array4 = oci_parse($conn, $sql2);
             // oci_execute($array4);
             $sql = "DELETE FROM ORDERED_PRODUCT WHERE ORDER_ID = '$order_id' AND PRODUCT_ID = '$pid'";
-            $array4 = oci_parse($conn, $sql);
+            $array4 = oci_parse($conn, $sql2);
             oci_execute($array4);
-            $sql2 = "SELECT ORDER_ID FROM ORDERED_PRODUCT  WHERE ORDER_ID = '$order_id'";
-            $array = oci_parse($conn, $sql2);
-            oci_execute($array);
-            $count = 0;
-            while($row = oci_fetch_array($array)){
-                $count++;
-            }
-            if($count == 0){
-                $sql = "DELETE FROM PRODUCT_ORDER WHERE ORDER_ID = '$order_id'";
-                $array4 = oci_parse($conn, $sql);
-                oci_execute($array4);
-            }
-            // oci_close($conn);
-
-
+            oci_close($conn);
         }
-        $sql = "DELETE FROM PRODUCT_CART WHERE PRODUCT_ID = '$pid' AND CART_ID = '$cart_id'";
-        $array = oci_parse($conn, $sql);
-        oci_execute($array);
         
     }
 
 
 ?>
-

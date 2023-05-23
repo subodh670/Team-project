@@ -58,14 +58,19 @@
         <?php
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
-                        $username = $_SESSION['username'];
-                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
-                        $array = oci_parse($conn, $sql);
-                        oci_execute($array);
-                        $totalnum = 0;
-                        while($numbers = oci_fetch_array($array)){
-                            $totalnum += $numbers[0];
-                        }
+                      $username = $_SESSION['username'];
+                      $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+                      $array = oci_parse($conn, $sql);
+                      oci_execute($array);
+                      $cid = oci_fetch_array($array)[0];
+                      $sql = "SELECT PRODUCT_CART.CART_ID, PRODUCT_CART.TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid";
+                      $array = oci_parse($conn, $sql);
+                      oci_execute($array);
+                      $totalnum = 0;
+                      while($numbers = oci_fetch_array($array)){
+                          $totalnum += $numbers[1];
+                      }
+                      // echo $totalnum;
                     
                     }
                     else{
@@ -108,7 +113,6 @@
         if($_SESSION['username']){
           include("../connectionPHP/connect.php");
           $username = $_SESSION['username'];
-
           $pid = $_GET['id'];
           // $cid = $_SESSION['cid'];
           // $quantity = $_POST['quantity'];
@@ -117,7 +121,7 @@
           oci_execute($arr);
           $cid = oci_fetch_array($arr)[0];
           // $query1 = "SELECT CART_ID FROM PRODUCT_CART WHERE PRODUCT_CART"
-          $query1 = "SELECT TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid AND PRODUCT_ID = $pid";
+          $query1 = "SELECT PRODUCT_CART.TOTAL_ITEMS, PRODUCT_CART.CART_ID FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid AND PRODUCT_CART.PRODUCT_ID = '$pid'";
           // $query1 = "SELECT P_QUANTITY FROM CART WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid'";
           $arr2 = oci_parse($conn, $query1);
           oci_execute($arr2);
@@ -133,10 +137,10 @@
       }
       $id = $_GET['id'];
       include("../connectionPHP/connect.php");
-      $sql = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME, SHOP.SHOP_ID, MART_USER.USER_ID FROM PRODUCT,CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND SHOP.FK_USER_ID = MART_USER.USER_ID AND PRODUCT_ID = $id";
-      $array = oci_parse($conn, $sql);
-      oci_execute($array);
-      while($row = oci_fetch_array($array)){
+      $sql1 = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME, SHOP.SHOP_ID, MART_USER.USER_ID FROM PRODUCT,CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND SHOP.FK_USER_ID = MART_USER.USER_ID AND PRODUCT_ID = $id";
+      $array1 = oci_parse($conn, $sql1);
+      oci_execute($array1);
+      while($row = oci_fetch_array($array1)){
           $pId = $row[0];
           $pName = $row[1];
           $pPrice = $row[3];
@@ -183,50 +187,84 @@
             $username = $_SESSION['username'];
             $quantity = productIncart()[0];
 
-            if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity && $_POST['quantity'] <= ($pQuantity-$quantity)){
+            // if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity && $_POST['quantity'] <= ($pQuantity-$quantity)){
+              if($_POST['quantity']>0){
               $pid = $_GET['id'];
               $quantity = $_POST['quantity'];
               $query = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
               $arr = oci_parse($conn, $query);
               oci_execute($arr);
               $cid = oci_fetch_array($arr)[0];
-              $query1 = "SELECT PRODUCT_CART.CART_ID, TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid AND PRODUCT_ID = $pid";
+              $query1 = "SELECT PRODUCT_CART.CART_ID, PRODUCT_CART.TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid AND PRODUCT_CART.PRODUCT_ID = '$pid'";
               $arr2 = oci_parse($conn, $query1);
               oci_execute($arr2);
               $finalArr = oci_fetch_array($arr2);
-              $exist = $finalArr;
+              $exist = $finalArr; 
+              $productExist[] = null;
               if(isset($exist[0])){
-                $cartid = $exist[0];
+                $cart_id = $exist[0];
+                $query2 = "SELECT CART_ID FROM PRODUCT_CART WHERE PRODUCT_ID = '$pid' AND CART_ID = '$cart_id'";
+                $arr2 = oci_parse($conn, $query2);
+                oci_execute($arr2);
+                $productExist = oci_fetch_array($arr2);
+              }
+               
+              // echo $exist[0];
+              // echo $cartid;
+              // echo $productExist[0];
+              if(isset($exist[0])){
                 $oldquantity = $exist[1];
                 $totalQ = $oldquantity + $quantity;
-                // $sql = "UPDATE CART SET ITEMS = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
-                $sql = "MERGE INTO CART
-                USING (
-                    SELECT PRODUCT_CART.CART_ID
-                    FROM CART
-                    INNER JOIN PRODUCT_CART ON CART.CART_ID = PRODUCT_CART.CART_ID
-                    WHERE CART.CART_ID = '$cartid'
-                      AND CART.FK_USER_ID = '$cid'
-                      AND PRODUCT_CART.PRODUCT_ID = '$pid'
-                ) src
-                ON (CART.CART_ID = src.CART_ID)
-                WHEN MATCHED THEN
-                    UPDATE SET CART.TOTAL_ITEMS = '$totalQ'";
-                $array = oci_parse($conn, $sql);
-                oci_execute($array);
-                echo "HELLO";
+                $cartid = $exist[0];
 
+
+                // echo $totalQ;
+                // $sql = "UPDATE CART SET ITEMS = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
+                // $sql = "MERGE INTO CART
+                // USING (
+                //     SELECT PRODUCT_CART.CART_ID
+                //     FROM CART
+                //     INNER JOIN PRODUCT_CART ON CART.CART_ID = PRODUCT_CART.CART_ID
+                //     WHERE CART.CART_ID = '$cartid'
+                //       AND CART.FK_USER_ID = '$cid'
+                //       AND PRODUCT_CART.PRODUCT_ID = '$pid'
+                // ) src
+                // ON (CART.CART_ID = src.CART_ID)
+                // WHEN MATCHED THEN
+                //     UPDATE SET CART.TOTAL_ITEMS = '$totalQ'";
+                // $sql = "UPDATE CART SET QUANTITY = '$totalQ' "
+                // $sql = "UPDATE CART SET TOTAL_ITEMS = '$totalQ' WHERE CART_ID = '$cartid'";
+                // $array = oci_parse($conn, $sql);
+                // oci_execute($array);
+                // echo "HELLO";
+                if(!isset($productExist[0])){
+                  echo "ME";
+                  $sql = "INSERT INTO PRODUCT_CART(CART_ID, PRODUCT_ID, TOTAL_ITEMS)  VALUES ('$cartid','$pid', '$totalQ')";
+                  $array = oci_parse($conn, $sql);
+                  oci_execute($array);
+                }
+                else{
+                  $sql = "UPDATE PRODUCT_CART SET  TOTAL_ITEMS = '$totalQ' WHERE CART_ID = '$cart_id' AND PRODUCT_ID = '$pid'";
+                  $array = oci_parse($conn, $sql);
+                  oci_execute($array);
+                }
+                // $sql = "INSERT CA"
               }
-              else{
+              else{ 
+                // $sql = "SELECT CART_ID, TOTAL_ITEMS FROM CART WHERE FK_USER_ID = '$cid' AND ITEMS = '$pName'";
+                // $array = oci_parse($conn, $sql);
+                // oci_execute($array);
+                // $ = oci_fetch_array($array)[0];
+                // $pQuantity2 = oci_fetch_array($array)[1];
                 // $sql = "INSERT INTO CART(PRODUCT_ID, C_ID, P_QUANTITY) VALUES('$pid','$cid',$quantity)";
-                $sql = "INSERT INTO CART(FK_USER_ID, TOTAL_ITEMS, ITEMS) VALUES('$cid', '$quantity', '$pName')";
+                $sql = "INSERT INTO CART(FK_USER_ID) VALUES('$cid')";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
-                $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid' AND TOTAL_ITEMS = '$quantity' AND ITEMS = '$pName'";
+                $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid'";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
                 $cart_id = oci_fetch_array($array)[0];
-                $sql = "INSERT INTO PRODUCT_CART(PRODUCT_ID, CART_ID) VALUES('$pId', '$cart_id')";
+                $sql = "INSERT INTO PRODUCT_CART(PRODUCT_ID, CART_ID, TOTAL_ITEMS) VALUES('$pId', '$cart_id', '$quantity')";
                 $array = oci_parse($conn, $sql);
                 oci_execute($array);
               }

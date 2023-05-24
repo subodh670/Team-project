@@ -31,14 +31,17 @@ tabs.forEach((tab,i)=>{
     dashItems[i].style.display = 'none';
     dashItems[0].style.display = 'flex';
     tabs[0].style.fontWeight = 'bolder';
+    tabs[0].style.color = 'var(--primary-color)';
     tab.addEventListener("click",(e)=>{
         tab.style.fontWeight = 'bolder';
+        tab.style.color = 'var(--primary-color)';
         let id = e.currentTarget.dataset.go;
         document.querySelector(`#${id}`).style.display = "flex";
         for(let j=0; j<4; j++){
             if(j!=i){
                 dashItems[j].style.display = 'none';
                 tabs[j].style.fontWeight = 'normal';
+                tabs[j].style.color = 'var(--secondary-color)';
             }
         }
     })

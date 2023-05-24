@@ -1141,3 +1141,23 @@ form .xmark i{
     align-items: center; */
 
 }
+
+/* admin logout */
+
+.logoutsection{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 1em;
+}
+.logoutsection form button{
+    background-color: var(--tertiary-color);
+    padding: 0.4em 0.6em;
+    border-width: 0px;
+    color: white;
+    transition: 0.6s;
+}
+.logoutsection form button:hover{
+    background-color: var(--secondary-color);
+}

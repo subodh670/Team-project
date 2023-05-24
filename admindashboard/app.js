@@ -32,7 +32,7 @@ mainLinkClick();
 function submenuClick(keyel){
     const pages = document.querySelectorAll(`.showdesc .${keyel}>div`);
     const navItem = document.querySelectorAll(`.${keyel} .nav-item a`);
-    // console.log(pages);
+    console.log(pages[0]);
     pages[0].style.display = 'block';
     pages.forEach((item,i)=>{
         if(i>0){
@@ -58,9 +58,10 @@ function submenuClick(keyel){
 }
 
 submenuClick("overall-manage");
-submenuClick("shops-manage");
+submenuClick("traders-manage");
+submenuClick("customers-manage");
 submenuClick("products-manage");
-submenuClick("offers-manage");
+submenuClick("review-manage");
 submenuClick("profile-manage");
 
 const triggerEditBtn = document.querySelector(".editbtntrigger");

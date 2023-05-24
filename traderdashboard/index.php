@@ -107,7 +107,7 @@
             <?php 
             // $username = $_SESSION['username'];
             include("../connectionPHP/connect.php");
-            $sql = "SELECT * FROM MART_USER WHERE USERNAME = 'bakery' AND ROLE = 'trader'";
+            $sql = "SELECT * FROM MART_USER WHERE USER_ID = '1029' AND ROLE = 'trader'";
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             while($rows = oci_fetch_array($arr)){

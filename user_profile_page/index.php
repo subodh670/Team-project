@@ -451,7 +451,7 @@ include("../connectionPHP/inc_session.php");
                         <p><?php echo $productName.", ".$productQuantity; ?> counts</p>
                         <i class="fa-solid fa-trash-can"></i>
                     </div>
-                    <h3><?php echo $productPrice;  ?></h3>
+                    <h3> price: £<?php echo $productPrice;  ?></h3>
                     <?php
                     $sql1 = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid'";
                     $arr1 = oci_parse($conn, $sql1);
@@ -484,6 +484,19 @@ include("../connectionPHP/inc_session.php");
         </div>
         <div class="dashitem4 dashitem" id="order">
             <!-- unfinished -->
+            <div class="wishitem">
+                <?php
+                // $sql = "SELECT PAY"
+                ?>
+            <div class='wish'>
+                    <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                    <div class="titlewish">
+                        <p><?php echo $productName.", ".$productQuantity; ?> counts</p>
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+                    <h3> price: £<?php echo $productPrice;  ?></h3>
+                </div>
+                </div>
         </div>
     </section>
 

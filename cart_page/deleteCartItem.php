@@ -37,7 +37,7 @@
         // echo $custId;
         // echo $pid;
         
-        $sql = "SELECT ORDER_ID FROM PRODUCT_ORDER WHERE FK_CART_ID = '$cart_id'";
+        $sql = "SELECT ORDER_ID FROM PRODUCT_ORDER, COLLECTION_SLOT WHERE COLLECTION_SLOT.SLOT_ID = PRODUCT_ORDER.FK_SLOT_ID AND PRODUCT_ORDER.FK_CART_ID = '$cart_id' AND COLLECTION_SLOT.STATUS = 1";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
         $o_id = oci_fetch_array($array);

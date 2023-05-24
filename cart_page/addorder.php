@@ -14,7 +14,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $arr = oci_parse($conn, $query);
     oci_execute($arr);
     $cid = oci_fetch_array($arr)[0];
-    echo $price;
+    // echo $price;
     
     // echo $quantity;
     // echo "<br>";
@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     // $sqlExist = "SELECT ORDERED_PRODUCT.ORDER_ID
     // FROM ORDERED_PRODUCT
     // INNER JOIN PRODUCT_ORDER ON ORDERED_PRODUCT.ORDER_ID = PRODUCT_ORDER.ORDER_ID WHERE ORDERED_PRODUCT.PRODUCT_ID = '$pid' AND PRODUCT_ORDER.FK_CART_ID= '$cartId' ";
-    $sqlExist = "SELECT ORDER_ID FROM PRODUCT_ORDER WHERE FK_CART_ID = '$cartId'";
+    $sqlExist = "SELECT ORDER_ID FROM PRODUCT_ORDER INNER JOIN COLLECTION_SLOT ON PRODUCT_ORDER.FK_SLOT_ID = COLLECTION_SLOT.SLOT_ID WHERE FK_CART_ID = '$cartId' AND COLLECTION_SLOT.STATUS = 1";
     $arr2 = oci_parse($conn, $sqlExist);
     oci_execute($arr2); 
     // echo $orderid;?
@@ -64,13 +64,14 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
             $slotQ += $rows[0];
             // $slotid = $rows[0];
         }
-        $slotArr = oci_parse($conn, "SELECT SLOT_ID FROM COLLECTION_SLOT, PRODUCT_ORDER WHERE COLLECTION_SLOT.SLOT_ID = PRODUCT_ORDER.FK_SLOT_ID AND PRODUCT_ORDER.FK_CART_ID = '$cartId'");
-        oci_execute($slotArr);
-        $slotid = oci_fetch_array($slotArr)[0];
+        
     
     }
+    $slotArr = oci_parse($conn, "SELECT SLOT_ID FROM COLLECTION_SLOT, PRODUCT_ORDER WHERE COLLECTION_SLOT.SLOT_ID = PRODUCT_ORDER.FK_SLOT_ID AND PRODUCT_ORDER.FK_CART_ID = '$cartId' AND COLLECTION_SLOT.STATUS=1");
+    oci_execute($slotArr);
+    $slotid = oci_fetch_array($slotArr);
     // echo $slotid;
-
+    // echo $slotid[0];
     $productOrderExist[] = [null];
     if(isset($arr[0])){
         $order_id = $arr[0];
@@ -156,7 +157,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     echo $grossQ;
     // echo $grossQ;
     if(isset($arr[0]) && $canAdd == true){
-        if(isset($slotid)){
+        if(isset($slotid[0])){
             // echo "MEEEE";
             // $sql = "INSERT INTO COLLECTION_SLOT(SLOT_ID, DAY, COLLECTION_DATE, MAXIMUM_ORDER, MINIMUM_ORDER, STATUS)  VALUES($slotid, '$day','$slot', 20, '$quantity', '1')";
             // $result = oci_parse($conn, $sql);
@@ -267,61 +268,82 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         
     }
     else if($canAdd == true && $nulldata == false){
-        // echo "THIS";
-        // echo "eeeee";
-        // $sqlforTraderid = "SELECT TRADER_ID FROM PRODUCT WHERE PRODUCT_ID = '$pid'";
-        // $arr4 = oci_parse($conn, $sqlforTraderid);
-        // oci_execute($arr4);
-        // $traderid = oci_fetch_array($arr4)[0];
-        // $sql4 = "INSERT INTO ORDERS(PRODUCT_QUANTITY, PRODUCT_ID, C_ID, TRADER_ID, ORDER_TIME, ORDER_DAY) VALUES ('$quantity', '$pid', '$cid', '$traderid','$slot', 'wed')";
-
-
-        $total_cost = $quantity*$price;
-        // echo $total_cost;
-        $maxorder = 20;
-        $status = 1;
-        
-        // echo $insertedId;
-        $sql = "INSERT INTO COLLECTION_SLOT (DAY, COLLECTION_DATE, MAXIMUM_ORDER, MINIMUM_ORDER, STATUS)
-            VALUES (:value1, :value2, :value3, :value4, :value5)
-            RETURNING SLOT_ID INTO :inserted_id";
-            $stmt = oci_parse($conn, $sql);
-            // Bind the values
-           
-            oci_bind_by_name($stmt, ":value1", $day);
-            oci_bind_by_name($stmt, ":value2", $slot);
-            oci_bind_by_name($stmt, ":value3", $maxorder);
-            oci_bind_by_name($stmt, ":value4", $quantity);
-            oci_bind_by_name($stmt, ":value5", $status);
-            oci_bind_by_name($stmt, ":inserted_id", $insertedId, 6);
-            oci_execute($stmt);
-            // $orderid = $arr[0];
-            $collection_id = $insertedId;
-        $sql4 = "INSERT INTO PRODUCT_ORDER( FK_CART_ID, STATUS, FK_SLOT_ID) VALUES( '$cartId', 1, '$collection_id' )"; 
-        $arr5 = oci_parse($conn, $sql4);
-        oci_execute($arr5);
-        $sql = "SELECT ORDER_ID FROM PRODUCT_ORDER WHERE FK_CART_ID = '$cartId'";
-        $arr5 = oci_parse($conn, $sql);
-        oci_execute($arr5);
-        $order_id= oci_fetch_array($arr5)[0];
-        $sql = "INSERT INTO ORDERED_PRODUCT(ORDER_ID, PRODUCT_ID, QUANTITY, TOTAL_COST) VALUES('$order_id', '$pid','$quantity', '$price')";
-        $arr5 = oci_parse($conn, $sql);
-        oci_execute($arr5);
-        $res = false;
-        // for($i =0; $i<count($_SESSION['quant']); $i++){
-        //     if($_SESSION['quant'][$i][0]==$pid && $_SESSION['quant'][$i][2]==$cid){
-        //         $_SESSION['quant'][$i][1] = $quantity;
-        //         $res = true;
-        //     }
-        // }
-        // if($res == false){
-        //     array_push($_SESSION['quant'],[$pid, $quantity, $cid]);
-        // }
-        // if(count($_SESSION['quant']) == 0){
-        //     array_push($_SESSION['quant'],[$pid, $quantity, $cid]);
-        // }
+        if(!isset($slotid[0])){
+            // echo "THIS";
+            // echo "eeeee";
+            // $sqlforTraderid = "SELECT TRADER_ID FROM PRODUCT WHERE PRODUCT_ID = '$pid'";
+            // $arr4 = oci_parse($conn, $sqlforTraderid);
+            // oci_execute($arr4);
+            // $traderid = oci_fetch_array($arr4)[0];
+            // $sql4 = "INSERT INTO ORDERS(PRODUCT_QUANTITY, PRODUCT_ID, C_ID, TRADER_ID, ORDER_TIME, ORDER_DAY) VALUES ('$quantity', '$pid', '$cid', '$traderid','$slot', 'wed')";
+    
+    
+            $total_cost = $quantity*$price;
+            // echo $total_cost;
+            $maxorder = 20;
+            $status = 1;
+            
+            // echo $insertedId;
+            $sql = "INSERT INTO COLLECTION_SLOT (DAY, COLLECTION_DATE, MAXIMUM_ORDER, MINIMUM_ORDER, STATUS)
+                VALUES (:value1, :value2, :value3, :value4, :value5)
+                RETURNING SLOT_ID INTO :inserted_id";
+                $stmt = oci_parse($conn, $sql);
+                // Bind the values
+               
+                oci_bind_by_name($stmt, ":value1", $day);
+                oci_bind_by_name($stmt, ":value2", $slot);
+                oci_bind_by_name($stmt, ":value3", $maxorder);
+                oci_bind_by_name($stmt, ":value4", $quantity);
+                oci_bind_by_name($stmt, ":value5", $status);
+                oci_bind_by_name($stmt, ":inserted_id", $insertedId, 6);
+                oci_execute($stmt);
+                // $orderid = $arr[0];
+                $collection_id = $insertedId;
+            $sql4 = "INSERT INTO PRODUCT_ORDER( FK_CART_ID, STATUS, FK_SLOT_ID) VALUES( '$cartId', 1, '$collection_id' )"; 
+            $arr5 = oci_parse($conn, $sql4);
+            oci_execute($arr5);
+            $sql = "SELECT ORDER_ID FROM PRODUCT_ORDER WHERE FK_CART_ID = '$cartId'";
+            $arr5 = oci_parse($conn, $sql);
+            oci_execute($arr5);
+            $order_id= oci_fetch_array($arr5)[0];
+            $sql = "INSERT INTO ORDERED_PRODUCT(ORDER_ID, PRODUCT_ID, QUANTITY, TOTAL_COST) VALUES('$order_id', '$pid','$quantity', '$price')";
+            $arr5 = oci_parse($conn, $sql);
+            oci_execute($arr5);
+            $res = false;
+            // for($i =0; $i<count($_SESSION['quant']); $i++){
+            //     if($_SESSION['quant'][$i][0]==$pid && $_SESSION['quant'][$i][2]==$cid){
+            //         $_SESSION['quant'][$i][1] = $quantity;
+            //         $res = true;
+            //     }
+            // }
+            // if($res == false){
+            //     array_push($_SESSION['quant'],[$pid, $quantity, $cid]);
+            // }
+            // if(count($_SESSION['quant']) == 0){
+            //     array_push($_SESSION['quant'],[$pid, $quantity, $cid]);
+            // }
+        }
+        else{
+            $sql = "SELECT SLOT_ID FROM COLLECTION_SLOT";
+            $arr = oci_fetch_array($conn, $sql);
+            oci_execute($arr);
+            $result = oci_fetch_array($arr)[0];
+            $sql4 = "INSERT INTO PRODUCT_ORDER( FK_CART_ID, STATUS, FK_SLOT_ID) VALUES( '$cartId', 1, '$collection_id' )"; 
+            $arr5 = oci_parse($conn, $sql4);
+            oci_execute($arr5);
+            $sql = "SELECT ORDER_ID FROM PRODUCT_ORDER WHERE FK_CART_ID = '$cartId'";
+            $arr5 = oci_parse($conn, $sql);
+            oci_execute($arr5);
+            $order_id= oci_fetch_array($arr5)[0];
+            $sql = "INSERT INTO ORDERED_PRODUCT(ORDER_ID, PRODUCT_ID, QUANTITY, TOTAL_COST) VALUES('$order_id', '$pid','$quantity', '$price')";
+            $arr5 = oci_parse($conn, $sql);
+            oci_execute($arr5);
+            $res = false;
+        }
+    
     }
-
+    
+    
     else{
         echo json_encode(['cannot be more than 20']);
     }

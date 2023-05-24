@@ -38,6 +38,7 @@ function orderPage(){
             placeorder.innerHTML =  `
             <p>Collection place: huddersfields</p>
             <hr> 
+            <p class="collection_date">Collection slot: empty</p>
                 <h1>Order summary</h1>
                 <p class="totalitems">Items total: ${quantity}</p>
                 <p class="totalpayment">Total payment: £${price}</p>
@@ -46,6 +47,8 @@ function orderPage(){
            
             `;
             invoicemodal();
+            getcollectionId();
+
         }
     }
     xml.open("POST", "orderPage.php?name="+customerName.value, true);
@@ -118,5 +121,24 @@ if (getCookie('color')==='dark') {
     document.documentElement.style.color = 'black';
 
 
+
+}
+
+function getcollectionId(){
+    const collectionSlot = document.querySelector(".slots input");
+    let collectiondate = document.querySelector(".collection_date");
+    let xml = new XMLHttpRequest();
+    xml.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            let json = JSON.parse(this.responseText);
+            console.log(json);
+            if(json[0] != ""){
+                collectiondate.textContent =  `Collection slot: ${json[1]}`;
+            }
+        }
+    }
+    xml.open("POST",'../cart_page/getslots.php', true);
+    xml.send();
 
 }

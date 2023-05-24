@@ -129,8 +129,9 @@
 </section> -->
 
             <div class="slots">
-                <label for="slotscollection">Choose collection slot: </label>
+                <label style="font-size: 1.3rem;" for="slotscollection">Choose collection slot between days wed, Thu or Friday: </label>
                 <input type="date" name="collection-slot" id="slotscollection">
+                <p class="collectionday"></p>
             </div>
 <main></main>
 <?php

@@ -20,6 +20,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $arr = oci_parse($conn, $sql);
     oci_execute($arr);
     $cart_id = oci_fetch_array($arr)[0];
+    // $sql ="SELECT ORDERED_PRODUCT.ORDER_ID FROM ORDERED_PRODUCT INNER JOIN PRODUCT_ORDER ON ORDERED_PRODUCT.ORDER_ID = PRODUCT_ORDER.ORDER_ID AND PRODUCT_ORDER.FK_CART_ID = '$cart_id'";
+    // $arr = oci_parse($conn, $sql);
+    // oci_execute($arr);
+    // $order_id = oci_fetch_array($arr)[0];
     $slotArr = oci_parse($conn, "SELECT ORDERED_PRODUCT.QUANTITY FROM PRODUCT_ORDER INNER JOIN ORDERED_PRODUCT ON PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID AND PRODUCT_ORDER.FK_CART_ID = '$cart_id'");
     oci_execute($slotArr);
     $slotQ = 0;
@@ -40,9 +44,10 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         $arr2 = oci_parse($conn, $sqlExist);
         oci_execute($arr2); 
         // echo $orderid;?
-        $order_id = oci_fetch_array($arr2);
+        $order_id = oci_fetch_array($arr2)[0];
         $total = $price * $quant;
-        $query = "UPDATE ORDERED_PRODUCT SET QUANTITY = $quant, TOTAL_COST = '$total' WHERE ORDER_ID = '$cartId'";
+        // echo $quant;
+        $query = "UPDATE ORDERED_PRODUCT SET QUANTITY = $quant, TOTAL_COST = '$total' WHERE ORDER_ID = '$order_id ' AND PRODUCT_ID = '$pid'";
         $array = oci_parse($conn, $query);
         oci_execute($array);
         // $sql = "SELECT ORDER_ID FROM PRODUCT_ORDER WHERE FK_CART_ID = '$cart_id'";

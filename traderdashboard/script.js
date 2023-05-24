@@ -415,6 +415,7 @@ const backdrop = document.querySelector(".backdrop");
     triggerEditBtn.addEventListener("click",(e)=>{
         editprofilemodal.classList.remove("hideEditprofile");
         backdrop.classList.remove("hidebackdrop");
+        // edittraderPro();
     })
     xmarkClose.addEventListener("click",()=>{
         editprofilemodal.classList.add("hideEditprofile");
@@ -439,9 +440,9 @@ function edittraderPro(){
     const errorusername = document.querySelector(".errorusername");
     const erroremail = document.querySelector(".erroremail");
     const errormobile = document.querySelector(".errormobile");
-    // console.log(updateBtn);
+    console.log(updateBtn);
     let gendervalue = 'male';
-    editgender.onchange=function(){
+    editgender.onchange = function(){
         gendervalue = editgender.options[editgender.selectedIndex].value;    
     }
     updateBtn.addEventListener("click",()=>{
@@ -529,8 +530,9 @@ function selectcategory(){
                 })
                 pcategory.innerHTML += ` <option value="others" class='othercategory'>others</option>`
                 // offerAdd();  
-                otherCategory();                             
             }
+            otherCategory();                             
+
         }
         xml.open("POST", `categorylist.php?trader=${1029}`, true);
         xml.send();
@@ -552,7 +554,7 @@ function otherCategory(){
         }
     })
 }
-// otherCategory();
+otherCategory();
 const changepassbtn = document.querySelector(".changepassbtn");
 const updatepassdiv = document.querySelector('.updatepass');
 const xmarkClose1 = document.querySelector(".xmark1 i");

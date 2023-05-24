@@ -126,6 +126,32 @@ function addingToOrders(){
     const username = document.querySelector(".usernameFind");
     let price = document.querySelectorAll(".wish_price_del> p");
     let pName = document.querySelectorAll(".product-desc .desc .itempro");
+    let slotsdaydisplay = document.querySelector(".collectionday");
+     let  slotsday = new Date(slots?.value).getDay() + 1;
+     console.log(slotsday);
+    if(slotsday === 1){
+        slotsdaydisplay.textContent = 'Day chosen: sunday';
+    }
+    else if(slotsday === 2){
+        slotsdaydisplay.textContent = 'Day chosen: monday';
+
+    }
+    else if(slotsday === 3){
+        slotsdaydisplay.textContent = 'Day chosen: tuesday';
+
+    }else if(slotsday === 4){
+        slotsdaydisplay.textContent = 'Day chosen: wednesday';
+
+    }else if(slotsday === 5){
+        slotsdaydisplay.textContent = 'Day chosen: thursday';
+
+    }else if(slotsday === 6){
+        slotsdaydisplay.textContent = 'Day chosen: friday';
+
+    }else if(slotsday === 7){
+        slotsdaydisplay.textContent = 'Day chosen: saturday';
+
+    }
     // console.log(pName[1].textContent);
     // console.log(day);
     // let slotsValue = "10-13";
@@ -152,38 +178,50 @@ function addingToOrders(){
             // console.log(slotsValue);
             let isChecked = e.target.matches(':checked'); 
             if(isChecked === true){
-                x = true;
-                console.log(day);
-                // console.log(price[i].textContent);
-                let price1 = price[i].textContent;
-                
-                let xml1 = new XMLHttpRequest();
-                xml1.onreadystatechange = function addXml(){
-                    if(this.readyState == 4 && this.status == 200){
-                        if(this.responseText != ""){
-                            console.log(this.responseText);
+                if(day === 4 || day === 5 || day === 6){
+                    x = true;
+                    console.log(day);
+                    // console.log(price[i].textContent);
+                    let price1 = price[i].textContent;
+                    
+                    let xml1 = new XMLHttpRequest();
+                    xml1.onreadystatechange = function(){
+                        if(this.readyState == 4 && this.status == 200){
+                            if(this.responseText != ""){
+                                console.log(this.responseText);
+                            }
+                            
+                                orderCost();
                         }
-                        
-                            orderCost();
                     }
+                    console.log(slotsValue);
+    
+                    xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price1.slice(1)}&pname=${pName[i].textContent}`, true);
+                    xml1.send();
                 }
-                console.log(slotsValue);
-
-                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price1.slice(1)}&pname=${pName[i].textContent}`, true);
-                xml1.send();
+                else{
+                    alert("Please choose appropriate time slot!!");
+                }
+                
             }
             else if(isChecked === false || isChecked === null){
                 x = false;
                 let xml2 = new XMLHttpRequest();
+                const collectionSlot = document.querySelector(".slots input");
+
                 xml2.onreadystatechange = function(){
                     if(this.readyState == 4 && this.status == 200){
-                        // console.log(this.responseText);
+                        if(JSON.parse(this.responseText)[0]===true){
+                            collectionSlot.disabled = false;
+                        }
+                        console.log(this.responseText);
                         orderCost();
                     }
                 }
                 xml2.open("POST", `deleteorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&pname=${pName[i].textContent}`, true);
                 xml2.send();
             }
+            
             // var y = x;
             btnIncrease[i].addEventListener("click",()=>{
                 setTimeout(()=>{
@@ -375,10 +413,12 @@ function showingsavedProduct(){
                 let cookieid = document.querySelector('.idcookie')?.value;
                 let quantcookie = document.querySelector(".idquant")?.value;
                 let arr1 = [];
+                console.log(quantcookie);
                 if(cookieid != null && quantcookie != null){
                     let cookieQ2 = quantcookie.split(" ");
                     for(let i=0; i<cookieQ2.length; i++){
                         arr1.push(Number(cookieQ2[i]));
+                        productssaved = Number(cookieQ2[i]);
                     }
                 }
                 // console.log(cookieid);
@@ -691,7 +731,7 @@ function orderCost(){
         xml.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
                 if(this.responseText != ""){
-                    console.log(this.responseText);
+                    // console.log(this.responseText);
                     let response = JSON.parse(this.responseText);
                     // console.log(this.responseText);                                 
                     
@@ -722,6 +762,7 @@ function orderCost(){
 function checkingIfordersHappened(){
     const username = document.querySelector(".usernameFind")?.value;
     if(username != null){
+        const items = document.querySelectorAll(".countitem input");
         let checkingbox = document.querySelectorAll(".onlyone input");
         let itemName = document.querySelectorAll(".desc .itempro");
         let xml = new XMLHttpRequest();
@@ -729,11 +770,14 @@ function checkingIfordersHappened(){
             if(this.readyState == 4 && this.status == 200){
                 console.log(this.responseText);
                 let arr = JSON.parse(this.responseText);
-                // console.log(arr);
+                console.log(arr[0]);
                 // console.log(itemName);
                 for(let i=0; i<itemName.length; i++){
                     if(arr.includes(itemName[i].textContent)){
+                        let indexof = arr.indexOf(itemName[i].textContent);
                         checkingbox[i].checked = 'true';
+                        items[i].value = arr[indexof + 1];
+                        console.log(arr[indexof+1]);
                     }
                 }
             }
@@ -843,3 +887,22 @@ updateCartAndTotal();
 // function getTotal(){
     
 // }
+
+function getcollectionId(){
+    const collectionSlot = document.querySelector(".slots input");
+    let xml = new XMLHttpRequest();
+    xml.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            let json = JSON.parse(this.responseText);
+            if(json[0] != ""){
+                collectionSlot.value = json[1];
+                collectionSlot.disabled = true;
+            }
+        }
+    }
+    xml.open("POST",'getslots.php', true);
+    xml.send();
+
+}
+getcollectionId();

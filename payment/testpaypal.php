@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+<!-- <h1>https://www.sandbox.paypal.com/cgi-bin/webscr</h1> -->
     <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST" id="by" name="by">
   <input type="hidden" name="business" value="sb-xuwu625717748@business.example.com">
   <input type="hidden" name="cmd" value="_xclick">
@@ -35,9 +36,10 @@
         $sum += $row[1];
         $quant += $row[2];
     }
+    // echo $sum;
     ?>
   <input type="hidden" name="quantity" value="<?php echo $sum;  ?>">
-    <input type="hidden" name="amount" value="<?php echo $quant; ?>">
+    <input type="hidden" name="amount" value="<?php echo 1; ?>">
 <?php
   ?>
   <input type="hidden" name="notify_url" value="https://localhost/ipn.php">

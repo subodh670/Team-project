@@ -47,10 +47,10 @@
           oci_execute($arr2);
           while($row = oci_fetch_array($arr2)){
             $pid = $row[2];
-            $sql = "SELECT NAME, PRICE FROM PRODUCT WHERE PRODUCT_ID = '$pid'";
-            $arr2 = oci_parse($conn, $sql);
-            oci_execute($arr2);
-            $result = oci_fetch_array($arr2);
+            $sql2 = "SELECT NAME, PRICE FROM PRODUCT WHERE PRODUCT_ID = '$pid'";
+            $arr3 = oci_parse($conn, $sql2);
+            oci_execute($arr3);
+            $result = oci_fetch_array($arr3);
             $pname = $result[0];
             $pprice = $result[1];
 
@@ -249,6 +249,9 @@
             <input type="hidden" class="hiddencustomer" value="<?php echo $_SESSION['username']; ?>">
         <div class="placeorder">
             <p>Collection place: huddersfields</p>
+           
+            <p class="collection_date">Collection slot: empty</p>
+            
             <hr>
                 <h1>Order summary</h1>
                 <p class="totalitems">Items total: 5</p>

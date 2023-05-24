@@ -11,6 +11,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"></link>
 </head>
 <body>
+  <?php
+include("../connectionPHP/inc_session_admin.php");
+  if(isset($_POST['logoutadmin'])){
+    unset($_SESSION['adusername']);
+    unset($_SESSION['adpassword']);
+    header("location: ../admin_login_page/index.php");
+  }
+?>
   <div class="backdrop hidebackdrop">
     
   </div>
@@ -182,6 +190,8 @@
   <li class="list-group-item" data-type="trader">Manage Trader</li>
   <li class="list-group-item" data-type="customer">Manage Customer</li>
   <li class="list-group-item" data-type="product">Manage Products</li>
+  <li class="list-group-item" data-type="review">Manage reviews</li>
+
 
   <li class="list-group-item" data-type="profile">Manage Profile</li>
 </ul>
@@ -316,7 +326,25 @@
     if(isset($_POST['deletepro'])){
       $id = $_POST['hidedeleteproduct'];
       // echo $id;
-      $sql = "DELETE FROM PRODUCT_ID WHERE PRODUCT_ID = '$id'";
+      $sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['activatereview'])){
+      $id = $_POST['hidactivatereview'];
+      $sql = "UPDATE REVIEW SET STATUS = '1' WHERE REVIEW_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['deactivatereview'])){
+      $id = $_POST['hiddeactivatereview'];
+      $sql = "UPDATE REVIEW SET STATUS = '0' WHERE REVIEW_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
+    if(isset($_POST['deletereview'])){
+      $id = $_POST['hidedeletereview'];
+      $sql = "DELETE FROM REVIEW  WHERE REVIEW_ID = '$id'";
       $arr = oci_parse($conn,$sql);
       oci_execute($arr);
     }
@@ -348,7 +376,7 @@
     </div>
     <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id='trader'>
         <!-- section manage shops -->
-      <section class="shops-manage">
+      <section class="traders-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
   <div class="container-fluid">
     
@@ -574,7 +602,7 @@
     </div>
     <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="customer">
         <!-- section manage products -->
-      <section class="products-manage">
+      <section class="customers-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
   <div class="container-fluid">
     
@@ -745,7 +773,7 @@
               <p><?php echo "$datecreated"; ?></p>
               <form method="POST" action="">
                 <input type="hidden" value="<?php echo $custId; ?>" name="hidedeletecust">
-                <button type="submit" name="deletecust" class="deletecust">Deactivate</button>
+                <button type="submit" name="deletecust" class="deletecust">Delete</button>
             </form>
             </div>
       
@@ -763,7 +791,7 @@
     </div>
     <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="product">
         <!-- section manage offers -->
-      <section class="offers-manage">
+      <section class="products-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
   <div class="container-fluid">
     
@@ -977,16 +1005,19 @@
 
       </section>
     </div>
-    <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="profile">
+    <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="review">
         <!-- section manage profile -->
-      <section class="profile-manage">
+      <section class="review-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
   <div class="container-fluid">
     
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" data-link="onelink4" href="#onelink4">Update profile</a>
+          <a class="nav-link" data-link="onelink4" href="#onelink4">Disable/enable review</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-link="twolink4" href="#onelink4">Delete reviews</a>
         </li>
       </ul>
     </div>
@@ -1001,6 +1032,188 @@
 
 
 <div id="onelink4">
+    <!-- <h1>Disable/enable review</h1> -->
+    <h3 style="color: var(--secondary-color); margin-top: 2em; margin-bottom: 2em;">Activate Reviews</h3>
+
+    <?php  
+    include("../connectionPHP/connect.php");
+    $sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, IMAGE, REVIEW_ID, REVIEW_DESCRIPTION, REVIEW_DATE FROM REVIEW, MART_USER WHERE REVIEW.FK_USER_ID = MART_USER.USER_ID AND ROLE='customer' AND MART_USER.REGISTERED_EMAIL = 'yes' AND MART_USER.STATUS = '1' AND REVIEW.STATUS = '0'";
+    
+    echo "<div class='title-items'>
+<p>Profile image</p>
+  <p>Username</p><p>Full Name</p><p>Email</p><p>Mobile</p><p>Review</p><p>Review Date</p><p></p>
+</div>";
+    // $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
+    $arr = oci_parse($conn, $sql);
+    oci_execute($arr);
+    $count = 0;
+    while($rows = oci_fetch_array($arr)){
+      $username = $rows[0];
+      $email = $rows[3];
+      $mobile = $rows[4];
+      $firstname = $rows[1];  
+      $custImage = $rows[4];
+      $gender = $rows[6];
+      $lastname = $rows[2];
+      $reviewId = $rows[5];
+      $reviewDesc = $rows[6];
+      $reviewDate = $rows[7];
+      $count++;
+      ?>
+     <div class="items-horizontal">
+              <img src="<?php echo "../images/".$traderimage; ?>" alt="">
+              <p><?php echo "$username"; ?></p>
+              <p><?php echo "$firstname"." "."$lastname"; ?></p>
+              <p><?php echo "$email"; ?></p>
+              <p><?php echo "$mobile"; ?></p>
+              <p><?php echo "$reviewDesc"; ?></p>
+              <p><?php echo "$reviewDate"; ?></p>
+              <form method="POST" action="">
+                <input type="hidden" value="<?php echo $reviewId; ?>" name="hidactivatereview">
+                <button type="submit" name="activatereview" class="activatereview">Activate</button>
+            </form>
+            </div>  
+      
+
+      <?php
+    }
+    if($count == 0){
+      echo "<p>No reviews to activate</p>";
+    }
+
+    ?>
+        <h3 style="color: var(--secondary-color); margin-top: 2em; margin-bottom: 2em;">Deactivate Reviews</h3>
+
+<?php  
+include("../connectionPHP/connect.php");
+$sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, IMAGE, REVIEW_ID, REVIEW_DESCRIPTION, REVIEW_DATE FROM REVIEW, MART_USER WHERE REVIEW.FK_USER_ID = MART_USER.USER_ID AND ROLE='customer' AND MART_USER.REGISTERED_EMAIL = 'yes' AND MART_USER.STATUS = '1' AND REVIEW.STATUS = '1'";
+
+echo "<div class='title-items'>
+<p>Profile image</p>
+  <p>Username</p><p>Full Name</p><p>Email</p><p>Mobile</p><p>Review</p><p>Review Date</p><p></p>
+</div>";
+// $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
+$arr = oci_parse($conn, $sql);
+oci_execute($arr);
+$count = 0;
+while($rows = oci_fetch_array($arr)){
+  $username = $rows[0];
+  $email = $rows[3];
+  $firstname = $rows[1];  
+  $custImage = $rows[4];
+  $gender = $rows[6];
+  $lastname = $rows[2];
+  $reviewId = $rows[5];
+  $reviewDesc = $rows[6];
+  $reviewDate = $rows[7];
+  $count++;
+  ?>
+ <div class="items-horizontal">
+          <img src="<?php echo "../images/".$traderimage; ?>" alt="">
+          <p><?php echo "$username"; ?></p>
+              <p><?php echo "$firstname"." "."$lastname"; ?></p>
+              <p><?php echo "$email"; ?></p>
+              <p><?php echo "$mobile"; ?></p>
+              <p><?php echo "$reviewDesc"; ?></p>
+              <p><?php echo "$reviewDate"; ?></p>
+          <form method="POST" action="">
+            <input type="hidden" value="<?php echo $reviewId; ?>" name="hiddeactivatereview">
+            <button type="submit" name="deactivatereview" class="deactivatereview">Deactivate</button>
+        </form>
+        </div>  
+  
+
+  <?php
+}
+if($count == 0){
+  echo "<p>No reviews to deactivate</p>";
+}
+
+?>
+</div>
+<div id='twolink4'>
+<h3 style="color: var(--secondary-color); margin-top: 2em; margin-bottom: 2em;">Delete Reviews</h3>
+
+<?php  
+include("../connectionPHP/connect.php");
+$sql = "SELECT USERNAME, FIRST_NAME, LAST_NAME, EMAIL, IMAGE, REVIEW_ID, REVIEW_DESCRIPTION, REVIEW_DATE FROM REVIEW, MART_USER WHERE REVIEW.FK_USER_ID = MART_USER.USER_ID AND ROLE='customer' AND MART_USER.REGISTERED_EMAIL = 'yes' AND MART_USER.STATUS = '1'";
+
+echo "<div class='title-items'>
+<p>Profile image</p>
+  <p>Username</p><p>Full Name</p><p>Email</p><p>Mobile</p><p>Review</p><p>Review Date</p><p></p>
+</div>";
+// $sql = "SELECT PRODUCT_NAME, PRODUCT_PRICE, PRODUCT_QUANTITY, PRODUCT_DESCRIPTION, PRODUCT_CATEGORY, PRODUCT_DISCOUNT, PRODUCT_ALLERGY_INFORMATION, PRODUCT_IMAGE2, PRODUCT_STATUS, PRODUCT_REGISTERED, PRODUCT_ID FROM PRODUCT WHERE TRADER_ID = 3003";
+$arr = oci_parse($conn, $sql);
+oci_execute($arr);
+$count = 0;
+while($rows = oci_fetch_array($arr)){
+  $username = $rows[0];
+  $email = $rows[3];
+  $firstname = $rows[1];  
+  $custImage = $rows[4];
+  $gender = $rows[6];
+  $lastname = $rows[2];
+  $reviewId = $rows[5];
+  $reviewDesc = $rows[6];
+  $reviewDate = $rows[7];
+  $count++;
+  ?>
+ <div class="items-horizontal">
+          <img src="<?php echo "../images/".$traderimage; ?>" alt="">
+          <p><?php echo "$username"; ?></p>
+              <p><?php echo "$firstname"." "."$lastname"; ?></p>
+              <p><?php echo "$email"; ?></p>
+              <p><?php echo "$mobile"; ?></p>
+              <p><?php echo "$reviewDesc"; ?></p>
+              <p><?php echo "$reviewDate"; ?></p>
+          <form method="POST" action="">
+            <input type="hidden" value="<?php echo $reviewId; ?>" name="hidedeletereview">
+            <button type="submit" name="deletereview" class="deleteereview">Delete</button>
+        </form>
+        </div>  
+  
+
+  <?php
+}
+if($count == 0){
+  echo "<p>No review to delete</p>";
+}
+
+?>
+</div>
+
+      </section>
+    </div>
+    <div class="col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10" id="profile">
+        <!-- section manage profile -->
+      <section class="profile-manage">
+      <nav class="navbar navbar-expand-md navbar-light bg-dark">
+  <div class="container-fluid">
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-link="onelink5" href="#onelink5">Update profile</a>
+        </li>
+      </ul>
+    </div>
+    <a class="navbar-brand" href="#">Dashboard</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- pages -->
+
+
+<div id="onelink5">
+<div class="logoutsection">
+  
+    <form action="" method="POST">
+      <button type="submit" name="logoutadmin">Logout</button>
+    </form>
+  </div>
   <div class="adminimage">
     <h3 style="color: white;">Our team</h3>
     <?php
@@ -1021,6 +1234,8 @@
     </div>
     
   </div>
+
+  
 <div class="profile-section">
   <?php 
             // $username = $_SESSION['username'];

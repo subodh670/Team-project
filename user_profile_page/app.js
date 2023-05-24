@@ -213,6 +213,7 @@ if(cancel != null){
 
 // animated toggle button
 function togglebutton(xyz=null){
+    console.log("HEY");
     var allBtns = document.querySelectorAll('.btn-holder');
     let span = document.querySelector(".userInfo span");
 for (let i =0; i<allBtns.length; i++) {
@@ -264,7 +265,9 @@ for (let i =0; i<allBtns.length; i++) {
                     document.documentElement.style.setProperty('--black', '#000000');
                     document.documentElement.style.setProperty('--white', '#DDE6ED');
                     document.documentElement.style.setProperty('--selected', '#000000');
-                    document.documentElement.style.color = 'white';
+                    document.documentElement.style.color = '#808080';
+                     document.documentElement.style.color = '87%';
+
                     span.textContent = 'dark mode';
                     setCookie('color', 'dark', '2');
 
@@ -291,7 +294,7 @@ for (let i =0; i<allBtns.length; i++) {
 }
 
 
-if(getCookie("color")===null){
+if(getCookie("color")===""){
     var allBtns = document.querySelectorAll('.btn-holder');
     allBtns.forEach((btn)=>{
         btn.addEventListener("click",()=>{
@@ -330,6 +333,10 @@ else if(getCookie("color")==='light'){
     })
 
 }
+else{
+    togglebutton();
+}
+
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));

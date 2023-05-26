@@ -309,6 +309,13 @@ include("../connectionPHP/inc_session_admin.php");
       $arr = oci_parse($conn,$sql);
       oci_execute($arr);
     }
+    if(isset($_POST['approvepro'])){
+      $id = $_POST['hideapprovepro'];
+      // echo $id;
+      $sql = "UPDATE PRODUCT SET  STATUS = '1' WHERE PRODUCT_ID = '$id'";
+      $arr = oci_parse($conn,$sql);
+      oci_execute($arr);
+    }
     if(isset($_POST['deactivatepro'])){
       $id = $_POST['hidedeactivateproduct'];
       // echo $id;
@@ -323,8 +330,8 @@ include("../connectionPHP/inc_session_admin.php");
       $arr = oci_parse($conn,$sql);
       oci_execute($arr);
     }
-    if(isset($_POST['deletepro'])){
-      $id = $_POST['hidedeleteproduct'];
+    if(isset($_POST['approvepro'])){
+      $id = $_POST['hideapproveproduct'];
       // echo $id;
       $sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = '$id'";
       $arr = oci_parse($conn,$sql);
@@ -797,11 +804,14 @@ include("../connectionPHP/inc_session_admin.php");
     
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" data-link="onelink3" href="#">Activate/Deactivate Product</a>
+      <li class="nav-item">
+          <a class="nav-link" data-link="onelink3" href="#">Approve Product</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-link="twolink3" href="#">Delete Product</a>
+          <a class="nav-link" data-link="twolink3" href="#">Activate/Deactivate Product</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-link="threelink3" href="#">Delete Product</a>
         </li>
       </ul>
     </div>
@@ -814,8 +824,69 @@ include("../connectionPHP/inc_session_admin.php");
 
 <!-- pages -->
 
-
 <div id="onelink3">
+<div class="disableproduct">
+     <h1>Approve Products</h1>
+    <?php  
+    include("../connectionPHP/connect.php");
+    // $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, OFFER_PRODUCT.OFFER_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, OFFER_PRODUCT, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND  PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND OFFER_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND MART_USER.ROLE = 'trader' AND PRODUCT.STATUS = 1";
+    $sql = "SELECT PRODUCT.NAME, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.DESCRIPTION, CATEGORY.CATEGORY_NAME, PRODUCT.PRODUCT_ID, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE2, PRODUCT.STATUS, PRODUCT.PRODUCT_REGISTERED FROM PRODUCT, CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND MART_USER.USER_ID = SHOP.FK_USER_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID  AND MART_USER.ROLE = 'trader' AND PRODUCT.STATUS = 2";
+    $arr = oci_parse($conn, $sql);
+    oci_execute($arr);
+    while($rows = oci_fetch_array($arr)){
+      $productId = $rows[5];
+      $sql1 = "SELECT OFFER_PERCENTAGE
+      FROM OFFER
+      INNER JOIN OFFER_PRODUCT ON OFFER.OFFER_ID = OFFER_PRODUCT.OFFER_ID WHERE OFFER_PRODUCT.PRODUCT_ID = '$productId'";
+      $arr1 = oci_parse($conn, $sql1);
+      oci_execute($arr1);
+      $productDiscount = oci_fetch_array($arr1);
+      if(isset($productDiscount[0]))
+        $productDiscount = $productDiscount[0];
+      else
+        $productDiscount = "No offer given";
+      $productName = $rows[0];
+      $productPrice = $rows[1];
+      $productQuant = $rows[2];
+      $productDesc = $rows[3];
+      $productCategory = $rows[4];  
+      $productAllergy = $rows[6];
+      $productImage = $rows[7];
+      $productStatus = $rows[8];
+      $productRegistered = $rows[9];
+      ?>
+      <div class="productenabled">
+                <div class="img--info">
+                    <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                    <div class="info">
+                        <p><?php echo $productName; ?></p>
+                        <p><?php echo $productCategory; ?></p>
+                        <p><?php echo $productQuant; ?> items</p>
+                    </div>
+                </div>
+                <div class="desc--discount--status">
+                  <p><?php echo substr($productDesc,0,50); ?></p>
+                  <p>offer: <?php echo $productDiscount;   ?></p>
+                  <p>Registered: <?php echo $productRegistered; ?></p>
+
+                </div>
+                <div class="qty--price">
+                    <p>Price: £<?php echo $productPrice; ?></p>
+                    <form method="POST" action="">
+                        <input type="hidden" value="<?php echo $productId; ?>" name="hideapprovepro">
+                        <button type="submit" name="approvepro" class="approvepro">Approve</button>
+                    </form>
+                </div>
+            </div>
+      
+
+      <?php
+    }
+
+    ?>
+    </div>
+</div>
+<div id="twolink3">
 <div class="disableproduct">
      <h1>Deactivate Products</h1>
     <?php  
@@ -938,7 +1009,7 @@ include("../connectionPHP/inc_session_admin.php");
     ?>
     </div>
 </div>
-<div id="twolink3">
+<div id="threelink3">
 <div class="disableproduct">
      <h1>Delete Product</h1>
     <?php  
@@ -988,8 +1059,8 @@ include("../connectionPHP/inc_session_admin.php");
                 <div class="qty--price">
                     <p>Price: £<?php echo $productPrice; ?></p>
                     <form method="POST" action="">
-                        <input type="hidden" value="<?php echo $productId; ?>" name="hidedeleteproduct">
-                        <button type="submit" name="deletepro" class="deletepro">Delete</button>
+                        <input type="hidden" value="<?php echo $productId; ?>" name="hideapproveproduct">
+                        <button type="submit" name="approvepro" class="approvepro">Delete</button>
                     </form>
                 </div>
             </div>

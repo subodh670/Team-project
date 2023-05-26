@@ -21,7 +21,7 @@
         </div>
         <ul>
             <li><a href="#home">Home</a></li>
-            <li><a href="../traders_login_page/index.php">Sale a product</a></li>
+            <li><a href="../traders_login_page/index.php">Sell a product</a></li>
             <li><a href="#customer_services">Customer Services</a></li>
             <li><a href="#contact_us">Contact Us</a></li>
         </ul>
@@ -53,12 +53,16 @@
                     include("../connectionPHP/connect.php");
                     if(isset($_SESSION['username'])){
                         $username = $_SESSION['username'];
-                        $sql = "SELECT TOTAL_ITEMS FROM CART,MART_USER WHERE CART.FK_USER_ID= MART_USER.USER_ID AND USERNAME = '$username'";
+                        $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+                        $array = oci_parse($conn, $sql);
+                        oci_execute($array);
+                        $cid = oci_fetch_array($array)[0];
+                        $sql = "SELECT PRODUCT_CART.CART_ID, PRODUCT_CART.TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid";
                         $array = oci_parse($conn, $sql);
                         oci_execute($array);
                         $totalnum = 0;
                         while($numbers = oci_fetch_array($array)){
-                            $totalnum += $numbers[0];
+                            $totalnum += $numbers[1];
                         }
                     
                     }
@@ -123,11 +127,6 @@
             <?php
         }
                 ?>
-            <h1>Date</h1>
-                <p>From</p>
-                <input type="date" class="datefrom">
-                <p>To</p>
-                <input type="date" class="dateto">
                 <button name='radio-submit'>Submit</button>
             </form>
         </div>

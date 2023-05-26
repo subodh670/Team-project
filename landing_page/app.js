@@ -138,6 +138,8 @@ function gettingProduct(type, items, item1=null){
     const loaderBtn = document.querySelector(".loader h1");
     loaderItem.textContent = "";
     let content = itemsContainer.innerHTML;
+    const prices = document.querySelectorAll(".price");
+    let arr = [];
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             let item = JSON.parse(this.responseText);
@@ -159,7 +161,7 @@ function gettingProduct(type, items, item1=null){
             let pDesc = item['DESCRIPTION'];
             let pCategory = item['CATEGORY_NAME'];
             // var pDiscount = item['PRODUCT_DISCOUNT'];
-            var pDiscount = 8;
+            var pDiscount = 9;
             let pAllergy = item['ALLERGY_INFORMATION'];
             let pImage1 = item['IMAGE1'];
             let pImage2 = item['IMAGE2'];
@@ -167,8 +169,10 @@ function gettingProduct(type, items, item1=null){
             let prevPrice = [];    
             itemsContainer.innerHTML = ""
                 for(let i=0; i<pId.length; i++){
-                    console.log(i);
-                    prevPrice.push(parseInt(Number(pPrice[i]) + (Number(pDiscount[i])*Number(pPrice[i]))/100));
+                    // let offer = getoffers(pId);
+                    // arr.push(offer);
+                    // console.log(offer);
+                    prevPrice.push(parseInt(Number(pPrice[i]) + (Number(pDiscount)*Number(pPrice[i]))/100));
                     if(type === null){
                         itemsContainer.innerHTML = content;
                     }
@@ -186,7 +190,7 @@ function gettingProduct(type, items, item1=null){
                         <img src="../productsImage/${pImage2[i]}" alt="productImage">
                         <div>
                             <h1>${pName[i]}</h1>
-                            <p>${pDesc[i]}</p>
+                            <p>${pDesc[i].substring(0,60)} ....</p>
                             <div class="btn_rate">
                                 <div class="btn"><a href="../item_page/index.php?id=${pId[i]}">View More</a></div>
                                 <p class="price">£${pPrice[i]}</p>
@@ -196,21 +200,23 @@ function gettingProduct(type, items, item1=null){
                     </div>`;
                     
                     }
+                    
                 }
             // filtershops();
-            const prices = document.querySelectorAll(".price");
-            prices.forEach((price,i)=>{
-                price.addEventListener("mouseover",(e)=>{
-                    price.innerHTML = "£"+prevPrice[i];
-                    price.style.textDecoration = 'line-through';
-                })
-            })
-            prices.forEach((price,i)=>{
-                price.addEventListener('mouseout',(e)=>{
-                    price.innerHTML = "£"+pPrice[i];
-                    price.style.textDecoration = 'none';
-                })
-            })
+
+            // const prices = document.querySelectorAll(".price");
+            // prices.forEach((price,i)=>{
+            //     price.addEventListener("mouseover",(e)=>{
+            //         price.innerHTML = "£"+prevPrice[i];
+            //         price.style.textDecoration = 'line-through';
+            //     })
+            // })
+            // prices.forEach((price,i)=>{
+            //     price.addEventListener('mouseout',(e)=>{
+            //         price.innerHTML = "£"+pPrice[i];
+            //         price.style.textDecoration = 'none';
+            //     })
+            // })
             
         }
     };
@@ -258,14 +264,44 @@ seeMore.addEventListener("click",()=>{
 })
 
 
+//get offers
+// function getoffers(){
+//     let xml = new XMLHttpRequest();
+//     let a = [];
+//     xml.onreadystatechange = function(){
+//         if(this.status == 200 && this.readyState == 4){
+//             console.log(this.responseText);
+//             let json = JSON.parse(this.responseText);
+//             return json;
+            
+//         }
+//     }
+//     xml.open("POST", "getoffers.php", true);
+//     xml.send();
+//     // return a;
+// }
+
+
+// let x = getoffers();
+// console.log(x);
+
+
+
 
 //filter shops
+
+
+
+
+
+
+
 
 function filtershops(){
     const shopRadio = document.querySelectorAll('.radio-select input');
     const radioSubmit = document.querySelector(".radio-select button");
-    let dateform = document.querySelector(".radio-select .datefrom").value;
-    let dateto = document.querySelector(".radio-select .dateto").value;
+    // let dateform = document.querySelector(".radio-select .datefrom").value;
+    // let dateto = document.querySelector(".radio-select .dateto").value;
     // console.log(dateform);
     let value = 'all';
     shopRadio.forEach((item)=>{
@@ -290,7 +326,7 @@ function filtershops(){
 
             }
         }
-        xml.open("POST", `filtershop.php?value=${value}&datefrom=${dateform}&dateto=${dateto}`, true);
+        xml.open("POST", `filtershop.php?value=${value}`, true);
         xml.send();
         
     }

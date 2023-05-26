@@ -1,6 +1,7 @@
 "use strict";
 
 function mainLinkClick(){
+    
     const listsMenu = document.querySelectorAll(".container-fluid .col-2 ul li");
     // listsMenu[0].style.fontSize = '1rem';
     const showDesc = document.querySelectorAll(".showdesc");
@@ -25,11 +26,11 @@ function mainLinkClick(){
         })
     })
 }
-mainLinkClick();
 
 
 //submenu click
 function submenuClick(keyel){
+   
     const pages = document.querySelectorAll(`.showdesc .${keyel}>div`);
     const navItem = document.querySelectorAll(`.${keyel} .nav-item a`);
     // console.log(pages);
@@ -42,6 +43,7 @@ function submenuClick(keyel){
     navItem[0].style.fontWeight = "bolder";
     navItem.forEach((item, i)=>{
         item.addEventListener("click",()=>{
+            console.log('alert');
             let link = item.dataset.link;
             document.querySelector(`.${keyel} > #${link}`).style.display = 'block';
             navItem[i].style.fontWeight = "bolder";
@@ -57,11 +59,21 @@ function submenuClick(keyel){
     })
 }
 
+
+// const traderaccess = document.querySelector(".traderaccess");
+// console.log(traderaccess.value);
+// const profilemanage = document.querySelector(".reports");
+// const profilemanage2 = document.querySelector(".reports2");
+// console.log(profilemanage2);
+
+mainLinkClick();
 submenuClick("overall-manage");
 submenuClick("shops-manage");
 submenuClick("products-manage");
 submenuClick("offers-manage");
 submenuClick("profile-manage");
+
+
 
 
 function flashAddproduct(){
@@ -135,8 +147,9 @@ function spawningProductDetails(id){
 // disable shops
 
 function addShop(){
+    let traderId = document.querySelector(".hiddentraderid").value;
     const shopname = document.querySelector(".shop-name input");
-    const shopcategory = document.querySelector(".shop-name input");
+    const shopaddress = document.querySelector(".shop-address input");
     const shopcontact = document.querySelector(".shop-contact input");
 
     const shopBtn = document.querySelector(".addshopbtn button");
@@ -149,7 +162,7 @@ function addShop(){
             // console.log(this.responseText);
         }
     }
-    xml.open("POST", `addshop.php?name=${shopname.value}&category=${shopcategory.value}&contact=${shopcontact.value}`, true);
+    xml.open("POST", `addshop.php?name=${shopname.value}&address=${shopaddress.value}&contact=${shopcontact.value}&trader=${traderId}`, true);
     xml.send();
     })
 
@@ -189,7 +202,7 @@ function addProduct(){
 function addshopoption(){
     let pshop = document.querySelector(".shop #shopname");
     let pshop1 = document.querySelector(".shop #shopname1");
-
+    let traderId = document.querySelector(".hiddentraderid").value;
     // let pshop1 = document.querySelector(".shop #pshop1");
     // let labeloffer = document.querySelectorAll(".selectproduct label")[0];
     // let pro1 = document.querySelectorAll(".selectproduct .pro1")[0];
@@ -215,13 +228,15 @@ function addshopoption(){
                 // offerAdd();                               
             }
         }
-        xml.open("POST", `shoplist.php?trader=${1029}`, true);
+        xml.open("POST", `shoplist.php?trader=${traderId}`, true);
         xml.send();
     }
 }
 addshopoption();
 
 function showShop(){
+    let traderId = document.querySelector(".hiddentraderid").value;
+    console.log(traderId);
     const disableShop = document.querySelector(".disableshop");
     const enableshop = document.querySelector(".enableshop");
     const allshops = document.querySelector(".deleteshop");
@@ -265,7 +280,7 @@ function showShop(){
             triggerDeleteBtn();
         }
     }
-    xml.open("POST", `enableshop.php?trader=${1029}`, true);
+    xml.open("POST", `enableshop.php?trader=${traderId}`, true);
     xml.send();
 }
 
@@ -330,17 +345,21 @@ function triggerDeleteBtn(){
 // triggerDeleteBtn();
 
 function addofferoption(){
+    let traderId = document.querySelector(".hiddentraderid").value;
+
     let selectProduct = document.querySelectorAll('.pro1')[0];
     let selectProd = document.querySelector('.selectproduct');
-    let poffer = document.querySelectorAll(".selectproduct #poffer")[0];
-    let poffer1 = document.querySelectorAll(".selectproduct #poffer1")[0];
+    let poffer = document.querySelectorAll(".selectproduct .pofferclass2");
+    let poffer1 = document.querySelector(".selectproduct #poffer1");
     console.log(poffer);
     console.log(poffer1);
     let labeloffer = document.querySelectorAll(".selectproduct label")[0];
     let pro1 = document.querySelectorAll(".selectproduct .pro1")[0];
     let xml = new XMLHttpRequest();
-    if(poffer != null || poffer1 != null){
-        poffer.innerHTML = "";
+    if(poffer.length>0 || poffer1 != null){
+        poffer.forEach((pof)=>{
+            pof.innerHTML = "";
+        })
         if(poffer1!=null)
             poffer1.innerHTML = "";
         xml.onreadystatechange = function(){
@@ -357,10 +376,19 @@ function addofferoption(){
                         `;
                     // document.querySelector('.hidcid').value = response['PRODUCT_ID'];
                 })
-                offerAdd();                               
+                poffer.forEach((pof)=>{
+                    response.forEach((resp)=>{
+                        pof.innerHTML += ` 
+                        <option value="${resp['PRODUCT_ID']}">${resp['NAME']}</option>
+                        `;
+                    })
+                })
+                // offeradd();
+                // offerupdate(); 
+                offerupdate();                              
             }
         }
-        xml.open("POST", `customersList.php?trader=${1029}`, true);
+        xml.open("POST", `productslist.php?trader=${traderId}`, true);
         xml.send();
     }
 
@@ -371,40 +399,108 @@ function addofferoption(){
 addofferoption();
 
 
-function offerAdd(){
-    let offerInput = document.querySelector('.offeradd');
-    let offername = document.querySelector('.offername');
+function offerupdate(){
+    let traderId = document.querySelector(".hiddentraderid").value;
 
-    let offerDate = document.querySelector('.offerdate');
+    let offerInput = document.querySelectorAll('.offeradd2');
+    let offername = document.querySelectorAll('.offername2');
+
+    let offerDate = document.querySelectorAll('.offerdate2');
     // let 
-    let poffer = document.querySelector(".pofferclass");
-    let pofferoption = document.querySelectorAll('.addoffers .selectproduct #poffer option')[0];
-    let offerBtn = document.querySelector('.offerbtn button');
+    let poffer = document.querySelectorAll(".pofferclass2");
+    let pofferoption = document.querySelectorAll('.addoffers1 .selectproduct .pofferclass2 option')[0];
+    let offerBtn = document.querySelectorAll('.offerbtn2 button');
+    let offerhideId = document.querySelectorAll(".hideofferupdate");
+    // console.log(offerhideId);
+    // console.log(poffer[0]);
     // let offerProid =  pofferoption.value;
-    let offerProid = pofferoption.value;
+    // console.log(pofferoption.value);
+    console.log("HEY");
+    offerBtn.forEach((item,i)=>{
+        // if(offerProid !=)
+        let offerProid = [];
+        poffer[i].onchange = function(){
+            offerProid.push(poffer[i].options[poffer[i].selectedIndex].value);
+        }
+        if(offerProid.length != i+1){
+            offerProid.push(pofferoption.value);
+        }
+        console.log(pofferoption.value);
+        console.log(offerProid[i]);
+        item.addEventListener("click",()=>{
+            
+            let offer = offerInput[i].value;
+            console.log("ITS ME");
+            offername = offername[i].value;
+            let Date = offerDate[i].value
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    // console.log(this.responseText);
+                   location.reload();
+                }
+            }
+            // console.log(offerProid[i]);
+            console.log(offername);
+            console.log(offer);
+            console.log(Date);
+            // console.log(offerProid);
+            console.log(traderId);
+            xml.open("POST", `updateoffer.php?offername=${offername}&offer=${offer}&date=${Date}&offerPro=${offerProid[i]}&traderid=${traderId}&offerid=${offerhideId[i].value}`, true);
+            xml.send();
+    
+            
+        })
+    })
+  
+
+}
+// offerupdate();   
+
+function offeradd(){
+    let traderId = document.querySelector(".hiddentraderid").value;
+
+    let offerInput = document.querySelector('.offeradd1');
+    let offername = document.querySelector('.offername1');
+
+    let offerDate = document.querySelector('.offerdate1');
+    // let 
+    let poffer = document.querySelector(".pofferclass1");
+    let pofferoption = document.querySelectorAll('.addoffers .selectproduct #poffer1 option')[0];
+    let offerBtn = document.querySelectorAll('.offerbtn1 button')[0];
+    // let offerProid =  pofferoption.value;
+    let offerProid = pofferoption?.value;
     poffer.onchange = function(){
         offerProid = poffer.options[poffer.selectedIndex].value;
     }
+    // console.log(offerProid);
+
     offerBtn.addEventListener("click",()=>{
         let offer = offerInput.value;
-        // console.log(offer);
+        console.log("ITS YOU");
         offername = offername.value;
         let Date = offerDate.value
         let xml = new XMLHttpRequest();
         xml.onreadystatechange = function(){
             if(this.readyState == 4 && this.status == 200){
                 console.log(this.responseText);
-               location.reload();
+            //    location.reload();
             }
         }
-        xml.open("POST", `addoffer.php?offername=${offername}&offer=${offer}&date=${Date}&offerPro=${offerProid}&traderid=${1029}`, true);
+        console.log(offerProid);
+        console.log(offername);
+        console.log(offer);
+        console.log(Date);
+        console.log(offerProid);
+        console.log(traderId);
+        xml.open("POST", `addoffer.php?offername=${offername}&offer=${offer}&date=${Date}&offerPro=${offerProid}&traderid=${traderId}`, true);
         xml.send();
 
         
     })
 
 }
-
+// offeradd();
 
 const triggerEditBtn = document.querySelector(".editbtntrigger");
 const editprofilemodal = document.querySelector(".editprofile");
@@ -482,6 +578,7 @@ function modaladdoffers(){
     const offerBtn = document.querySelectorAll('.Updateoffer');
     let addoffers = document.querySelectorAll('.addoffers1');
     const backdrop = document.querySelector(".backdrop");
+    console.log("ME");
     offerBtn.forEach((item,i)=>{
         item.addEventListener('click',()=>{
             addoffers[i].classList.remove('updateoffer');
@@ -509,6 +606,9 @@ function modaladdoffers(){
 modaladdoffers();
 
 function selectcategory(){
+    let traderId = document.querySelector(".hiddentraderid").value;
+    let othercat = document.querySelector(".categoryselect input");
+
     let pcategory = document.querySelector(".categoryselect #category");
     // let pcategory1 = document.querySelector(".shop #pcategory1");
     // let labeloffer = document.querySelectorAll(".selectproduct label")[0];
@@ -522,28 +622,40 @@ function selectcategory(){
             if(this.readyState == 4 && this.status == 200){
                 console.log(this.responseText);
                 let response = JSON.parse(this.responseText);
-                response.forEach((resp)=>{
+                let num = 0;
+                response.forEach((resp, i)=>{
                     pcategory.innerHTML += ` 
                     <option value="${resp['CATEGORY_ID']}">${resp['CATEGORY_NAME']}</option>
                     `;
+                    num++;
                     // document.querySelector('.hidcid').value = response['PRODUCT_ID'];
                 })
+                
                 pcategory.innerHTML += ` <option value="others" class='othercategory'>others</option>`
-                // offerAdd();  
+                // offerupdate();  
+                console.log(num);
+                otherCategory(); 
+                if(num===0){
+                        document.querySelector(".categoryselect input").type= 'text';
+
+                }                            
             }
-            otherCategory();                             
 
         }
-        xml.open("POST", `categorylist.php?trader=${1029}`, true);
+        xml.open("POST", `categorylist.php?trader=${traderId}`, true);
         xml.send();
     }
 }
 selectcategory();
 
-function otherCategory(){
+function otherCategory(x){
     let pcategory = document.querySelector(".categoryselect #category");
     let othercat = document.querySelector(".categoryselect input");
-    pcategory.addEventListener("change",()=>{
+    if(x===0){
+        othercat.type = 'text';
+    }
+    pcategory.addEventListener("input",()=>{
+        console.log("HEY");
         pcategory = pcategory.options[pcategory.selectedIndex].value;
         if(pcategory === 'others'){
             othercat.type = 'text';
@@ -637,3 +749,11 @@ if (getCookie('color')==='dark') {
 
 
 }
+
+
+// const buttonUpdateOffer = document.querySelectorAll(".updateofferbtn");
+// buttonUpdateOffer.forEach((item)=>{
+//     item.addEventListener("click",()=>{
+//         item.type = 'submit';
+//     })
+// })

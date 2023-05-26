@@ -31,9 +31,9 @@
         $cart_id = oci_fetch_array($array)[0];
         // $order_id = oci_fetch_array($array)[0];
         
-        // $sql = "DELETE FROM CART WHERE CART_ID='$cart_id'";
-        // $array = oci_parse($conn, $sql);
-        // oci_execute($array);
+        $sql = "DELETE FROM CART WHERE CART_ID='$cart_id'";
+        $array = oci_parse($conn, $sql);
+        oci_execute($array);
         // echo $custId;
         // echo $pid;
         

@@ -31,7 +31,7 @@
         </div>
         <ul>
             <li><a href="">Home</a></li>
-            <li><a href="../traders_login_page/index.php">Sale a product</a></li>
+            <li><a href="../traders_login_page/index.php">Sell a product</a></li>
             <li><a href="">Customer Services</a></li>
             <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
@@ -146,10 +146,10 @@
             <div class="categories show-cat">
                 <?php
                 include("../connectionPHP/connect.php");
-                $sql = "SELECT * FROM CATEGORY";
-                $array = oci_parse($conn, $sql);
-                oci_execute($array);
-                while($row = oci_fetch_array($array)){
+                $sql2 = "SELECT * FROM CATEGORY";
+                $array2 = oci_parse($conn, $sql2);
+                oci_execute($array2);
+                while($row = oci_fetch_array($array2)){
                     $category = $row[1];
                     ?>
                         <a href="<?php  echo "../category_page/index.php?cat=$category" ?>"><p><?php echo $category ?></p></a>
@@ -160,8 +160,51 @@
                 <div class="close-cat">&times;</div>
             </div>
             <div class="slider">
+                <?php 
+                $count = 0;
+                $sql = "SELECT IMAGE2, NAME, PRODUCT_ID FROM PRODUCT, REVIEW WHERE PRODUCT.PRODUCT_ID = REVIEW.FK_PRODUCT_ID AND PRODUCT.STATUS = 1 AND ROWNUM <= 3 ORDER BY REVIEW.RATE";
+                $arr = oci_parse($conn, $sql);
+                oci_execute($arr);
+                while($rows = oci_fetch_array($arr)){
+                    $image = $rows[0];
+                    $name = $rows[1];
+                    $pid = $rows[2];
+                    ?>
                 <div>
-                    <img src="../productsimage/cheesecake1.jpg" alt="">
+                    <img src="../productsimage/<?php echo $image; ?>" alt="">
+                    <div class="info-img show-info-img">
+                        <h1><?php echo $name; ?></h1>
+                        <p><a href="../item_page?id=<?php echo $pid; ?>">View more</a></p>
+                    </div>
+                </div>
+
+                <?php
+                $count++;
+                }
+
+                if($count == 0){
+                    $sql1 = "SELECT IMAGE2, NAME, PRODUCT_ID FROM PRODUCT WHERE PRODUCT.STATUS = 1 AND ROWNUM <= 3";
+                    $arr1 = oci_parse($conn, $sql1);
+                    oci_execute($arr1);
+                    while($rows = oci_fetch_array($arr1)){
+                        $image = $rows[0];
+                        $name = $rows[1];
+                        $pid = $rows[2];
+                        ?>
+                        <div>
+                            <img src="../productsimage/<?php echo $image; ?>" alt="">
+                            <div class="info-img show-info-img">
+                                <h1><?php echo $name; ?></h1>
+                                <p><a href="../item_page?id=<?php echo $pid; ?>">View more</a></p>
+                            </div>
+                        </div>
+        
+                        <?php
+                    }
+                }
+                ?>
+                <!-- <div> -->
+                    <!-- <img src="../productsimage/cheesecake1.jpg" alt="">
                     <div class="info-img show-info-img">
                         <h1>Cheesecake</h1>
                         <p><a href="../item_page/index.php">View more</a></p>
@@ -180,7 +223,7 @@
                         <h1>rockscookies</h1>
                         <p><a href="">View more</a></p>
                     </div>
-                </div>
+                </div> -->
                 <aside class="navslide">
                     <div class="circle circle1"></div>
                     <div class="circle circle2"></div>
@@ -240,11 +283,11 @@
         }
                 ?>
                 
-            <h1>Expiry date</h1>
+            <!-- <h1>Expiry date</h1>
                 <p>From</p>
                 <input type="date" class="datefrom">
                 <p>To</p>
-                <input type="date" class="dateto">
+                <input type="date" class="dateto"> -->
                 <button type="button" name='radiosubmit'>Submit</button>
             </form>
         </div>
@@ -310,7 +353,7 @@
                     <img src="<?php echo "../productsImage/".$pImage2; ?>" alt="productImage">
                     <div>
                         <h1><?php echo $pName; ?></h1>
-                        <p><?php echo substr($pDesc,0,50)."..."; ?></p>
+                        <p><?php echo substr($pDesc,0,60)."..."; ?></p>
                         <div class="btn_rate">
                             <div class="btn"><a href="<?php echo "../item_page/index.php?id=$pId"; ?>">View More</a></div>
                             <p class="price"><?php echo "£".$pPrice; ?></p>

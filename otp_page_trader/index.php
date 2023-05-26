@@ -13,7 +13,7 @@ session_start();
 </head>
 <body>
     <section class='otp'>
-        <form action="../traderdashboard/index.php" method='POST'>
+        <form action="../trader_signup_page/index.php" method='POST'>
             
             <p>Check an otp from your mail box and type here: </p>
             <div class='inputotp'>

@@ -21,11 +21,12 @@ session_start();
             <div class="container">
                 <a href="../landing_page/index.php"><img src="../landing_page/image1.png" alt=""></a>
                 <form class="show-form" method="POST" action="">
+                    
                     <h1>Sign In</h1>
                     <div class="mail">
                     <div style="display: flex; justify-content: center; align-items:center; gap: 0.2em;">
                         <label for="email"><i class="fa-solid fa-envelope"></i></label>
-                        <input type="email" id="email" name="email" placeholder="email">
+                        <input type="email" id="email" name="email" placeholder="email" value="<?php if(isset($_POST['email'])) echo $_POST['email'];  ?>">
                     </div>
                     </div>
                     <div class="pass">
@@ -38,11 +39,75 @@ session_start();
                     <button class="login-btn" name="login">Login</button>
                 </form>
                 <div style="z-index: 4;" class="bars show-bars">
-                    <button class="bars">Sign in</button>
+                    <button class="trader_signup">Sign in</button>
+
                 </div>
             </div>
     </section>
     <section class="hero-signup">
+    <?php 
+                    include("../connectionPHP/connect.php");
+                        if(isset($_POST['trader_signup']) || isset($_POST['login'])){
+                            if(!empty($_POST['email']) && !empty($_POST['password'])){
+                                
+                                $email = $_POST['email'];
+                                $pass = sha1($_POST['password']);
+                                $sql = "SELECT USERNAME, PASSWORD, IMAGE, FIRST_NAME, LAST_NAME, REGISTERED_EMAIL, EMAIL,ROLE, USER_ID, STATUS FROM MART_USER WHERE ROLE= 'trader'";
+                                $array = oci_parse($conn, $sql);
+                                oci_execute($array);
+                                $approveError = false;
+                                while($row = oci_fetch_array($array)){
+                                    if($email == $row[6] && $pass == $row[1]){
+                                        $status = $row[5];
+                                        $role = $row[7];
+                                        $approval = $row[9];
+                                        if($status == 'yes' && $approval == 1){
+                                            $_SESSION['cid'] = $row[8];
+                                            $_SESSION['traderusername'] = $row[0];
+                                            $_SESSION['traderpassword'] = $pass;
+                                            $_SESSION['image'] = $row[2];
+                                            $_SESSION['firstname'] = $row[3];
+                                            $_SESSION['lastname'] = $row[4];
+                                            $_SESSION['guest'] = true;
+                                            $_SESSION['role'] =  $row[7];
+                                            $_SESSION['traderapproval'] = 1;
+                                            $cid = $row[8];
+                                            header("location: ../traderdashboard/index.php");
+                                        }
+                                        else if($approval == 2){
+                                            echo "Wait for the approval from admin of the website!!";
+                                            $approveError = true;
+                                            break;
+                                        }
+                                        else{
+                                            $otpvalue = rand(100000,999999);
+                                            $_SESSION['email'] = $row[6];
+                                            include("../connectionPHP/connect.php");
+                                            $sql = "UPDATE MART_USER SET OTP = '$otpvalue' WHERE EMAIL = '$row[6]' AND role='customer'";
+                                            $array = oci_parse($conn, $sql);
+                                            oci_execute($array);
+                                            oci_close($conn);
+                                            // $message = "Your otp code is ". $otpvalue;
+                                             $message = "$row[3], your otp is ". $otpvalue. " Thanks for joining our ecommerce website. <br> Please do not share this code with anyone!!";
+        
+        
+                                            if(mail("$row[6]", "OTP for cleckHFmart", $message)){
+                                                echo "mail sent";
+                                            }
+                                            else{
+                                                echo "unable to connect";
+                                            }
+                                            header("location: ../otp_page_trader/index.php");
+                                        }
+                                    }
+                                }
+                                if($approveError == false){
+                                    echo "<p class='flasherror'>Login unsuccessfull !!  </p>";
+                                }
+                            }
+                        }
+                    
+                    ?>
         <div class="signup-container">
             <div class="our-motto">
                 <h1>The best #1 platform to sell
@@ -51,22 +116,35 @@ session_start();
             </div>
             <form class="signup" method="POST" action="">
                 <?php 
+                $email = true;
                 if(isset($_POST['otpbtn'])){
                     if(!empty($_POST['email'])){
                         $email = $_POST['email'];
                         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                            $otpvalue = rand(100000,999999);
-                            $emailApprove = $email;
-                            $_SESSION['finalotp'] = $otpvalue;
-                            $_SESSION['traderemail'] = $emailApprove;
-                            $message = "Your otp code is ". $otpvalue. " Thanks for joining our website and being trader for our website. Please do not share this code with anyone!!";
-                            if(mail("$email", "OTP code for cleckHFmart", $message)){
-                                echo "mail sent";
+                            $query = "SELECT EMAIL FROM MART_USER";
+                            $arr = oci_parse($conn, $query);
+                            oci_execute($arr);
+                            while($row = oci_fetch_array($arr)){
+                                if($row[0] == $email){
+                                    echo "<p>An account with the same email address is found!!</p>";
+                                    $email =  null;
+                                }
                             }
-                            else{
-                                echo "unable to connect";
+                            if($email == true){
+                                $otpvalue = rand(100000,999999);
+                                $emailApprove = $email;
+                                $_SESSION['finalotp'] = $otpvalue;
+                                $_SESSION['traderemail'] = $emailApprove;
+                                $message = "Your otp code is ". $otpvalue. " Thanks for joining our website and being trader for our website. Please do not share this code with anyone!!";
+                                if(mail("$email", "OTP code for cleckHFmart", $message)){
+                                    echo "mail sent";
+                                }
+                                else{
+                                    echo "unable to connect";
+                                }
+                                header("location: ../otp_page_trader/index.php");
                             }
-                            header("location: ../otp_page_trader/index.php");
+                            
                     
                         }
                         else{
@@ -86,7 +164,7 @@ session_start();
                     <input type="text" id="email" name="email" >
                 </div>
                 <div class="otp">
-                    <button class="otpbtn" name="otpbtn"    >Send me an otp</button>
+                    <button class="otpbtn" name="otpbtn">Send me an otp</button>
                 </div>
             </form>
         </div>

@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $c_id = oci_fetch_array($arr)[0];
     $pid = $_GET['pid'];
     $quant = $_GET['quant'];
-    $sql = "SELECT NAME , PRICE FROM PRODUCT     WHERE PRODUCT_ID = '$pid'";
+    $sql = "SELECT NAME , PRICE FROM PRODUCT  WHERE PRODUCT_ID = '$pid'";
     $array = oci_parse($conn, $sql);
     oci_execute($array);
     $pname = oci_fetch_array($array);
@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     while($rows = oci_fetch_array($slotArr)){
         $slotQ += $rows[0];
     }
-    $canAdd = $slotQ <= 20 ? true:false;
+    $canAdd = $slotQ <= 20 && $slotQ>0 ? true:false;
     // echo $slotQ;
     // echo "<br>";
     // echo $canAdd;
@@ -40,7 +40,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         $arr = oci_parse($conn, $sql);
         oci_execute($arr);
         $cartId = oci_fetch_array($arr)[0];
-        $sqlExist = "SELECT ORDER_ID FROM PRODUCT_ORDER WHERE FK_CART_ID = '$cartId'";
+        $sqlExist = "SELECT ORDER_ID FROM PRODUCT_ORDER, COLLECTION_SLOT WHERE PRODUCT_ORDER.FK_SLOT_ID = COLLECTION_SLOT.SLOT_ID AND FK_CART_ID = '$cartId'";
         $arr2 = oci_parse($conn, $sqlExist);
         oci_execute($arr2); 
         // echo $orderid;?
@@ -55,6 +55,9 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         // oci_execute($array);
         // $order_id = oci_fetch_array($array)[0];
         $name = $pname[0];
+        if($quant<0){
+            $quant = 0;
+        }
         $query1 = "UPDATE PRODUCT_CART SET TOTAL_ITEMS = $quant WHERE CART_ID = '$cartId' AND PRODUCT_ID = '$pid' ";
         $array2 = oci_parse($conn, $query1);
         oci_execute($array2);

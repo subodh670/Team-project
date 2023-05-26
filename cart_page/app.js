@@ -109,7 +109,7 @@ function checkingItems(){
         })
     
 }
-checkingItems();
+// checkingItems();
 
 
 // adding checked item to database
@@ -397,6 +397,7 @@ function showingsavedProduct(){
            let items = JSON.parse(this.responseText);
             // console.log(items);
             let arr = [];
+            console.log(items);
             items.forEach((item,i)=>{
                 let productName = item[0];
                 let productPrice = item[1];
@@ -408,12 +409,12 @@ function showingsavedProduct(){
                 let productId = item[7];
                 let productssaved = item[8];
                 arr.push(item[1]);
-                console.log(productPrice);
+                console.log(productId);
                 // let cookieQ = document.cookie;
                 let cookieid = document.querySelector('.idcookie')?.value;
                 let quantcookie = document.querySelector(".idquant")?.value;
                 let arr1 = [];
-                console.log(quantcookie);
+                // console.log(quantcookie);
                 if(cookieid != null && quantcookie != null){
                     let cookieQ2 = quantcookie.split(" ");
                     for(let i=0; i<cookieQ2.length; i++){
@@ -428,45 +429,52 @@ function showingsavedProduct(){
                 // arr1 = 34;
                 // console.log(cookieQ1, cookieQ2);
                 // productssaved = productssaved != null ? productssaved : getcookie("quantity");
-                oneItemSelect.innerHTML += `
-                <section class="oneitemselect">
-                <input type="hidden" value="${productId}" class="getproductid">
-                <div class="selectone">
-                    <div class="onlyone">
-                        <p>${shopName}</p>
+                if(items.length === 1 && items[0]===""){
+                    oneItemSelect.innerHTML = "<h2 style='width: 100%; text-align: center;'>No products in your cart!!</h2>";
+                }
+                else{
+                    oneItemSelect.innerHTML += `
+                    <section class="oneitemselect">
+                    <input type="hidden" value="${productId}" class="getproductid">
+                    <div class="selectone">
+                        <div class="onlyone">
+                            <p>${shopName}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="productselect">
-                    <div class="onlyone">
-                        <input type="checkbox" data-tick="0" name="secselect" class="orderitem">
-                        <div class="product-desc">
-                            <img src="../productsImage/${productImage2}" alt="">
-                            <div class="desc">
-                                <p class="itempro">${productName}</p>
-                                <p>${productCategory}</p>
-                                <p>only ${productQuantity} items remaining</p>
+                    <div class="productselect">
+                        <div class="onlyone">
+                            
+                            <div class="product-desc">
+                                <img src="../productsImage/${productImage2}" alt="">
+                                <div class="desc">
+                                    <p class="itempro">${productName}</p>
+                                    <p>${productCategory}</p>
+                                    <p>only ${productQuantity} items remaining</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="price--qty">
+                            <div class="wish_price_del">
+                                <p>£${productPrice}</p>
+                                <div>
+                                <input class="getProid" type='hidden' value=${productId}>
+                                    <i data-love='0' class="fa-regular fa-heart"></i>
+                                   
+                                    <i class="fa-solid fa-trash-can"></i>      
+                                </div>
+                            </div>
+                            <div class="countitem">
+                                <button class="decrease">-</button>
+                              <input type="number" value="${productssaved}">
+                              <button class="increase">+</button>
                             </div>
                         </div>
                     </div>
-                    <div class="price--qty">
-                        <div class="wish_price_del">
-                            <p>£${productPrice}</p>
-                            <div>
-                            <input class="getProid" type='hidden' value=${productId}>
-                                <i data-love='0' class="fa-regular fa-heart"></i>
-                               
-                                <i class="fa-solid fa-trash-can"></i>      
-                            </div>
-                        </div>
-                        <div class="countitem">
-                            <button class="decrease">-</button>
-                          <input type="number" value="${productssaved}">
-                          <button class="increase">+</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-                `;
+                </section>
+                    `;
+                }
+                
+                
             
 
 
@@ -544,6 +552,7 @@ function showingsavedProduct(){
                         if(totalinput>=20){
                             inputValue[i].value = 0;
                             alert("Total cart should have not more than 20 items!!");
+                            price[j].textContent = 0;
                         }
                         // console.log(totalprice);
                         totalsummary.textContent = `£${totalprice}`;
@@ -584,21 +593,23 @@ function showingsavedProduct(){
                 
             }
             itemPlus(arr);
-            
+            addToCart();
+            addtocart2();
             
             // getTotal();
             
             // preventTyping();
             trashCart();
             // selectboxMain();
-            addingToOrders();
-            orderCost();
+            // addingToOrders();
+            // orderCost();
 
-            checkingItems();
+            // checkingItems();
             cartCounter();
             heartItem();
-            checkingIfordersHappened();
-            updateCartAndTotal();
+            updateCart();
+            // checkingIfordersHappened();
+            // updateCartAndTotal();
             // trashOrder();
             function trashCart(){
                 const proidset = document.querySelectorAll(".getProid");
@@ -620,25 +631,25 @@ function showingsavedProduct(){
                 })
                  
             }
-            function trashOrder(){
-                const proidset = document.querySelectorAll(".getProid");
-                const username = document.querySelector(".usernameFind")?.value;
-                const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
-                trashIcon.forEach((trash,i)=>{
-                    trash.addEventListener("click",()=>{
-                        let xml = new XMLHttpRequest();
-                        xml.onreadystatechange = function(){
-                            if(this.readyState == 4 && this.status == 200){
-                                // location.reload(); 
-                                console.log(this.responseText);
-                            }
-                        }
-                        xml.open("POST", `deleteorderitem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
-                        xml.send();
+            // function trashOrder(){
+            //     const proidset = document.querySelectorAll(".getProid");
+            //     const username = document.querySelector(".usernameFind")?.value;
+            //     const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
+            //     trashIcon.forEach((trash,i)=>{
+            //         trash.addEventListener("click",()=>{
+            //             let xml = new XMLHttpRequest();
+            //             xml.onreadystatechange = function(){
+            //                 if(this.readyState == 4 && this.status == 200){
+            //                     // location.reload(); 
+            //                     console.log(this.responseText);
+            //                 }
+            //             }
+            //             xml.open("POST", `deleteorderitem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
+            //             xml.send();
                         
-                    })
-                })
-            }
+            //         })
+            //     })
+            // }
             
 
         }
@@ -710,14 +721,7 @@ let checkout = document.querySelector(".checkout");
 
 checkout.addEventListener("click",()=>{
     const slots = document.querySelector('.slots #slotscollection');
-    console.log(slots.value);
-    if(slots.value != ""){
-        window.location.href = "../order_page/index.php";                                                                                                                                                           
-
-    }
-    else{
-        alert("Collection date is not chosen!!");
-    }
+    
 
 })
 
@@ -819,7 +823,7 @@ function updateCartAndTotal(){
                             xmlhttp.onreadystatechange = function(){
                                 if(this.readyState == 4 && this.status == 200){
                                     console.log(this.responseText);
-                                    // console.log(JSON.parse(this.responseText));
+                                    console.log(JSON.parse(this.responseText));
                                     if(JSON.parse(this?.responseText)[0]==false){
     
                                         inputValue[i].disabled = true;
@@ -882,11 +886,186 @@ function updateCartAndTotal(){
     }
     
 }
-updateCartAndTotal();
+// updateCartAndTotal();
 
-// function getTotal(){
+function updateCart(){
+    let pIdAll = document.querySelectorAll(".getproductid");
+    const username = document.querySelector(".usernameFind")?.value;
+    let inputValue = document.querySelectorAll('.countitem input');
+    let decrease = document.querySelectorAll(".countitem .decrease");
+    let increase = document.querySelectorAll(".countitem .increase");
+    if(username !=null){
+        increase.forEach((inc,i)=>{
+            inc.addEventListener("click",()=>{
+                let xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                        console.log(this.responseText);
+                        console.log(JSON.parse(this.responseText));
+                        if(JSON.parse(this?.responseText)[0]==true){
+
+                            console.log("start");
+                        }
+                        else{
+                            // inputValue[i].disabled = false;
+                            console.log("end");
+                        }
+                    }
+                }
+                xmlhttp.open("POST", `cartIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
+                xmlhttp.send();
+            })
+        })
+        decrease.forEach((inc,i)=>{
+            inc.addEventListener("click",()=>{
+                let xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                        console.log(this.responseText);
+                        console.log(JSON.parse(this.responseText));
+                        if(JSON.parse(this?.responseText)[0]==true){
+
+                            console.log("start");
+                        }
+                        else{
+                            // inputValue[i].disabled = false;
+                            console.log("end");
+                        }
+                    }
+                }
+                xmlhttp.open("POST", `cartIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
+                xmlhttp.send();
+            })
+        })
+        inputValue.forEach((inp,i)=>{
+            inp.addEventListener("input",()=>{
+                if(inputValue[i].value<0){
+                    inputValue[i].value = 0;
+                }
+                console.log(inputValue[i].value);
+                let xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function(){
+                    if(this.readyState ==4 && this.status == 200){
+                        console.log(JSON.parse(this.responseText));
+                        if(JSON.parse(this?.responseText)[0]==true){
+
+                            console.log("start");
+                        }
+                        else{
+                            // inputValue[i].disabled = false;
+                            console.log("end");
+                        }
+                    }
+                }
+                xmlhttp.open("POST", `cartIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
+                xmlhttp.send();
+            })
+        })
+    }
+}
+
+function addToCart(){
+    const button = document.querySelector(".order-checkout button");
+    let pIdAll = document.querySelectorAll(".getproductid");
+    const collectionSlot = document.querySelector(".slots input");
+    const slots = document.querySelector('.slots #slotscollection');
+    const username = document.querySelector(".usernameFind")?.value;
+    let slotsdaydisplay = document.querySelector(".collectionday");
+    let slotsday = null;
+    slots.addEventListener("change",()=>{
+        slotsday = new Date(slots?.value).getDay() + 1;
+        console.log(slotsday);
+    })
+    console.log(slots);
+   if(slotsday === 1){
+       slotsdaydisplay.textContent = 'Day chosen: sunday';
+   }
+   else if(slotsday === 2){
+       slotsdaydisplay.textContent = 'Day chosen: monday';
+
+   }
+   else if(slotsday === 3){
+       slotsdaydisplay.textContent = 'Day chosen: tuesday';
+
+   }else if(slotsday === 4){
+       slotsdaydisplay.textContent = 'Day chosen: wednesday';
+
+   }else if(slotsday === 5){
+       slotsdaydisplay.textContent = 'Day chosen: thursday';
+
+   }else if(slotsday === 6){
+       slotsdaydisplay.textContent = 'Day chosen: friday';
+
+   }else if(slotsday === 7){
+       slotsdaydisplay.textContent = 'Day chosen: saturday';
+
+   }
+   console.log(slotsday);
+    button.addEventListener("click",()=>{
+       
+        let xml = new XMLHttpRequest();
+        xml.onreadystatechange = function(){
+            if(this.readyState ==4 && this.status == 200){
+                console.log(this.responseText);
+                // console.log(JSON.parse(this.responseText));
+                // console.log(slots.value);
+                if(JSON.parse(this.responseText)[0] === true)
+                    window.location.href = "../order_page/index.php";
+                    // console.log('redirect');                                                                                                                                                           
+                else if(collectionSlot.value === null)
+                    alert("collection date is not provided");
+                    // alert("Collection date is not chosen!!");
+            }
+                
+            }
+           
+        xml.open("POST","addtoorderpage.php?date="+collectionSlot.value+"&cname="+username+"&day="+slotsday, true);
+        xml.send();
+    })
     
-// }
+}
+
+
+function addtocart2(){
+    let pIdAll = document.querySelectorAll(".getproductid");
+    const slots = document.querySelector('.slots #slotscollection');
+    const username = document.querySelector(".usernameFind")?.value;
+    const button = document.querySelector(".order-checkout button");
+    let inputValue = document.querySelectorAll('.countitem input');
+    let price = document.querySelectorAll(".wish_price_del>p");
+    console.log(pIdAll);   
+    let slotsday = null;
+    slots.addEventListener("change",()=>{
+        slotsday = new Date(slots?.value).getDay() + 1;
+        console.log(slotsday);
+    })     
+    button.addEventListener("click",()=>{
+        console.log("hel");
+        pIdAll.forEach((pid,i)=>{
+            console.log(price[i].textContent);
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(this.readyState ==4 && this.status == 200){
+                    console.log(this.responseText);
+                    // console.log(JSON.parse(this.responseText));
+                    // console.log(slots.value);
+                    // if(JSON.parse(this.responseText)[0] === true)
+                    //     window.location.href = "../order_page/index.php";                                                                                                                                                           
+                    // else if(JSON.parse(this.responseText)[0] === false)
+                    //     alert("collection date is not provided");
+                    //     alert("Collection date is not chosen!!");
+                }
+                    
+                }
+               
+            xml.open("POST",`addtoorderpage2.php?cname=${username}&pid=${pIdAll[i].value}&quant=${inputValue[i].value}&price=${price[i].textContent.slice(1)}&slots=${slots.value}`, true);
+            xml.send();
+        })
+    })
+   
+}
+// addtocart2();
+
 
 function getcollectionId(){
     const collectionSlot = document.querySelector(".slots input");

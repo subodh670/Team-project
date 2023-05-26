@@ -189,68 +189,76 @@
 
             // if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity && $_POST['quantity'] <= ($pQuantity-$quantity)){
               if($_POST['quantity']>0){
+                echo "1";
               $pid = $_GET['id'];
               $quantity = $_POST['quantity'];
               $query = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
               $arr = oci_parse($conn, $query);
               oci_execute($arr);
               $cid = oci_fetch_array($arr)[0];
-              $query1 = "SELECT PRODUCT_CART.CART_ID, PRODUCT_CART.TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid AND PRODUCT_CART.PRODUCT_ID = '$pid'";
+              $query1 = "SELECT PRODUCT_CART.CART_ID, PRODUCT_CART.TOTAL_ITEMS FROM PRODUCT_CART INNER JOIN CART ON PRODUCT_CART.CART_ID=CART.CART_ID AND FK_USER_ID = $cid";
               $arr2 = oci_parse($conn, $query1);
               oci_execute($arr2);
               $finalArr = oci_fetch_array($arr2);
               $exist = $finalArr; 
-              $productExist[] = null;
+              // $productExist[] = null;
+              $totalQ = $quantity;
               if(isset($exist[0])){
+                echo "2";
                 $cart_id = $exist[0];
-                $query2 = "SELECT CART_ID FROM PRODUCT_CART WHERE PRODUCT_ID = '$pid' AND CART_ID = '$cart_id'";
+                $query2 = "SELECT CART_ID, TOTAL_ITEMS FROM PRODUCT_CART WHERE PRODUCT_ID = '$pid' AND CART_ID = '$cart_id'";
                 $arr2 = oci_parse($conn, $query2);
                 oci_execute($arr2);
                 $productExist = oci_fetch_array($arr2);
-              }
-               
-              // echo $exist[0];
-              // echo $cartid;
-              // echo $productExist[0];
-              if(isset($exist[0])){
-                $oldquantity = $exist[1];
-                $totalQ = $oldquantity + $quantity;
-                $cartid = $exist[0];
-
-
-                // echo $totalQ;
-                // $sql = "UPDATE CART SET ITEMS = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
-                // $sql = "MERGE INTO CART
-                // USING (
-                //     SELECT PRODUCT_CART.CART_ID
-                //     FROM CART
-                //     INNER JOIN PRODUCT_CART ON CART.CART_ID = PRODUCT_CART.CART_ID
-                //     WHERE CART.CART_ID = '$cartid'
-                //       AND CART.FK_USER_ID = '$cid'
-                //       AND PRODUCT_CART.PRODUCT_ID = '$pid'
-                // ) src
-                // ON (CART.CART_ID = src.CART_ID)
-                // WHEN MATCHED THEN
-                //     UPDATE SET CART.TOTAL_ITEMS = '$totalQ'";
-                // $sql = "UPDATE CART SET QUANTITY = '$totalQ' "
-                // $sql = "UPDATE CART SET TOTAL_ITEMS = '$totalQ' WHERE CART_ID = '$cartid'";
-                // $array = oci_parse($conn, $sql);
-                // oci_execute($array);
-                // echo "HELLO";
-                if(!isset($productExist[0])){
-                  echo "ME";
-                  $sql = "INSERT INTO PRODUCT_CART(CART_ID, PRODUCT_ID, TOTAL_ITEMS)  VALUES ('$cartid','$pid', '$totalQ')";
-                  $array = oci_parse($conn, $sql);
-                  oci_execute($array);
-                }
-                else{
+                if(isset($productExist[0])){
+                  echo "3";
+                  // $quantity = $productExist[1];
+                  $oldquantity = $exist[1];
+                  $totalQ = $oldquantity + $quantity;
+                  // $cartid = $exist[0];
+                  echo "4";
                   $sql = "UPDATE PRODUCT_CART SET  TOTAL_ITEMS = '$totalQ' WHERE CART_ID = '$cart_id' AND PRODUCT_ID = '$pid'";
                   $array = oci_parse($conn, $sql);
                   oci_execute($array);
+  
+                  // echo $totalQ;
+                  // $sql = "UPDATE CART SET ITEMS = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
+                  // $sql = "MERGE INTO CART
+                  // USING (
+                  //     SELECT PRODUCT_CART.CART_ID
+                  //     FROM CART
+                  //     INNER JOIN PRODUCT_CART ON CART.CART_ID = PRODUCT_CART.CART_ID
+                  //     WHERE CART.CART_ID = '$cartid'
+                  //       AND CART.FK_USER_ID = '$cid'
+                  //       AND PRODUCT_CART.PRODUCT_ID = '$pid'
+                  // ) src
+                  // ON (CART.CART_ID = src.CART_ID)
+                  // WHEN MATCHED THEN
+                  //     UPDATE SET CART.TOTAL_ITEMS = '$totalQ'";
+                  // $sql = "UPDATE CART SET QUANTITY = '$totalQ' "
+                  // $sql = "UPDATE CART SET TOTAL_ITEMS = '$totalQ' WHERE CART_ID = '$cartid'";
+                  // $array = oci_parse($conn, $sql);
+                  // oci_execute($array);
+                  // echo "HELLO";
+                
+
+               
                 }
+                else if(!isset($productExist[0])){
+                   $cart_id = $exist[0];
+                  $sql = "INSERT INTO PRODUCT_CART(CART_ID, PRODUCT_ID, TOTAL_ITEMS)  VALUES ('$cart_id','$pid', '$totalQ')";
+                  $array = oci_parse($conn, $sql);
+                  oci_execute($array);
+                }
+                
+              // echo $exist[0];
+              // echo $cartid;
+              // echo $productExist[0];
+              
                 // $sql = "INSERT CA"
               }
               else{ 
+                echo "ready";
                 // $sql = "SELECT CART_ID, TOTAL_ITEMS FROM CART WHERE FK_USER_ID = '$cid' AND ITEMS = '$pName'";
                 // $array = oci_parse($conn, $sql);
                 // oci_execute($array);
@@ -430,10 +438,43 @@
             </div>
             <hr>
             <div class="cost">
-                 <p>Price <?php echo "  £".$pPrice;  ?></p>
-                 <div>
-                    <p><?php $prevPrice = number_format(((float)$pPrice + ((float)$pPrice*(float)$pDiscount)/100),2); echo "£".$prevPrice; ?></p>
-                    <p>offer: <?php echo $pDiscount."%";  ?></p>
+                 
+                  <?php
+                  $sql =  "SELECT DISTINCT OFFER_PERCENTAGE, OFFER_PRODUCT.PRODUCT_ID FROM OFFER INNER JOIN OFFER_PRODUCT ON OFFER_PRODUCT.OFFER_ID = OFFER.OFFER_ID WHERE ITEMS = '$pName'";
+                  $arr = oci_parse($conn, $sql);
+                  oci_execute($arr);
+                  $x = false;
+                  while($row = oci_fetch_array($arr)){
+                    $offer = $row[0];
+                    $pid = $row[1];
+                    if($pid == $proid){
+                      ?>
+                      <?php $afterprice = number_format(((float)$pPrice - ((float)$pPrice*(float)$offer)/100),2);?>
+
+                      <p>Price <?php echo "  £".$afterprice ;  ?></p>
+                      <div>
+                        <p><?php echo "£".$pPrice;  ?></p>
+                      <p>offer: <?php echo $pDiscount."%";  ?></p>
+                      <?php
+                      $x = true;
+                    }
+                    
+                    
+                  }
+                  if($x == false){
+
+                    ?>
+                    <?php //$prevPrice = number_format(((float)$pPrice - ((float)$pPrice*(float)$offer)/100),2);?>
+
+                    <p>Price <?php echo "  £".$pPrice;  ?></p>
+                    <div>
+                      <p><?php echo "£".$pPrice;  ?></p>
+                    <p>offer: <?php echo "No offer";  ?></p>
+                    <?php
+                  }
+                  
+                  ?>
+                    
                  </div>
             </div>
             <h1>Quantity</h1>
@@ -458,7 +499,7 @@
               <p class="quantity_error" style="color: red; font-size: 0.8rem; font-weight: bold; margin-top: 1em;"><?php  if(isset($quant_Error)) echo $quant_Error;  ?></p>
             </div>
             <div class="place-order">
-              <button name='buynow'>Buy Now</button>
+              <!-- <button name='buynow'>Buy Now</button> -->
               <button name="addtocart">Add to Cart</button>
             </div>
         </form>

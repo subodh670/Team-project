@@ -105,7 +105,9 @@ html{
     }
 }
 @media(max-width: 992px){
-    
+    .login-btn{
+        display: none;
+    }
     .container a{
         width: 25%;
     }
@@ -217,11 +219,13 @@ html{
 .otpbtn:hover{
     background-color: #1c711c;
 }
-.bars{
+.bars button{
     background-color: var(--tertiary-color);
     border-width: 0px;
-    padding: 5px;
+    padding: 0.5em 0.8em;
     border-radius: 8px;
+    color: white;
+
 }
 @media(max-width: 992px){
     .signup-container{

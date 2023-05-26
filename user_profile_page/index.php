@@ -486,16 +486,39 @@ include("../connectionPHP/inc_session.php");
             <!-- unfinished -->
             <div class="wishitem">
                 <?php
-                // $sql = "SELECT PAY"
-                ?>
-            <div class='wish'>
-                    <img src="../productsImage/<?php echo $productImage; ?>" alt="">
+                 $username = $_SESSION['username'];
+                 $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+                 $arr = oci_parse($conn, $sql);
+                 oci_execute($arr);
+                 $cid = oci_fetch_array($arr)[0];
+                $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid'";
+                $arr = oci_parse($conn, $sql);
+                 oci_execute($arr);
+                 $cart_id = oci_fetch_array($arr);
+                 if(isset($cart_id[0])){
+                    $cart_id = $cart_id[0];
+                    $sql = "SELECT PRODUCT.IMAGE2, PRODUCT.NAME, ORDERED_PRODUCT.TOTAL_COST, PRODUCT.STOCK_AVAILABLE FROM PRODUCT INNER JOIN ORDERED_PRODUCT ON ORDERED_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID INNER JOIN PRODUCT_ORDER ON PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID WHERE PRODUCT_ORDER.FK_CART_ID = '$cart_id' AND PRODUCT_ORDER.STATUS = 2";
+                    $arr = oci_parse($conn, $sql);
+                    oci_execute($arr);
+                    while($row = oci_fetch_array($arr)){
+                        ?>
+ <div class='wish'>
+                    <img src="../productsImage/<?php echo "../productsImage/".$row[0]; ?>" alt="">
+                    <div>
+                        status: paid
+                    </div>
                     <div class="titlewish">
-                        <p><?php echo $productName.", ".$productQuantity; ?> counts</p>
+                        <p><?php echo $row[1].", ".$row[3]; ?> counts</p>
                         <i class="fa-solid fa-trash-can"></i>
                     </div>
-                    <h3> price: £<?php echo $productPrice;  ?></h3>
+                    <h3> paid price: £<?php echo $row[2];  ?></h3>
                 </div>
+
+<?php
+                    }
+                 }
+                ?>
+           
                 </div>
         </div>
     </section>

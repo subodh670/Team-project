@@ -115,7 +115,9 @@
 
 
 ?>
+<?php
 
+?>
 
 <!-- <section class="selectall">
         <div class="all">
@@ -127,13 +129,9 @@
             <span>Delete</span>
         </div>
 </section> -->
-
-            <div class="slots">
-                <label style="font-size: 1.3rem;" for="slotscollection">Choose collection slot between days wed, Thu or Friday: </label>
-                <input type="date" name="collection-slot" id="slotscollection">
-                <p class="collectionday"></p>
-            </div>
+<div class="cartpage"><h2>Cart Page</h2></div>
 <main></main>
+
 <?php
 if(isset($_SESSION['username'])){
 ?>

@@ -36,17 +36,21 @@ function orderPage(){
             let quantity = response[1];
             let price = response[0];
             placeorder.innerHTML =  `
-            <p>Collection place: huddersfields</p>
-            <hr> 
-            <p class="collection_date">Collection slot: empty</p>
+            
+            <hr>
                 <h1>Order summary</h1>
                 <p class="totalitems">Items total: ${quantity}</p>
-                <p class="totalpayment">Total payment: £${price}</p>
-                <p class="tax">All taxes included</p>
-                <button class="orderbtn">Place order</button>
+                <p class="totalpayment">Total payment: ${price}</p>
+                <p class="tax">No taxes included</p>
+                <form action="" method="POST">
+                    <input type="hidden" class="postcollectdate" name="postcollectdate">
+                    <input type="hidden" class="posttimeslot" name="posttimeslot">
+                    <input type="hidden" class="postday" name="postday">
+                    <button type="submit" class="orderbtn" name="orderbtn">Place order</button>
+                </form>
            
             `;
-            invoicemodal();
+            // invoicemodal();
             getcollectionId();
 
         }
@@ -140,5 +144,98 @@ function getcollectionId(){
     }
     xml.open("POST",'../cart_page/getslots.php', true);
     xml.send();
+
+}
+
+
+function dayslots(){
+    const collectionSlot = document.querySelector(".slots #slotscollection");
+    let yourDate = new Date();
+    yourDate.setDate(yourDate.getDate()+1);
+    let x = yourDate.toISOString().split('T')[0]
+    collectionSlot.min = x;
+    const day = document.querySelector(".slots .slotsday");
+    const fixingtheday = document.querySelector(".disabledate");
+
+    const dayhidden = document.querySelector(".dayhidden");
+    let slotsday = "";
+    collectionSlot.addEventListener("change",()=>{
+        slotsday = new Date(collectionSlot?.value).getDay() + 1;
+        // if(slotsday!=""){
+            dayhidden.value = slotsday;
+            if(slotsday === 1){
+                day.textContent = 'Day chosen: sunday';
+            }
+            else if(slotsday === 2){
+                day.textContent = 'Day chosen: monday';
+         
+            }
+            else if(slotsday === 3){
+                day.textContent = 'Day chosen: tuesday';
+         
+            }else if(slotsday === 4){
+                day.textContent = 'Day chosen: wednesday';
+         
+            }else if(slotsday === 5){
+                day.textContent = 'Day chosen: thursday';
+         
+            }else if(slotsday === 6){
+                day.textContent = 'Day chosen: friday';
+         
+            }else if(slotsday === 7){
+                day.textContent = 'Day chosen: saturday';
+         
+            }
+            // day.textContent = slotsday;
+        // }
+    }) 
+    if(fixingtheday.value == 'true'){
+        collectionSlot.disabled = true;
+    }
+setCollectionDate();
+
+    // console.log(dayhidden.value);
+
+      
+}
+dayslots();
+
+function setCollectionDate(){
+    const collectSlot = document.querySelector("#slotscollection");
+    const timeSlot = document.querySelector(".slots select");
+    // const slotsDay = document.querySelector(".dayhidden").textContent;
+    let value = '10-13';
+    timeSlot.addEventListener("change",()=>{
+        value = timeSlot.options[timeSlot.selectedIndex].value;
+        
+    })
+    let slotsday = null;
+    let collectdate = null;
+    collectSlot.addEventListener("change",()=>{
+        collectdate = collectSlot.value;
+        slotsday = new Date(collectSlot?.value).getDay() + 1;
+        console.log(value, slotsday, collectdate);
+        if(slotsday != null && collectdate != null){
+            let xml = new XMLHttpRequest();
+            xml.onreadystatechange = function(){
+                if(xml.status==200 && xml.readyState == 4){
+                    // console.log(this.responseText);
+                    // console.log(JSON.parse(this.responseText)); 
+                    document.querySelector('.flashmessage').innerHTML = JSON.parse(this.responseText)[0];
+                    if(JSON.parse(this.responseText)[2] != null){
+                        document.querySelector(".postcollectdate").value = JSON.parse(this.responseText)[2];
+                        document.querySelector(".posttimeslot").value = JSON.parse(this.responseText)[3];;
+                        document.querySelector(".postday").value = JSON.parse(this.responseText)[1];;
+                    }
+
+                }
+            }
+            xml.open("POST", `collectiondate.php?cslot=${collectdate}&timeslot=${value}&slotsday=${slotsday}`, true);
+            xml.send();
+    
+        }
+    })
+    
+   
 
 }

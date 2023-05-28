@@ -162,7 +162,7 @@
             <div class="slider">
                 <?php 
                 $count = 0;
-                $sql = "SELECT IMAGE2, NAME, PRODUCT_ID FROM PRODUCT, REVIEW WHERE PRODUCT.PRODUCT_ID = REVIEW.FK_PRODUCT_ID AND PRODUCT.STATUS = 1 AND ROWNUM <= 3 ORDER BY REVIEW.RATE";
+                $sql = "SELECT IMAGE2, NAME, PRODUCT_ID FROM PRODUCT, REVIEW WHERE PRODUCT.PRODUCT_ID = REVIEW.FK_PRODUCT_ID AND PRODUCT.STATUS = 1 AND ROWNUM >= 3 ORDER BY REVIEW.RATE";
                 $arr = oci_parse($conn, $sql);
                 oci_execute($arr);
                 while($rows = oci_fetch_array($arr)){

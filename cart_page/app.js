@@ -116,192 +116,6 @@ function checkingItems(){
 
 
 
-
-
-function addingToOrders(){
-    const checkBoxItems = document.querySelectorAll(".productselect .onlyone input");
-    const getproductid = document.querySelectorAll(".getproductid");
-    const quantities = document.querySelectorAll('.countitem input');
-    const slots = document.querySelector('.slots #slotscollection');
-    const username = document.querySelector(".usernameFind");
-    let price = document.querySelectorAll(".wish_price_del> p");
-    let pName = document.querySelectorAll(".product-desc .desc .itempro");
-    let slotsdaydisplay = document.querySelector(".collectionday");
-     let  slotsday = new Date(slots?.value).getDay() + 1;
-     console.log(slotsday);
-    if(slotsday === 1){
-        slotsdaydisplay.textContent = 'Day chosen: sunday';
-    }
-    else if(slotsday === 2){
-        slotsdaydisplay.textContent = 'Day chosen: monday';
-
-    }
-    else if(slotsday === 3){
-        slotsdaydisplay.textContent = 'Day chosen: tuesday';
-
-    }else if(slotsday === 4){
-        slotsdaydisplay.textContent = 'Day chosen: wednesday';
-
-    }else if(slotsday === 5){
-        slotsdaydisplay.textContent = 'Day chosen: thursday';
-
-    }else if(slotsday === 6){
-        slotsdaydisplay.textContent = 'Day chosen: friday';
-
-    }else if(slotsday === 7){
-        slotsdaydisplay.textContent = 'Day chosen: saturday';
-
-    }
-    // console.log(pName[1].textContent);
-    // console.log(day);
-    // let slotsValue = "10-13";
-    // slots.addEventListener("change",()=>{
-    //     slotsValue = slots.options[slots.selectedIndex].value;
-    // })
-    // console.log(slotsValue);
-    // var z = null;
-    let x = false;
-    checkBoxItems.forEach((checkitem,i)=>{
-        let productIdValue = getproductid[i];
-        let btnIncrease = document.querySelectorAll(".countitem .increase");
-        let btnDecrease = document.querySelectorAll(".countitem .decrease");
-        checkitem.addEventListener("change",(e)=>{
-            let day = "";
-            let slotsValue = "";
-            // console.log(slots.value);
-            if(slots.value != ""){
-                 slotsValue = slots.value;
-                day = new Date(slots?.value).getDay() + 1;
-            }
-            // console.log(slotsValue);
-            // console.log(day);
-            // console.log(slotsValue);
-            let isChecked = e.target.matches(':checked'); 
-            if(isChecked === true){
-                if(day === 4 || day === 5 || day === 6){
-                    x = true;
-                    console.log(day);
-                    // console.log(price[i].textContent);
-                    let price1 = price[i].textContent;
-                    
-                    let xml1 = new XMLHttpRequest();
-                    xml1.onreadystatechange = function(){
-                        if(this.readyState == 4 && this.status == 200){
-                            if(this.responseText != ""){
-                                console.log(this.responseText);
-                            }
-                            
-                                orderCost();
-                        }
-                    }
-                    console.log(slotsValue);
-    
-                    xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price1.slice(1)}&pname=${pName[i].textContent}`, true);
-                    xml1.send();
-                }
-                else{
-                    alert("Please choose appropriate time slot!!");
-                }
-                
-            }
-            else if(isChecked === false || isChecked === null){
-                x = false;
-                let xml2 = new XMLHttpRequest();
-                const collectionSlot = document.querySelector(".slots input");
-
-                xml2.onreadystatechange = function(){
-                    if(this.readyState == 4 && this.status == 200){
-                        if(JSON.parse(this.responseText)[0]===true){
-                            collectionSlot.disabled = false;
-                        }
-                        console.log(this.responseText);
-                        orderCost();
-                    }
-                }
-                xml2.open("POST", `deleteorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&pname=${pName[i].textContent}`, true);
-                xml2.send();
-            }
-            
-            // var y = x;
-            btnIncrease[i].addEventListener("click",()=>{
-                setTimeout(()=>{
-                    addingToOrders();
-                },1000)
-            })
-            btnDecrease[i].addEventListener("click",()=>{
-                setTimeout(()=>{
-                    addingToOrders();
-                },1000)
-            })
-        })
-        // var z = y;
-        btnIncrease[i].addEventListener("click",()=>{
-            // console.log("hello");
-            let y = true;
-            y = x;
-            if(x===false)
-                y = false;
-            let day = "";
-            if(slots.value != ""){
-                day = new Date(slots?.value).getDay() + 1;
-            }
-            let slotsValue = slots.value;
-            if(y===true){
-                let price1 = price[i].textContent;
-                
-                let xml1 = new XMLHttpRequest();
-                xml1.onreadystatechange = function addXml(){
-                    if(this.readyState == 4 && this.status == 200){
-                        if(this.responseText != ""){
-                            console.log(this.responseText);
-                        }
-                        else{
-                            orderCost();
-                        }
-                    }
-                }
-                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price1.slice(1)}&pname=${pName[i].textContent}`, true);
-                xml1.send();
-            }
-            // console.log(price[i]);
-            // price1 = price[i].textContent;
-        })
-        btnDecrease[i].addEventListener("click",()=>{
-            // console.log("hello");
-            let y = true;
-            y = x;
-            if(x===false)
-                y = false;
-            let day = "";
-            if(slots.value != ""){
-                day = new Date(slots?.value).getDay() + 1;
-            }
-            let slotsValue = slots.value;
-            if(y===true){
-                let price1 = price[i].textContent;
-                
-                let xml1 = new XMLHttpRequest();
-                xml1.onreadystatechange = function addXml(){
-                    if(this.readyState == 4 && this.status == 200){
-                        if(this.responseText != ""){
-                            console.log(this.responseText);
-                        }
-                        else{
-                            orderCost();
-                        }
-                    }
-                }
-                xml1.open("POST", `addorder.php?pid=${getproductid[i].value}&quant=${quantities[i].value}&slot=${slotsValue}&username=${username.value}&day=${day}&price=${price1.slice(1)}&pname=${pName[i].textContent}`, true);
-                xml1.send();
-            }
-        })
-        // })
-    })
-    
-
-}
-
-
 //  increasing prices
 
 
@@ -593,8 +407,8 @@ function showingsavedProduct(){
                 
             }
             itemPlus(arr);
-            addToCart();
-            addtocart2();
+            // addToCart();
+            // addtocart2();
             
             // getTotal();
             
@@ -1025,6 +839,10 @@ function addToCart(){
     
 }
 
+const button = document.querySelector(".order-checkout button");
+button.addEventListener("click",()=>{
+    window.location.href = "../order_page/index.php";
+})
 
 function addtocart2(){
     let pIdAll = document.querySelectorAll(".getproductid");
@@ -1084,4 +902,6 @@ function getcollectionId(){
     xml.send();
 
 }
-getcollectionId();
+// getcollectionId();
+
+// dayslots();

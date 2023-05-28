@@ -53,8 +53,9 @@
     $arr = oci_parse($conn, $sql);
     $g = oci_execute($arr);
     if($g){
-        echo "<h1 style='width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;'>Payment of money $$sum is Successfull!!</h1>";
-        echo "<a href='../landing_page/index.php'>Redirect</a>";
+        echo "<div style='width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;'><h1 '>Payment of money $$sum is Successfull!!</h1><a href='../landing_page/index.php'>Redirect</a></div>";
+        echo "";
+
     }
     ?>
 </body>

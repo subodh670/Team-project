@@ -254,7 +254,9 @@ if(isset($_POST['deletepro'])){
 
 <div id="onelink" class="reports">
         
-
+<div class="reportlink">
+  <a href="#">Trader report</a>
+</div>
 
 
 

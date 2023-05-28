@@ -219,7 +219,9 @@ include("../connectionPHP/inc_session_admin.php");
 
 
 <div id="onelink" class="welcome">
-
+<div class="reportlink">
+  <a href="#">Admin Report</a>
+</div>
 
 
 

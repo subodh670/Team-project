@@ -559,3 +559,62 @@ footer{
     color: white;
   }
  
+  /* fix the collection day */
+.slots{
+    background-color: white;
+    /* border: 1px solid black; */
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 2em;
+}
+.slots button{
+    padding: 0.5em 1em;
+    background-color: var(--tertiary-color);
+    color: var(--white);
+    border-width: 0px;
+    transition: 0.6s;
+}
+.slots button:hover{
+    background-color: var(--secondary-color);
+}
+.slots select{
+    color: white;
+}
+.infoslots{
+    padding: 3em;
+    width: 80%;
+    margin: auto;
+    background-color: var(--secondary-color);
+    margin-top: 3em;
+}
+.infoslots h3{
+    color: var(--white);
+    margin-bottom: 1em;
+}
+.infoslots p{
+    color: var(--white);
+
+}
+
+/* slots start */
+.slots{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    margin-top: 2em;
+}
+.slots label{
+    font-size: 2rem;
+    color: var(--secondary-color);
+}
+main{
+    margin-top: 3em;
+}
+.slots select{
+    color: white;
+    width: 100px;
+    height: 40px;
+    background-color: var(--secondary-color);
+}

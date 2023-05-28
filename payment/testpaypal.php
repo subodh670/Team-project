@@ -5,8 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <?php
+  session_start();
+  include("../connectionPHP/connect.php");
+  ?>
 <!-- <h1>https://www.sandbox.paypal.com/cgi-bin/webscr</h1> -->
     <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST" id="by" name="by">
   <input type="hidden" name="business" value="sb-xuwu625717748@business.example.com">
@@ -26,7 +31,7 @@
   oci_execute($arr);
   $cartId = oci_fetch_array($arr)[0];
   // $query = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE FROM PRODUCT_ORDER,PRODUCT,CATEGORY,CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
-  $query = "SELECT DISTINCT ORDERED_PRODUCT.ORDER_ID, ORDERED_PRODUCT.TOTAL_COST, ORDERED_PRODUCT.QUANTITY FROM ORDERED_PRODUCT INNER JOIN PRODUCT_ORDER ON ORDERED_PRODUCT.ORDER_ID=PRODUCT_ORDER.ORDER_ID AND FK_CART_ID = $cartId";
+  $query = "SELECT DISTINCT ORDERED_PRODUCT.ORDER_ID, ORDERED_PRODUCT.TOTAL_COST, ORDERED_PRODUCT.QUANTITY FROM ORDERED_PRODUCT INNER JOIN PRODUCT_ORDER ON ORDERED_PRODUCT.ORDER_ID=PRODUCT_ORDER.ORDER_ID AND FK_CART_ID = $cartId AND PRODUCT_ORDER.STATUS = 1";
 
     $arr2 = oci_parse($conn, $query);
     oci_execute($arr2);
@@ -36,7 +41,8 @@
         $sum += $row[1];
         $quant += $row[2];
     }
-    // echo $sum;
+
+    echo $sum;
     ?>
   <input type="hidden" name="quantity" value="<?php echo $sum;  ?>">
     <input type="hidden" name="amount" value="<?php echo 1; ?>">
@@ -44,8 +50,9 @@
   ?>
   <input type="hidden" name="notify_url" value="https://localhost/ipn.php">
   <input type="hidden" name="cancel_return" value="https://localhost/cancel.php">
-  <button type="submit" value="Buy">Buy</button>
+  
+  <button style="visibility: none;" type="submit" value="Buy the product(s)" class='pay'>Buy</button>
 </form>
-
+<script src="app.js"></script>
 </body>
 </html>

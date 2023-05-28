@@ -16,94 +16,34 @@
     <div class="backdrop hidebackdrop">
 
     </div>
-    <div class="invoice hideinvoice">
-    <h2>Invoice</h2>
-    <div class="cross">
-    <i class="fa-solid fa-xmark"></i>
-    </div>
-    
-    <div class="item-row">
-      <div class="item-name"><strong>Item Name</strong></div>
-      <div class="item-quantity"><strong>Quantity</strong></div>
-      <div class="item-price"><strong>Price</strong></div>
-      <div class="item-total"><strong>Total</strong></div>
-    </div>
-    
-
     <?php
-    include("../connectionPHP/connect.php");
-    $username = $_SESSION['username'];
-    $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
-    $arr = oci_parse($conn, $sql);
-    oci_execute($arr);
-    $c_id = oci_fetch_array($arr)[0];
-    $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$c_id'";
-    $arr = oci_parse($conn, $sql);
-    oci_execute($arr);
-    $cartId = oci_fetch_array($arr)[0];
-        //   $query = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE FROM PRODUCT_ORDER,PRODUCT,CATEGORY,CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
-          $query = "SELECT ORDERED_PRODUCT.ORDER_ID, ORDERED_PRODUCT.TOTAL_COST, ORDERED_PRODUCT.PRODUCT_ID, ORDERED_PRODUCT.QUANTITY FROM ORDERED_PRODUCT INNER JOIN PRODUCT_ORDER ON ORDERED_PRODUCT.ORDER_ID=PRODUCT_ORDER.ORDER_ID AND FK_CART_ID = $cartId AND PRODUCT_ORDER.STATUS = 1";
-          $arr2 = oci_parse($conn, $query);
-          oci_execute($arr2);
-          while($row = oci_fetch_array($arr2)){
-            $pid = $row[2];
-            $sql2 = "SELECT NAME, PRICE FROM PRODUCT WHERE PRODUCT_ID = '$pid'";
-            $arr3 = oci_parse($conn, $sql2);
-            oci_execute($arr3);
-            $result = oci_fetch_array($arr3);
-            $pname = $result[0];
-            $pprice = $result[1];
+// Set the HTML content for the invoice
+$error = false;
+if(isset($_POST['orderbtn'])){
+    if(isset($_POST['postcollectdate']) && isset($_POST['posttimeslot']) && isset($_POST['postday'])){
+        if(!empty($_POST['postcollectdate']) && !empty($_POST['posttimeslot']) && !empty($_POST['postday'])){
+            $_SESSION['date'] = $_POST['postcollectdate'];
+            $_SESSION['day'] = $_POST['postday'];
+            $_SESSION['timeslot'] = $_POST['posttimeslot'];
+            
+            header("location: invoice.php");
 
-            ?>
-    <div class="item-row">
-        <div class="item-name"><?php echo $pname;  ?></div>
-        <div class="item-quantity"><?php echo $row[3];  ?></div>
-        <div class="item-price"><?php echo $pprice;  ?></div>
-        <div class="item-total"><?php echo $row[1];  ?></div>
-    </div>
-            <?php
-          }
-
-    ?>
-    <!-- <div class="item-row">
-      <div class="item-name">Product 1</div>
-      <div class="item-quantity">2</div>
-      <div class="item-price">$10.00</div>
-      <div class="item-total">$20.00</div>
-    </div>
-    
-    <div class="item-row">
-      <div class="item-name">Product 2</div>
-      <div class="item-quantity">1</div>
-      <div class="item-price">$15.00</div>
-      <div class="item-total">$15.00</div>
-    </div> -->
-    <?php
-    // $query = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE FROM PRODUCT_ORDER,PRODUCT,CATEGORY,CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
-    $query = "SELECT DISTINCT ORDERED_PRODUCT.ORDER_ID, ORDERED_PRODUCT.TOTAL_COST FROM ORDERED_PRODUCT INNER JOIN PRODUCT_ORDER ON ORDERED_PRODUCT.ORDER_ID=PRODUCT_ORDER.ORDER_ID AND FK_CART_ID = $cartId AND PRODUCT_ORDER.STATUS = 1";
-    $arr2 = oci_parse($conn, $query);
-    oci_execute($arr2);
-    $sum = 0;
-    while($row = oci_fetch_array($arr2)){
-        $sum += $row[1];
+        }
+        else{
+            $error = true;
+        }
+      
     }
-    ?>
-    <div class="total-row">
-      <div class="total-label">Subtotal: </div>
-      <div class="total-value"><?php echo $sum; ?></div>
-    </div>
-    <div class="total-row">
-      <div class="total-label">Tax (0%):</div>
-      <div class="total-value">0</div>
-    </div>
     
-    <div class="total-row">
-      <div class="total-label">Total:</div>
-      <div class="total-value"><?php echo $sum; ?></div>
-    </div>
-    <?php
-    include('../payment/testpaypal.php');
-?> 
+    
+}
+
+// echo $htmlContent;
+?>
+
+
+    
+   
     
   </div>
     <header>
@@ -193,8 +133,31 @@
             
         </div>
     </header>
+    <p class="flashmessage">
+        <?php if($error==true) echo "<p>Collection slot is not chosen!!</p>" ?>
+</p>    
 
-
+    <div class="infoslots">
+    <h3>About Collection Slots</h3>
+    <p>According to cleckhfmart group collection slot can be fixed on day only after 24 hours of current date on wednesday , thursday and friday. The time slots are 10-13, 13-16 and 16-19. Thank You.</p>
+</div>
+            <div class="slots">
+                <label style="font-size: 1.3rem;" for="slotscollection">Choose collection slot between days wed, Thu or Friday: </label>
+                <input type="date" name="collection-slot" id="slotscollection">
+                <select name="timeslot" style="color: white;" id="timeslot">
+                    <option value="10-13">10-13</option>
+                    <option value="13-16">13-16</option>
+                    <option value="16-19">16-19</option>
+                </select>
+                <input type="hidden" class="disabledate" value="<?php if(isset($fixedDate) == true) echo "true"; else echo "false"; ?>">
+                <input type="hidden" class='dayhidden' name="dayhidden">
+                
+                <p class="slotsday" name="slotsday"></p>
+                <!-- <button name="fixtheday">Fix the day
+                    
+                </button> -->
+                <p class="collectionday"></p>
+            </div>
 
 <section class="orderedItems">
     <div class="containerorder">
@@ -207,11 +170,15 @@
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
             $c_id = oci_fetch_array($arr)[0];
+            $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$c_id'";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            $cartId = oci_fetch_array($arr)[0];
             // echo $c_id;
             // $sql = "SELECT CART_ID"
             // $sql = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM PRODUCT_ORDER,PRODUCT,CATEGORY, CART WHERE PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.NAME = CART.ITEMS AND CART.FK_USER_ID = '$c_id'";
-            $sql = "SELECT ORDERED_PRODUCT.QUANTITY, PRODUCT.NAME, ORDERED_PRODUCT.TOTAL_COST, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM ORDERED_PRODUCT,PRODUCT,CATEGORY, CART, PRODUCT_ORDER WHERE ORDERED_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID AND CART.FK_USER_ID = '$c_id' AND PRODUCT_ORDER.STATUS = 1";
-                  
+            // $sql = "SELECT ORDERED_PRODUCT.QUANTITY, PRODUCT.NAME, ORDERED_PRODUCT.TOTAL_COST, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM ORDERED_PRODUCT,PRODUCT,CATEGORY, CART, PRODUCT_ORDER WHERE ORDERED_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT_ORDER.FK_CART_ID = CART.CART_ID AND PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID AND CART.FK_USER_ID = '$c_id' AND PRODUCT_ORDER.STATUS = 1";
+            $sql = "SELECT PRODUCT_CART.TOTAL_ITEMS, PRODUCT.NAME, PRODUCT.PRICE, CATEGORY.CATEGORY_NAME, PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE, PRODUCT_CART.CART_ID FROM PRODUCT_CART, PRODUCT,CATEGORY WHERE PRODUCT_CART.PRODUCT_ID = PRODUCT.PRODUCT_ID AND PRODUCT_CART.CART_ID = $cartId AND PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID";
             // $sql = "SELECT PRODUCT_ORDER.QUANTITY, PRODUCT.NAME, PRODUCT.PRICE, CATEGORY.CATEGORY_NAME,PRODUCT.IMAGE2, PRODUCT.STOCK_AVAILABLE FROM PRODUCT, CATEGORY INNER JOIN PRODUCT_ORDER, CART ON "
             $arr = oci_parse($conn, $sql);
             oci_execute($arr);
@@ -256,8 +223,13 @@
                 <h1>Order summary</h1>
                 <p class="totalitems">Items total: 5</p>
                 <p class="totalpayment">Total payment: £35</p>
-                <p class="tax">All taxes included</p>
-                <button class="orderbtn">Place order</button>
+                <p class="tax">No taxes included</p>
+                <form action="" method="POST">
+                    <input type="hidden" class="postcollectdate" name="postcollectdate">
+                    <input type="hidden" class="posttimeslot" name="posttimeslot">
+                    <input type="hidden" class="postday" name="postday">
+                    <button type="submit" class="orderbtn" name="orderbtn">Place order</button>
+                </form>
         </div>
     </div>
 </section>

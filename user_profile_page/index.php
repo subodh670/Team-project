@@ -453,32 +453,17 @@ include("../connectionPHP/inc_session.php");
                     </div>
                     <h3> price: £<?php echo $productPrice;  ?></h3>
                     <?php
-                    $sql1 = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid'";
-                    $arr1 = oci_parse($conn, $sql1);
-                    oci_execute($arr1);
-                    $wishtocartexist = oci_fetch_array($arr1);
-                    if(isset($wishtocartexist[0])){
-                        ?>
-                    <button class="wishedtocart">Added to cart</button>
-                    </div>
-                        <?php
-
-                    }
-                    else{
+                    
                         // echo "HELLo";
                         ?>
                         <input type="hidden" class="wishlistidclass" value="<?php echo $wishlist_id; ?>">
                         <input type="hidden" class="wishlistnameclass" value="<?php echo $productName; ?>">
 
-                        <button class="wishtocartbtn">Add to cart</button>
+                        <button class="wishtocartbtn">Add to cart   +1</button>
                         </div>
                     
                         <?php
                     }
-                    
-                    }
-                
-                
                 ?>
             </div>
         </div>
@@ -497,12 +482,13 @@ include("../connectionPHP/inc_session.php");
                  $cart_id = oci_fetch_array($arr);
                  if(isset($cart_id[0])){
                     $cart_id = $cart_id[0];
-                    $sql = "SELECT PRODUCT.IMAGE2, PRODUCT.NAME, ORDERED_PRODUCT.TOTAL_COST, PRODUCT.STOCK_AVAILABLE FROM PRODUCT INNER JOIN ORDERED_PRODUCT ON ORDERED_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID INNER JOIN PRODUCT_ORDER ON PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID WHERE PRODUCT_ORDER.FK_CART_ID = '$cart_id' AND PRODUCT_ORDER.STATUS = 2";
+                    $sql = "SELECT PRODUCT.IMAGE2, PRODUCT.NAME, ORDERED_PRODUCT.TOTAL_COST, PRODUCT.STOCK_AVAILABLE, PRODUCT_ORDER.STATUS FROM PRODUCT INNER JOIN ORDERED_PRODUCT ON ORDERED_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID INNER JOIN PRODUCT_ORDER ON PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID WHERE PRODUCT_ORDER.FK_CART_ID = '$cart_id'";
                     $arr = oci_parse($conn, $sql);
                     oci_execute($arr);
                     while($row = oci_fetch_array($arr)){
-                        ?>
- <div class='wish'>
+                        if($row[4]==2){
+                            ?>
+                            <div class='wish'>
                     <img src="../productsImage/<?php echo "../productsImage/".$row[0]; ?>" alt="">
                     <div>
                         status: paid
@@ -513,8 +499,24 @@ include("../connectionPHP/inc_session.php");
                     </div>
                     <h3> paid price: £<?php echo $row[2];  ?></h3>
                 </div>
-
-<?php
+<?php 
+                        }
+                        else{
+                            ?>
+                            <div class='wish'>
+                                               <img src="../productsImage/<?php echo "../productsImage/".$row[0]; ?>" alt="">
+                                               <div>
+                                                   status: just ordered
+                                               </div>
+                                               <div class="titlewish">
+                                                   <p><?php echo $row[1].", ".$row[3]; ?> counts</p>
+                                                   <i class="fa-solid fa-trash-can"></i>
+                                               </div>
+                                               <h3> paid price: £<?php echo $row[2];  ?></h3>
+                                           </div>
+                           <?php
+                        }
+                       
                     }
                  }
                 ?>

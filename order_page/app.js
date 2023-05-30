@@ -40,7 +40,7 @@ function orderPage(){
             <hr>
                 <h1>Order summary</h1>
                 <p class="totalitems">Items total: ${quantity}</p>
-                <p class="totalpayment">Total payment: ${price}</p>
+                <p class="totalpayment">Total payment: £${price}</p>
                 <p class="tax">No taxes included</p>
                 <form action="" method="POST">
                     <input type="hidden" class="postcollectdate" name="postcollectdate">
@@ -202,6 +202,7 @@ dayslots();
 
 function setCollectionDate(){
     const collectSlot = document.querySelector("#slotscollection");
+    const flashmessage = document.querySelector(".flashmessage");
     const timeSlot = document.querySelector(".slots select");
     // const slotsDay = document.querySelector(".dayhidden").textContent;
     let value = '10-13';
@@ -221,7 +222,11 @@ function setCollectionDate(){
                 if(xml.status==200 && xml.readyState == 4){
                     // console.log(this.responseText);
                     // console.log(JSON.parse(this.responseText)); 
+                    flashmessage.style.display = 'block';
                     document.querySelector('.flashmessage').innerHTML = JSON.parse(this.responseText)[0];
+                    setTimeout(() => {
+                        flashmessage.style.display = 'none';
+                    }, 5000);
                     if(JSON.parse(this.responseText)[2] != null){
                         document.querySelector(".postcollectdate").value = JSON.parse(this.responseText)[2];
                         document.querySelector(".posttimeslot").value = JSON.parse(this.responseText)[3];;

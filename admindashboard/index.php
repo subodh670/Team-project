@@ -311,6 +311,7 @@ include("../connectionPHP/inc_session_admin.php");
       $arr = oci_parse($conn,$sql);
       oci_execute($arr);
     }
+    //approve product
     if(isset($_POST['approvepro'])){
       $id = $_POST['hideapprovepro'];
       // echo $id;
@@ -318,6 +319,8 @@ include("../connectionPHP/inc_session_admin.php");
       $arr = oci_parse($conn,$sql);
       oci_execute($arr);
     }
+
+    //deactivate product
     if(isset($_POST['deactivatepro'])){
       $id = $_POST['hidedeactivateproduct'];
       // echo $id;
@@ -325,6 +328,7 @@ include("../connectionPHP/inc_session_admin.php");
       $arr = oci_parse($conn,$sql);
       oci_execute($arr);
     }
+    //activate product
     if(isset($_POST['activatepro'])){
       $id = $_POST['hideactivateproduct'];
       // echo $id;
@@ -332,8 +336,9 @@ include("../connectionPHP/inc_session_admin.php");
       $arr = oci_parse($conn,$sql);
       oci_execute($arr);
     }
-    if(isset($_POST['approvepro'])){
-      $id = $_POST['hideapproveproduct'];
+    //delete product
+    if(isset($_POST['deletepro'])){
+      $id = $_POST['hidedeleteproduct'];
       // echo $id;
       $sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = '$id'";
       $arr = oci_parse($conn,$sql);
@@ -1061,8 +1066,8 @@ include("../connectionPHP/inc_session_admin.php");
                 <div class="qty--price">
                     <p>Price: £<?php echo $productPrice; ?></p>
                     <form method="POST" action="">
-                        <input type="hidden" value="<?php echo $productId; ?>" name="hideapproveproduct">
-                        <button type="submit" name="approvepro" class="approvepro">Delete</button>
+                        <input type="hidden" value="<?php echo $productId; ?>" name="hidedeleteproduct">
+                        <button type="submit" name="deletepro" class="deletepro">Delete</button>
                     </form>
                 </div>
             </div>

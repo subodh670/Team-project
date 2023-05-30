@@ -30,28 +30,7 @@
   
 
   <?php
-if(isset($_POST['disablepro'])){
-  $id = $_POST['hiddendisablepro'];
-  $sql = "UPDATE PRODUCT SET STATUS = 0 WHERE PRODUCT_ID = '$id'";
-  $arr = oci_parse($conn, $sql);
-  oci_execute($arr);
-}
 
-
-  ?>
-    <?php
-if(isset($_POST['enablepro'])){
-  $id = $_POST['hiddenenablepro'];
-  $sql = "UPDATE PRODUCT SET STATUS = 1 WHERE PRODUCT_ID = '$id'";
-  $arr = oci_parse($conn, $sql);
-  oci_execute($arr);
-}
-if(isset($_POST['deletepro'])){
-  $id = $_POST['hiddenenablepro'];
-  $sql = "UPDATE PRODUCT SET STATUS = 1 WHERE PRODUCT_ID = '$id'";
-  $arr = oci_parse($conn, $sql);
-  oci_execute($arr);
-}
 
 
   ?>
@@ -364,12 +343,12 @@ if(isset($_POST['updateofferbtn'])){
         $target_file = $target_dir . basename($_FILES["traderpic1"]["name"]);
         $image = basename($_FILES["traderpic1"]["name"]);
         if (move_uploaded_file($_FILES["traderpic1"]["tmp_name"], $target_file)) {
-          echo "<p>The file ". htmlspecialchars( basename( $_FILES["adminpic1"]["name"])). " has been uploaded.</p>";
+          echo "<p>The file ". htmlspecialchars( basename( $_FILES["traderpic1"]["name"])). " has been uploaded.</p>";
       } else {
           echo "<p>Error: Sorry, there was an error uploading your file.</p>";
           $image = null;
       }
-      $sql = "UPDATE MART_USER SET IMAGE = '$image' WHERE USER_ID = 7";
+      $sql = "UPDATE MART_USER SET IMAGE = '$image' WHERE USERNAME = '$username'";
       $arr = oci_parse($conn, $sql);
       oci_execute($arr);
       }
@@ -388,7 +367,36 @@ if(isset($_POST['updateofferbtn'])){
             echo $flashvalidated;
             echo $errornotmatch;
         }
-
+        if(isset($_POST['disablepro'])){
+          $id = $_POST['hiddendisablepro'];
+          $sql = "UPDATE PRODUCT SET STATUS = 0 WHERE PRODUCT_ID = '$id'";
+          $arr = oci_parse($conn, $sql);
+          $r = oci_execute($arr);
+          if($r){
+            echo "<p class='flash'>Product disabled successfully!!</p>";
+          }
+        }
+        
+          ?>
+            <?php
+        if(isset($_POST['enablepro'])){
+          $id = $_POST['hiddenenablepro'];
+          $sql = "UPDATE PRODUCT SET STATUS = 1 WHERE PRODUCT_ID = '$id'";
+          $arr = oci_parse($conn, $sql);
+          $r = oci_execute($arr);
+          if($r){
+            echo "<p class='flash'>Product enabled successfully!!</p>";
+          }
+        }
+        if(isset($_POST['deletepro'])){
+          $id = $_POST['hidedeletepro'];
+          $sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = '$id'";
+          $arr = oci_parse($conn, $sql);
+          $r = oci_execute($arr);
+          if($r){
+            echo "<p class='flash'>Product deleted successfully!!</p>";
+          }
+        }
 ?>
     </section>
   <?php
@@ -463,7 +471,7 @@ if(isset($_POST['updateofferbtn'])){
 // }
   ?>
 <?php
-      if(isset($_POST['addproduct'])){
+      if(isset($_POST['addprobtn'])){
         if(!empty($_POST['pname']) && !empty($_POST['pprice']) && !empty($_POST['pquant']) && !empty($_POST['prodesc']) && !empty($_POST['pallergy']) && !empty($_POST['shopname']) && !empty($_POST['pmanudate']) && !empty($_POST['pexpiredate']) && !empty($_POST['categorypro'])){
           $pname = $_POST['pname'];
           $pprice = $_POST['pprice'];
@@ -561,11 +569,15 @@ if(isset($_POST['updateofferbtn'])){
               $trader_id = oci_fetch_array($arr)[0];
               if(isset($uniquecat[0])){
                 $cat_id = $uniquecat[1];
-                $sql = "INSERT INTO PRODUCT(NAME, PRICE, STOCK_AVAILABLE, DESCRIPTION, MINIMUM_ORDER, ALLERGY_INFORMATION, MANUFACTURE_DATE, EXPIRY_DATE, IMAGE1, IMAGE2, IMAGE3, FK_CATEGORY_ID, FK_SHOP_ID, STATUS,PRODUCT_REGISTERED ) VALUES('$pname', '$pprice', '$pquant', '$pdesc', '20', '$pallergy', TO_DATE(:pmanudate, 'YYYY-MM-DD'), TO_DATE(:pexpiredate, 'YYYY-MM-DD'), '$image1', '$image2', '$image3','$cat_id','$pshop', '1', 'yes')";
+                $sql = "INSERT INTO PRODUCT(NAME, PRICE, STOCK_AVAILABLE, DESCRIPTION, MINIMUM_ORDER, ALLERGY_INFORMATION, MANUFACTURE_DATE, EXPIRY_DATE, IMAGE1, IMAGE2, IMAGE3, FK_CATEGORY_ID, FK_SHOP_ID, STATUS,PRODUCT_REGISTERED ) VALUES('$pname', '$pprice', '$pquant', '$pdesc', '20', '$pallergy', TO_DATE(:pmanudate, 'YYYY-MM-DD'), TO_DATE(:pexpiredate, 'YYYY-MM-DD'), '$image1', '$image2', '$image3','$cat_id','$pshop', '2', 'yes')";
                 $arr = oci_parse($conn, $sql);
                 oci_bind_by_name($arr, ':pmanudate', $pmanudate);
                 oci_bind_by_name($arr, ':pexpiredate', $pexpiredate);
-                oci_execute($arr);
+                $g =  oci_execute($arr);
+                if($g){
+                  echo "<p>Product added successfully!!</p>";
+
+                }
               }
               else{
                 $sql = "INSERT INTO CATEGORY(CATEGORY_NAME, CATEGORY_DESCRIPTION, STATUS, FK_USER_ID) VALUES('$cat', 'Category for trader $trader_id ', 1 , $trader_id)";
@@ -584,7 +596,10 @@ if(isset($_POST['updateofferbtn'])){
                 $arr = oci_parse($conn, $sql);
                 oci_bind_by_name($arr, ':pmanudate', $pmanudate);
                 oci_bind_by_name($arr, ':pexpiredate', $pexpiredate);
-                oci_execute($arr);
+                $g = oci_execute($arr);
+                if($g){
+                  echo "<p>Product added successfully!!</p>";
+                }
               }
               
             }
@@ -809,7 +824,7 @@ if(isset($_POST['updateofferbtn'])){
 
 <div id="onelink2" class="addproduct">
 <h1>Add Product</h1>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST" enctype="multipart/form-data">
+    <form action="" method="POST" enctype="multipart/form-data">
       
         <div class="productname">
             <label for="pname">Product Name(*)</label>
@@ -889,7 +904,7 @@ if(isset($_POST['updateofferbtn'])){
             
         </div>
         <div class="btnaddpro">
-            <button type="submit" name="addproduct" class="addproduct">Add product</button>
+            <button type="submit" name="addprobtn" class="addprobtn">Add product</button>
         </div>
         
         
@@ -1594,7 +1609,6 @@ if(isset($_POST['updateofferbtn'])){
                     </div>
                 </div>
             </div>
-
             <?php
             }
             

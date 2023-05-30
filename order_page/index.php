@@ -133,10 +133,8 @@ if(isset($_POST['orderbtn'])){
             
         </div>
     </header>
-    <p class="flashmessage">
-        <?php if($error==true) echo "<p>Collection slot is not chosen!!</p>" ?>
-</p>    
-
+    <?php if($error==true) echo "<p class='flashmessage'>Collection slot is not chosen!></p>" ?>  
+    <p class="flashmessage"></p>  
     <div class="infoslots">
     <h3>About Collection Slots</h3>
     <p>According to cleckhfmart group collection slot can be fixed on day only after 24 hours of current date on wednesday , thursday and friday. The time slots are 10-13, 13-16 and 16-19. Thank You.</p>

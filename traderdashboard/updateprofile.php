@@ -45,9 +45,9 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     $changedEmail = true ? oci_fetch_array($valueArr)[0] != $email : false;
 
     if($uniqueEmail && $uniqueName && $uniqueMobile){
-        $_SESSION['username'] = $name;
-        $_SESSION['firstname'] = $firstname;        
-        $_SESSION['lastname'] = $lastname;
+        $_SESSION['traderusername'] = $name;
+        $_SESSION['traderfirstname'] = $firstname;        
+        $_SESSION['traderlastname'] = $lastname;
         
         $sql = "UPDATE MART_USER SET USERNAME = '$name' , FIRST_NAME = '$firstname', LAST_NAME = '$lastname', MOBILE_NO = $mobile, EMAIL = '$email', GENDER = '$gender', ADDRESS = '$address' WHERE USER_ID = $tid";
         $arr = oci_parse($conn, $sql);

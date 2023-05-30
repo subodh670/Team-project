@@ -252,6 +252,7 @@ ul li a:active{
     justify-content: space-between;
     align-items: baseline;
     margin: 2em auto;
+    /* flex-wrap: wrap; */
 }
 .userInfo p{
     font-size: 1.3rem;
@@ -269,6 +270,14 @@ ul li a:active{
     border-radius: 10%;
     border: 2px solid black;
 }
+@keyframes animateupload {
+    from{
+        height: 0px;
+    }
+    to{
+        height: 180px;
+    }
+}
 .processtoupload{
     width: 25%;
     display: flex;
@@ -276,7 +285,35 @@ ul li a:active{
     align-items: end;
     flex-direction: column;
 }
+.processtoupload form{
+    position: relative;
+    animation-name: animateupload;
+    animation-duration: 0.4s;
+}
 
+@media(max-width: 800px){
+    .userInfo h1{
+        font-size: 1rem;
+    }
+    .userInfo p{
+        font-size: 1em;
+        font-weight: bolder;
+    }
+    .userInfo{
+        flex-wrap: wrap;
+        gap: 2em;
+    }
+    .userInfo p, .userInfo h1, .userInfo .processtoupload{
+        flex-grow: 1;
+    }
+    .userInfo .btn-holder{
+        flex-grow: 1;
+    }
+    .userInfo span{
+        display: none;
+    }
+
+}
 
 
 /* userinfo ended */
@@ -288,6 +325,7 @@ ul li a:active{
     justify-content: space-between;
     align-items: start;
     margin:  2em auto;
+    height: auto;
 }
 @keyframes dashanimate {
     from{
@@ -308,7 +346,8 @@ ul li a:active{
     animation-duration: 0.6s;
     animation-name: dashanimate;
     padding: 2em;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    height: 86vh;
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 .dashprofile p{
@@ -322,6 +361,55 @@ ul li a:active{
 #profile{
     display: none;
 }
+@media(max-width: 800px){
+    .dashprofile{
+        height: auto;
+    }
+    .dashprofile p{
+        font-size: 1rem;
+    }
+    .dashprofile h4{
+        font-size: 1rem;
+    }
+    .profilecontainer{
+        gap: 1em;
+    }
+}
+@media(max-width: 600px){
+    .dashprofile p{
+        font-size: 0.8rem;
+    }
+    .dashprofile h4{
+        font-size: 0.8rem;
+    }
+    .profilecontainer{
+        flex-direction: column;
+        width: 95%;
+        margin: auto;
+        gap: 1em;
+        margin-bottom:3em;
+
+    }
+    .dashprofile{
+        flex-direction: row;
+        width: 95%;
+        gap: 0.5em;
+        justify-content: space-between;
+        align-items: center;
+        min-width: 300px;
+        padding: 1em;
+        margin: auto;
+        height: auto;
+    }
+    #profile{
+        width: 95%;
+        margin: auto;
+
+    }
+}
+
+
+
 /* profile edit */
 @keyframes animatemodal {
     from{
@@ -378,6 +466,10 @@ ul li a:active{
     align-items: center;
     width: 100%;
 }
+.showuserdetail .useremail p{
+    word-break: break-all;
+    width: 35%;
+}
 .showuserdetail .password{
     align-items: start;
 }
@@ -396,6 +488,14 @@ ul li a:active{
 .showuserdetail .password button:hover{
     background-color: var(--primary-color);
 }
+@media(max-width: 800px){
+    .dashitem1, .dashitem2, .dashitem3,.dashitem4{
+        width: 95%;
+    }
+}
+
+
+
 /* reviews edit */
 
 .dashitem2 .profile-header{
@@ -403,7 +503,7 @@ ul li a:active{
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 0 2em;
+    padding: 0.2em;
 }
 .dashitem2 .profile-header img{
     width: 10%;
@@ -413,7 +513,7 @@ ul li a:active{
     justify-content: space-between;
     align-items: stretch;
     width: 100%;
-    padding: 0 2em;
+    padding: 0.2em;
     margin-bottom: 1em;
     padding-bottom: 1em;
     border-bottom: 3px solid var(--primary-color);
@@ -432,6 +532,37 @@ ul li a:active{
     background-color: var(--secondary-color);
 
 }
+@media(max-width: 800px){
+    .dashitem1, .dashitem2, .dashitem3,.dashitem4{
+        width: 95%;
+        margin: 0 auto;
+    }
+    .review-comment p{
+        font-size: 1rem;
+    }
+    .dashitem2{
+        padding: 0.2em;
+    }
+    .dashitem2 .profile-header img{
+        width: 20%;
+    }
+}
+@media(max-width: 600px){
+    .dashitem1, .dashitem2, .dashitem3,.dashitem4{
+        width: 95%;
+        margin: 0 auto;
+    }
+    .review-comment p{
+        font-size: 0.8rem;
+    }
+    .dashitem2{
+        padding: 0.2em;
+    }
+}
+
+
+
+
 /* wishlist */
 
 .dashitem3{
@@ -485,6 +616,89 @@ ul li a:active{
     padding-bottom: 1em;
     border-bottom: 2px solid var(--primary-color);
 }
+@media(max-width: 600px){
+    .dashitem1, .dashitem2, .dashitem3,.dashitem4{
+        width: 95%;
+        margin: 0 auto;
+    }
+    .dashitem3{
+        width: 95%;
+        padding: 0.9em;
+    }
+    .dashitem3 .wish p{
+        font-size: 0.8em;
+    }
+    .dashitem3 .wish h3{
+        font-size: 0.8em;
+    }
+    .dashitem3 .wish button{
+        padding: 0.4em 0.6em;
+    }
+    .dashitem3 .wish{
+        flex-direction: column;
+        gap: 2em;
+    }
+    .dashitem3 .wish img{
+        width: 30%;
+    }
+}
+@media(max-width: 800px){
+    .dashitem1, .dashitem2, .dashitem3,.dashitem4{
+        width: 95%;
+        margin: 0 auto;
+    }
+    .dashitem3{
+        width: 95%;
+        padding: 0.9em;
+    }
+    .dashitem3 .wish p{
+        font-size: 1em;
+    }
+    .dashitem3 .wish h3{
+        font-size: 1em;
+    }
+    .dashitem3 .wish button{
+        padding: 0.4em 0.6em;
+    }
+    .dashitem3 .wish{
+        flex-direction: column;
+        gap: 2em;
+    }
+    .dashitem3 .wish img{
+        width: 30%;
+    }
+}
+@media(max-width: 800px){
+    .dashitem1, .dashitem2, .dashitem3,.dashitem4{
+        width: 95%;
+        margin: 0 auto;
+    }
+    .dashitem4{
+        width: 95%;
+        padding: 0.9em;
+    }
+    .dashitem4 .wish p{
+        font-size: 1em;
+    }
+    .dashitem4 .wish h3{
+        font-size: 1em;
+    }
+    .dashitem4 .wish button{
+        padding: 0.4em 0.6em;
+    }
+    .dashitem4 .wish{
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .dashitem4 .wish img{
+        width: 30%;
+    }
+    
+}
+
+
+
 
 
 /* dashboard profile ended */
@@ -578,6 +792,19 @@ form .xmark i{
     color: red;
     margin-top: 1em;
 }
+@media(max-width: 800px){
+    .editprofile form{
+        padding: 1em;
+        gap: 0.6em;
+    }
+    .editprofile{
+        top: 45%;
+        padding: 0em;
+        max-width: 400px;
+    }
+ 
+}
+
 /* modal password */
 
 .updatepass{
@@ -643,6 +870,13 @@ form .xmark1{
 form .xmark i{
     font-size: 4rem;
     cursor: pointer;
+}
+
+@media(max-width: 800px){
+    .updatepass{
+        max-width: 380px;
+    }
+ 
 }
 
 /* footer */

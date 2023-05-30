@@ -445,25 +445,7 @@ function showingsavedProduct(){
                 })
                  
             }
-            // function trashOrder(){
-            //     const proidset = document.querySelectorAll(".getProid");
-            //     const username = document.querySelector(".usernameFind")?.value;
-            //     const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
-            //     trashIcon.forEach((trash,i)=>{
-            //         trash.addEventListener("click",()=>{
-            //             let xml = new XMLHttpRequest();
-            //             xml.onreadystatechange = function(){
-            //                 if(this.readyState == 4 && this.status == 200){
-            //                     // location.reload(); 
-            //                     console.log(this.responseText);
-            //                 }
-            //             }
-            //             xml.open("POST", `deleteorderitem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
-            //             xml.send();
-                        
-            //         })
-            //     })
-            // }
+           
             
 
         }
@@ -539,168 +521,14 @@ checkout.addEventListener("click",()=>{
 
 })
 
-//total cost of order
-function orderCost(){
-
-    const username = document.querySelector(".usernameFind")?.value;
-    if(username != null){
-        let costOfOrder = document.querySelector(".container-order .ordercost");
-        let xml = new XMLHttpRequest();
-        xml.onreadystatechange = function(){
-            if(this.readyState == 4 && this.status == 200){
-                if(this.responseText != ""){
-                    // console.log(this.responseText);
-                    let response = JSON.parse(this.responseText);
-                    // console.log(this.responseText);                                 
-                    
-                    let sum = 0;
-                    for(let i=0; i<response.length; i++){
-                        sum += parseInt(response[i]);
-                    }
-                    // console.log(sum);
-                    if(sum>0){
-                        costOfOrder.textContent = `£${sum}`;
-                    }
-                    
-                }
-                else{
-                        costOfOrder.textContent = `£${0}`;
-                }
-                
-            }
-        }
-        xml.open("POST",`findTotalCost.php?name=${username}`, true );
-        xml.send();
-    }
-    
-}   
-// console.log(costOfOrder);
-
-
-function checkingIfordersHappened(){
-    const username = document.querySelector(".usernameFind")?.value;
-    if(username != null){
-        const items = document.querySelectorAll(".countitem input");
-        let checkingbox = document.querySelectorAll(".onlyone input");
-        let itemName = document.querySelectorAll(".desc .itempro");
-        let xml = new XMLHttpRequest();
-        xml.onreadystatechange = function(){
-            if(this.readyState == 4 && this.status == 200){
-                console.log(this.responseText);
-                let arr = JSON.parse(this.responseText);
-                console.log(arr[0]);
-                // console.log(itemName);
-                for(let i=0; i<itemName.length; i++){
-                    if(arr.includes(itemName[i].textContent)){
-                        let indexof = arr.indexOf(itemName[i].textContent);
-                        checkingbox[i].checked = 'true';
-                        items[i].value = arr[indexof + 1];
-                        console.log(arr[indexof+1]);
-                    }
-                }
-            }
-        }
-        xml.open("POST", "selectedItem.php?cname="+username, true);
-        xml.send();
-    }
-    
-}
 
 
 
-// checkingIfordersHappened();
+
 
 
 // checking if button in clicked when tick is given and increase orders quantity in database
-function updateCartAndTotal(){
-    let checkBox = document.querySelectorAll('.onlyone input');
-    let pIdAll = document.querySelectorAll(".getproductid");
-    const username = document.querySelector(".usernameFind")?.value;
-    let decrease = document.querySelectorAll(".countitem .decrease");
-    let increase = document.querySelectorAll(".countitem .increase");
-    let inputValue = document.querySelectorAll('.countitem input');
 
-    if(username != null){
-        checkBox.forEach((item,i)=>{
-            // console.log(checkBox);
-            let xml = new XMLHttpRequest();
-            xml.onreadystatechange = function(){
-                if(this.readyState == 4 && this.status == 200){
-                    console.log(this.responseText);
-                    let arr = JSON.parse(this.responseText);
-                    if(arr[0]==true){
-                    
-                        // console.log("hee");
-                        increase[i].addEventListener("click",()=>{
-                            // console.log("hello");
-                            let xmlhttp = new XMLHttpRequest();
-                            xmlhttp.onreadystatechange = function(){
-                                if(this.readyState == 4 && this.status == 200){
-                                    console.log(this.responseText);
-                                    console.log(JSON.parse(this.responseText));
-                                    if(JSON.parse(this?.responseText)[0]==false){
-    
-                                        inputValue[i].disabled = true;
-                                    }
-                                    else{
-                                        inputValue[i].disabled = false;
-                                    }
-                                }
-                            }
-                            xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
-                            xmlhttp.send();
-                        })
-                        decrease[i].addEventListener("click",()=>{
-                            // console.log("hello");
-                            let xmlhttp = new XMLHttpRequest();
-                            xmlhttp.onreadystatechange = function(){
-                                if(this.readyState == 4 && this.status == 200){
-                                    // console.log(this.responseText);
-                                    // console.log(JSON.parse(this.responseText));
-                                    if(JSON.parse(this?.responseText)[0]==false){
-    
-                                        inputValue[i].disabled = true;
-                                    }
-                                    else{
-                                        inputValue[i].disabled = false;
-                                    }
-                                }
-                            }
-                            xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
-                            xmlhttp.send();
-                        })
-                        
-                        inputValue[i].addEventListener("input",()=>{
-                            let xmlhttp = new XMLHttpRequest();
-                            xmlhttp.onreadystatechange = function(){
-                                if(this.readyState ==4 && this.status == 200){
-                                    // console.log(this.responseText);
-
-                                    // console.log(JSON.parse(this.responseText));
-                                    if(JSON.parse(this.responseText)[0]==false){
-    
-                                        inputValue[i].disabled = true;
-                                    }
-                                    else{
-                                        inputValue[i].disabled = false;
-                                    }
-                                }
-                            }
-                            xmlhttp.open("POST", `addfromIncrease.php?pid=${pIdAll[i].value}&name=${username}&quant=${inputValue[i].value}`, true);
-                            xmlhttp.send();
-                        })
-                        
-                    }
-                    // console.log(this.responseText);
-                }
-            }
-            xml.open("POST", `checkingordered.php?pid=${pIdAll[i].value}&name=${username}`, true);
-            xml.send();
-        })
-    }
-    
-}
-// updateCartAndTotal();
 
 function updateCart(){
     let pIdAll = document.querySelectorAll(".getproductid");
@@ -778,130 +606,15 @@ function updateCart(){
     }
 }
 
-function addToCart(){
-    const button = document.querySelector(".order-checkout button");
-    let pIdAll = document.querySelectorAll(".getproductid");
-    const collectionSlot = document.querySelector(".slots input");
-    const slots = document.querySelector('.slots #slotscollection');
-    const username = document.querySelector(".usernameFind")?.value;
-    let slotsdaydisplay = document.querySelector(".collectionday");
-    let slotsday = null;
-    slots.addEventListener("change",()=>{
-        slotsday = new Date(slots?.value).getDay() + 1;
-        console.log(slotsday);
-    })
-    console.log(slots);
-   if(slotsday === 1){
-       slotsdaydisplay.textContent = 'Day chosen: sunday';
-   }
-   else if(slotsday === 2){
-       slotsdaydisplay.textContent = 'Day chosen: monday';
-
-   }
-   else if(slotsday === 3){
-       slotsdaydisplay.textContent = 'Day chosen: tuesday';
-
-   }else if(slotsday === 4){
-       slotsdaydisplay.textContent = 'Day chosen: wednesday';
-
-   }else if(slotsday === 5){
-       slotsdaydisplay.textContent = 'Day chosen: thursday';
-
-   }else if(slotsday === 6){
-       slotsdaydisplay.textContent = 'Day chosen: friday';
-
-   }else if(slotsday === 7){
-       slotsdaydisplay.textContent = 'Day chosen: saturday';
-
-   }
-   console.log(slotsday);
-    button.addEventListener("click",()=>{
-       
-        let xml = new XMLHttpRequest();
-        xml.onreadystatechange = function(){
-            if(this.readyState ==4 && this.status == 200){
-                console.log(this.responseText);
-                // console.log(JSON.parse(this.responseText));
-                // console.log(slots.value);
-                if(JSON.parse(this.responseText)[0] === true)
-                    window.location.href = "../order_page/index.php";
-                    // console.log('redirect');                                                                                                                                                           
-                else if(collectionSlot.value === null)
-                    alert("collection date is not provided");
-                    // alert("Collection date is not chosen!!");
-            }
-                
-            }
-           
-        xml.open("POST","addtoorderpage.php?date="+collectionSlot.value+"&cname="+username+"&day="+slotsday, true);
-        xml.send();
-    })
-    
-}
 
 const button = document.querySelector(".order-checkout button");
 button.addEventListener("click",()=>{
     window.location.href = "../order_page/index.php";
 })
 
-function addtocart2(){
-    let pIdAll = document.querySelectorAll(".getproductid");
-    const slots = document.querySelector('.slots #slotscollection');
-    const username = document.querySelector(".usernameFind")?.value;
-    const button = document.querySelector(".order-checkout button");
-    let inputValue = document.querySelectorAll('.countitem input');
-    let price = document.querySelectorAll(".wish_price_del>p");
-    console.log(pIdAll);   
-    let slotsday = null;
-    slots.addEventListener("change",()=>{
-        slotsday = new Date(slots?.value).getDay() + 1;
-        console.log(slotsday);
-    })     
-    button.addEventListener("click",()=>{
-        console.log("hel");
-        pIdAll.forEach((pid,i)=>{
-            console.log(price[i].textContent);
-            let xml = new XMLHttpRequest();
-            xml.onreadystatechange = function(){
-                if(this.readyState ==4 && this.status == 200){
-                    console.log(this.responseText);
-                    // console.log(JSON.parse(this.responseText));
-                    // console.log(slots.value);
-                    // if(JSON.parse(this.responseText)[0] === true)
-                    //     window.location.href = "../order_page/index.php";                                                                                                                                                           
-                    // else if(JSON.parse(this.responseText)[0] === false)
-                    //     alert("collection date is not provided");
-                    //     alert("Collection date is not chosen!!");
-                }
-                    
-                }
-               
-            xml.open("POST",`addtoorderpage2.php?cname=${username}&pid=${pIdAll[i].value}&quant=${inputValue[i].value}&price=${price[i].textContent.slice(1)}&slots=${slots.value}`, true);
-            xml.send();
-        })
-    })
-   
-}
-// addtocart2();
 
 
-function getcollectionId(){
-    const collectionSlot = document.querySelector(".slots input");
-    let xml = new XMLHttpRequest();
-    xml.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-            console.log(this.responseText);
-            let json = JSON.parse(this.responseText);
-            if(json[0] != ""){
-                collectionSlot.value = json[1];
-                collectionSlot.disabled = true;
-            }
-        }
-    }
-    xml.open("POST",'getslots.php', true);
-    xml.send();
 
-}
 // getcollectionId();
 
 // dayslots();

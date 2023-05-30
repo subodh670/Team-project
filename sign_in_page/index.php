@@ -71,6 +71,9 @@ session_start();
                     $quantity_cookie = $_COOKIE['quantity'];
                     $arrid = explode(" ", $id_cookie);
                     $quantarr = explode(" ", $quantity_cookie);
+                    var_dump($arrid);
+                    var_dump($quantarr);
+                    
                     // var_dump($arrid);
                     $arr = array();
                     for($i = 0; $i<count($arrid); $i++){
@@ -107,7 +110,7 @@ session_start();
                             $arr = oci_parse($conn, $sql);
                             oci_execute($arr);
                             $ifcartexist = oci_fetch_array($arr);
-                            if($ifcartexist[0]){
+                            if(isset($ifcartexist[0])){
                                 $cartid = $ifcartexist[0];
                                 $sql2 = "UPDATE PRODUCT_CART SET TOTAL_ITEMS = '$quantarr1' WHERE CART_ID = '$cartid' AND PRODUCT_ID = '$id'";
                                 $arr = oci_parse($conn, $sql2);

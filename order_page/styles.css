@@ -563,9 +563,12 @@ footer{
 .slots{
     background-color: white;
     /* border: 1px solid black; */
-    width: 100%;
+    width: 80%;
     margin: 0 auto;
     margin-top: 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .slots button{
     padding: 0.5em 1em;
@@ -595,20 +598,18 @@ footer{
     color: var(--white);
 
 }
-
+@media(max-width: 400px) {
+    .slots{
+        flex-direction: column;
+        gap: 2em;
+    }
+}
+#lotscollection{
+    width: 100px;
+    height: 30px;
+}
 /* slots start */
-.slots{
-    width: 95%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2em;
-    margin-top: 2em;
-}
-.slots label{
-    font-size: 2rem;
-    color: var(--secondary-color);
-}
+
 main{
     margin-top: 3em;
 }
@@ -617,4 +618,25 @@ main{
     width: 100px;
     height: 40px;
     background-color: var(--secondary-color);
+}
+@keyframes flashmes {
+    from{
+        bottom: 30px;
+    }
+    to{
+        bottom: -30px;
+    }
+}
+.flashmessage{
+    position: relative;
+    animation-name: flashmes;
+    animation-duration: 0.6s;
+    width: 60%;
+    background-color: var(--primary-color);
+    margin: 0 auto;
+    color: white;
+    padding: 0.6em;
+    margin-top: 3em;
+    display: none;
+    text-align: center;
 }

@@ -482,7 +482,7 @@ include("../connectionPHP/inc_session.php");
                  $cart_id = oci_fetch_array($arr);
                  if(isset($cart_id[0])){
                     $cart_id = $cart_id[0];
-                    $sql = "SELECT PRODUCT.IMAGE2, PRODUCT.NAME, ORDERED_PRODUCT.TOTAL_COST, PRODUCT.STOCK_AVAILABLE, PRODUCT_ORDER.STATUS FROM PRODUCT INNER JOIN ORDERED_PRODUCT ON ORDERED_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID INNER JOIN PRODUCT_ORDER ON PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID WHERE PRODUCT_ORDER.FK_CART_ID = '$cart_id'";
+                    $sql = "SELECT PRODUCT.IMAGE2, PRODUCT.NAME, ORDERED_PRODUCT.TOTAL_COST, PRODUCT.STOCK_AVAILABLE, PRODUCT_ORDER.STATUS, PRODUCT_ORDER.ORDERED_DATE FROM PRODUCT INNER JOIN ORDERED_PRODUCT ON ORDERED_PRODUCT.PRODUCT_ID = PRODUCT.PRODUCT_ID INNER JOIN PRODUCT_ORDER ON PRODUCT_ORDER.ORDER_ID = ORDERED_PRODUCT.ORDER_ID WHERE PRODUCT_ORDER.FK_CART_ID = '$cart_id'";
                     $arr = oci_parse($conn, $sql);
                     oci_execute($arr);
                     while($row = oci_fetch_array($arr)){
@@ -490,12 +490,12 @@ include("../connectionPHP/inc_session.php");
                             ?>
                             <div class='wish'>
                     <img src="../productsImage/<?php echo "../productsImage/".$row[0]; ?>" alt="">
-                    <div>
-                        status: paid
-                    </div>
+                    
                     <div class="titlewish">
+                        <p class="status">Status : paid</p>
                         <p><?php echo $row[1].", ".$row[3]; ?> counts</p>
-                        <i class="fa-solid fa-trash-can"></i>
+                        <!-- <i class="fa-solid fa-trash-can"></i> -->
+                        <p class="date" style="color: var(--secondary-color);">Ordered date: <?php echo substr($row[5],0,9);  ?></p>
                     </div>
                     <h3> paid price: £<?php echo $row[2];  ?></h3>
                 </div>

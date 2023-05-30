@@ -1,0 +1,19 @@
+html{
+    max-width: 100%;
+}
+form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+form button{
+    background-color: var(green);
+    padding: 0.5em 0.9em;
+    opacity: 0.5;
+    visibility: none;
+}
+form button:hover{
+    background-color: var(blue);
+}

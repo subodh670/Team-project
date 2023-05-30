@@ -129,7 +129,7 @@
             <span>Delete</span>
         </div>
 </section> -->
-<div class="cartpage"><h2>Cart Page</h2></div>
+<div class="cartpage" style="width: 100%; text-align: center; margin-top: 3em; color: var(--secondary-color);"><h2>Cart Page</h2></div>
 <main></main>
 
 <?php

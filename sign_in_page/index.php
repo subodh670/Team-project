@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -148,7 +147,7 @@ session_start();
                                 $status = $row[5];
                                 $role = $row[7];
                                 if($status == 'yes'){
-                                    $_SESSION['cid'] = $row[8];
+                                    $_SESSION['cid'] = $row[8]; 
                                     $_SESSION['username'] = $username;
                                     $_SESSION['password'] = $pass;
                                     $_SESSION['image'] = $row[2];

@@ -197,8 +197,10 @@
     </div>
 <div class="container-fluid text-center menu-dash">
   <div class="row">
-    <div class="col-2 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-xl-2">
-      <!-- menu -->
+    <div class="col-2 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-xl-2 toggle-btn" id='main_col'>
+      <div class="crossdash">
+        <p>&times;</p>
+      </div>
       <a href="../landing_page/index.php"><img src="../landing_page/image1.png" alt=""></a>
       <ul class="list-group list-group-flush1">
   <li class="list-group-item" data-type="overall">Trader Dashboard</li>
@@ -207,23 +209,25 @@
   <li class="list-group-item" data-type="offers">Manage offers</li>
   <li class="list-group-item" data-type="profile">Manage profile</li>
 </ul>
+
     </div>
-    <div class='col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10' id='overall'>
+    <div class='col-12 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10' id='overall'>
         <section class="overall-manage">
     <nav class="navbar navbar-expand-md navbar-light bg-dark">
-  <div class="container-fluid">
+  <div class="container">
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-link="onelink" href="#onelink">Statistics</a>
         </li>
       </ul>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse">
+            <span style="color: white;" class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+          </button>
+      
     </div>
-    <!-- <a class="navbar-brand" href="#profilemanage">Trader profile</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-        </button> -->
+  
        
   </div>
 </nav>
@@ -699,9 +703,9 @@ if(isset($_POST['updateofferbtn'])){
         <!-- section manage shops -->
       <section class="shops-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
-  <div class="container-fluid">
+  <div class="container">
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-link="onelink1" href="#onelink1">Add Shops</a>
@@ -713,6 +717,9 @@ if(isset($_POST['updateofferbtn'])){
           <a class="nav-link" data-link="threelink1" href="#threelink1"> Delete shop</a>
         </li>
       </ul>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse">
+            <span style="color: white;" class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+          </button>
     </div>
     <!-- <a class="navbar-brand" href="#">Dashboard</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -795,9 +802,9 @@ if(isset($_POST['updateofferbtn'])){
         <!-- section manage products -->
       <section class="products-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
-  <div class="container-fluid">
+  <div class="container">
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-link="onelink2" href="#onelink2">Add Products</a>
@@ -812,6 +819,9 @@ if(isset($_POST['updateofferbtn'])){
           <a class="nav-link" data-link="fourlink2" href="#fourlink2"> Delete Products</a>
         </li>
       </ul>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse">
+            <span style="color: white;" class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+          </button>
     </div>
     <!-- <a class="navbar-brand" href="#">Dashboard</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -1257,9 +1267,9 @@ if(isset($_POST['updateofferbtn'])){
         <!-- section manage offers -->
       <section class="offers-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
-  <div class="container-fluid">
+  <div class="container">
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-link="onelink3" href="#">Add Offers</a>
@@ -1271,6 +1281,9 @@ if(isset($_POST['updateofferbtn'])){
           <a class="nav-link" data-link="threelink3" href="#"> Delete Offers</a>
         </li>
       </ul>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse">
+            <span style="color: white;" class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+          </button>
     </div>
     <!-- <a class="navbar-brand" href="#">Dashboard</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -1492,14 +1505,17 @@ if(isset($_POST['updateofferbtn'])){
         <!-- section manage profile -->
       <section class="profile-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
-  <div class="container-fluid">
+  <div class="container">
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-link="onelink4" href="#onelink4">Update profile</a>
         </li>
       </ul>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse">
+            <span style="color: white;" class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+          </button>
     </div>
     <!-- <a class="navbar-brand" href="#">Dashboard</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

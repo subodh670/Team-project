@@ -135,6 +135,32 @@
         }
        
       }
+      function totalCartQuant(){
+        include("../connectionPHP/connect.php");
+          $username = $_SESSION['username'];
+          $pid = $_GET['id'];
+          $query = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
+          $arr = oci_parse($conn, $query);
+          oci_execute($arr);
+          $cid = oci_fetch_array($arr)[0];
+          $sql = "SELECT CART_ID FROM CART WHERE FK_USER_ID = '$cid'";
+          $arr = oci_parse($conn, $sql);
+          oci_execute($arr);
+          $exist = oci_fetch_array($arr);
+          $sum = 0;
+          if(isset($exist[0])){
+            $cart_id = $exist[0];
+            $sql = "SELECT TOTAL_ITEMS FROM PRODUCT_CART WHERE CART_ID = '$cart_id'";
+            $arr = oci_parse($conn, $sql);
+            oci_execute($arr);
+            while($row = oci_fetch_array($arr)){
+              $sum += $row[0];
+            }
+            return $sum;
+          }
+          return $sum;
+
+      }
       $id = $_GET['id'];
       include("../connectionPHP/connect.php");
       $sql1 = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME, SHOP.SHOP_ID, MART_USER.USER_ID FROM PRODUCT,CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND SHOP.FK_USER_ID = MART_USER.USER_ID AND PRODUCT_ID = $id";
@@ -186,10 +212,10 @@
             // include("../connectionPHP/connect.php");
             $username = $_SESSION['username'];
             $quantity = productIncart()[0];
-
+            $productIncart = productIncart()[0];
             // if(intval($_POST['quantity'])>0 && intval($_POST['quantity'])<=$pQuantity && $_POST['quantity'] <= ($pQuantity-$quantity)){
-              if($_POST['quantity']>0){
-                echo "1";
+              if($_POST['quantity']>0 && totalCartQuant()+$_POST['quantity'] <=20 && ($_POST['quantity'] + $quantity - $pQuantity)<=0 ){
+                // echo totalCartQuant()+$_POST['quantity'];
               $pid = $_GET['id'];
               $quantity = $_POST['quantity'];
               $query = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
@@ -204,22 +230,24 @@
               // $productExist[] = null;
               $totalQ = $quantity;
               if(isset($exist[0])){
-                echo "2";
+                // echo "2";
                 $cart_id = $exist[0];
                 $query2 = "SELECT CART_ID, TOTAL_ITEMS FROM PRODUCT_CART WHERE PRODUCT_ID = '$pid' AND CART_ID = '$cart_id'";
                 $arr2 = oci_parse($conn, $query2);
                 oci_execute($arr2);
                 $productExist = oci_fetch_array($arr2);
                 if(isset($productExist[0])){
-                  echo "3";
                   // $quantity = $productExist[1];
                   $oldquantity = $exist[1];
                   $totalQ = $oldquantity + $quantity;
                   // $cartid = $exist[0];
                   echo "4";
-                  $sql = "UPDATE PRODUCT_CART SET  TOTAL_ITEMS = '$totalQ' WHERE CART_ID = '$cart_id' AND PRODUCT_ID = '$pid'";
-                  $array = oci_parse($conn, $sql);
-                  oci_execute($array);
+                    $sql = "UPDATE PRODUCT_CART SET  TOTAL_ITEMS = '$totalQ' WHERE CART_ID = '$cart_id' AND PRODUCT_ID = '$pid'";
+                    $array = oci_parse($conn, $sql);
+                    oci_execute($array);
+                  
+              
+                 
   
                   // echo $totalQ;
                   // $sql = "UPDATE CART SET ITEMS = $totalQ WHERE PRODUCT_ID = '$pid' AND C_ID = '$cid' ";
@@ -246,9 +274,10 @@
                 }
                 else if(!isset($productExist[0])){
                    $cart_id = $exist[0];
-                  $sql = "INSERT INTO PRODUCT_CART(CART_ID, PRODUCT_ID, TOTAL_ITEMS)  VALUES ('$cart_id','$pid', '$totalQ')";
-                  $array = oci_parse($conn, $sql);
-                  oci_execute($array);
+                    $sql = "INSERT INTO PRODUCT_CART(CART_ID, PRODUCT_ID, TOTAL_ITEMS)  VALUES ('$cart_id','$pid', '$totalQ')";
+                    $array = oci_parse($conn, $sql);
+                    oci_execute($array);
+                  
                 }
                 
               // echo $exist[0];
@@ -284,17 +313,25 @@
               // oci_close($conn);
               header("location: ../cart_page/index.php");
             }
+            else if((totalCartQuant()+$_POST['quantity']) >20){
+              $quant_Error = 'Product cannot exceed more than 20 in cart!!';
+            }
             else if($pQuantity == 0){
               $quant_Error = "Item out of stock";
             }
             else{
-              $pQ = $pQuantity-productIncart()[0];
-              if($pQ == 0){
-                $quant_Error = "You have put all items in cart";
+              $pQ = $pQuantity-$productIncart;
+              $outOfcart = $_POST['quantity'] + $productIncart  - $pQuantity;
+              // echo $outOfcart;
+              if($outOfcart > 0){
+                $quant_Error = "Your input exceeded items in stock!!";
               }
-              else{
-                $quant_Error = "Quantity should be between 1 and $pQ";
-              }
+              // if($pQ == 0){
+              //   $quant_Error = "You have put all items in cart";
+              // }
+              // else{
+              //   $quant_Error = "Quantity should be between 1 and $pQ";
+              // }
             }
             $quant_Error = $quant_Error;
           }

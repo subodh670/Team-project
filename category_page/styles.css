@@ -136,8 +136,14 @@ ul li a:active{
     gap: 15%;
     /* background-color: red; */
 }
+.item-search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .item-search input{
     padding: 0.3em;
+    /* width: 100%; */
 }
 .item-search button{
     padding: 0.4em 1em;
@@ -204,6 +210,12 @@ ul li a:active{
     .search-bar{
         right: 32%;
     }
+    .main-item-sale{
+        gap: 5%;
+    }
+    .item-search input{
+        width: 70%;
+    }
 }
 @media(max-width: 600px){
     ul{
@@ -265,6 +277,71 @@ ul li a:active{
     }
 }
 /* header below */
+@media(max-width: 1000px){
+    .filters form{
+        flex-direction: row;
+        overflow: scroll;
+        width: 100%;
+    }
+    .filters{
+     width: 100%;
+     margin-bottom: 1em  ;
+    }
+    .filters label{
+     font-size: 0.9rem;
+    }
+    .filter-icon{
+     width: 10%;
+    }
+    .morefilters .pricefilter{
+     flex-direction: column;
+     width: 100%;
+    }
+    .pricefilter .pricerange, .pricefilter .view-range{
+     width: 100%;
+     justify-content: left;
+     margin-top: 1.5em;
+     margin-bottom: 1.5em;
+     gap: 1em;
+    }
+    .pricefilter .pricerange input{
+     width: 100%;
+    }
+    .morefilters .sort select{
+     width: 100%;
+    }
+ 
+ }
+ @media(max-width: 800px){
+     .filters form{
+         flex-direction: column;
+         overflow: scroll;
+         width: 100%;
+     }
+     .filters{
+      width: 100%;
+      margin-bottom: 1em  ;
+     }
+     .filters label{
+      font-size: 0.9rem;
+     }
+     .filter-icon{
+      width: 10%;
+     }
+     .morefilters .pricefilter{
+         flex-direction: column;
+         width: 100%;
+        }
+        .pricefilter .pricerange, .pricefilter .view-range{
+         width: 100%;
+         justify-content: left;
+         margin-top: 1.5em;
+         margin-bottom: 1.5em;
+        }
+  
+  }
+ 
+
 
 /* session userprofile starts */
 
@@ -453,20 +530,30 @@ header .custprofile{
 }
 
 /* media query for items list */
+/* media query for items list */
 @media(max-width: 1000px){
-    .filters{
+    /* .filters{
         display: none;
-    }
+    } */
     .items-container{
         justify-content: center;
     }
     .items{
         width: 100%;
     }
+    .filters{
+        width: 100%;
+    }
     .item{
         min-width: 300px;
     }
-   
+    .filters-items{
+        flex-direction: column;
+    }
+    .filters form{
+        width: 100%;
+        flex-direction: row;
+    }
 }
 
 /* filters styling */

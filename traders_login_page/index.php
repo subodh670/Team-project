@@ -74,12 +74,12 @@ session_start();
                                             $cid = $row[8];
                                             header("location: ../traderdashboard/index.php");
                                         }
-                                        else if($approval == 2){
+                                        else if($approval == 2 || $approval == 0){
                                             echo "Wait for the approval from admin of the website!!";
                                             $approveError = true;
                                             break;
                                         }
-                                        else{
+                                        else if($status != 'yes'){
                                             $otpvalue = rand(100000,999999);
                                             $_SESSION['email'] = $row[6];
                                             include("../connectionPHP/connect.php");

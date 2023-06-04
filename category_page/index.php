@@ -102,7 +102,7 @@
                 <p>filter</p>
             </div>
             <hr>
-            <h1>Categories</h1>
+            <h1>Shops</h1>
             <form class="radio-select" method="POST" action="">
             <?php
             $cat = $_GET['cat'];

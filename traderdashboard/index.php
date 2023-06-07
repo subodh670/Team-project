@@ -394,6 +394,12 @@ if(isset($_POST['updateofferbtn'])){
         }
         if(isset($_POST['deletepro'])){
           $id = $_POST['hidedeletepro'];
+          $sql = "DELETE FROM ORDERED_PRODUCT WHERE PRODUCT_ID = '$id'";
+          $arr = oci_parse($conn, $sql);
+          oci_execute($arr);
+          $sql = "DELETE FROM REVIEW WHERE FK_PRODUCT_ID = '$id'";
+          $arr = oci_parse($conn, $sql);
+          oci_execute($arr);
           $sql = "DELETE FROM PRODUCT WHERE PRODUCT_ID = '$id'";
           $arr = oci_parse($conn, $sql);
           $r = oci_execute($arr);
@@ -407,7 +413,6 @@ if(isset($_POST['updateofferbtn'])){
   $pquanterror = false;
   $ppriceError = false;
   $pdescerror = false;
-  
   if(isset($_POST['updateproduct'])){
   //   echo $_POST['pname1'];
   // echo $_POST['pprice1'];
@@ -601,6 +606,7 @@ if(isset($_POST['updateofferbtn'])){
                 oci_bind_by_name($arr, ':pmanudate', $pmanudate);
                 oci_bind_by_name($arr, ':pexpiredate', $pexpiredate);
                 $g = oci_execute($arr);
+                
                 if($g){
                   echo "<p>Product added successfully!!</p>";
                 }

@@ -9,6 +9,10 @@ bars.addEventListener("click",(e)=>{
     form.classList.toggle("show-form");
     backdrop.classList.toggle("show-back");
 })
+backdrop.addEventListener("click",(e)=>{
+    form.classList.toggle("show-form");
+    backdrop.classList.add("show-back");
+})
 
 
 

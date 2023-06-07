@@ -57,9 +57,6 @@ function orderPage(){
     }
     xml.open("POST", "orderPage.php?name="+customerName.value, true);
     xml.send();
-
-
-
 }
 orderPage();
 
@@ -104,6 +101,7 @@ function getCookie(cname) {
     }
     return "";
   }
+
 // console.log(getCookie('color'));
 if (getCookie('color')==='dark') {
     document.documentElement.style.setProperty('--primary-color', '#27374D');
@@ -203,6 +201,8 @@ dayslots();
 function setCollectionDate(){
     const collectSlot = document.querySelector("#slotscollection");
     const flashmessage = document.querySelector(".flashmessage");
+    const flashmessage2 = document.querySelector(".flashmessage2");
+
     const timeSlot = document.querySelector(".slots select");
     // const slotsDay = document.querySelector(".dayhidden").textContent;
     let value = '10-13';
@@ -226,6 +226,7 @@ function setCollectionDate(){
                     document.querySelector('.flashmessage').innerHTML = JSON.parse(this.responseText)[0];
                     setTimeout(() => {
                         flashmessage.style.display = 'none';
+                        flashmessage2.style.display = 'none';
                     }, 5000);
                     if(JSON.parse(this.responseText)[2] != null){
                         document.querySelector(".postcollectdate").value = JSON.parse(this.responseText)[2];
@@ -240,6 +241,9 @@ function setCollectionDate(){
     
         }
     })
+    setTimeout(() => {
+        flashmessage2.style.display = 'none';
+    }, 5000);
     
    
 

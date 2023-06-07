@@ -22,7 +22,7 @@
         <ul>
             <li><a href="#home">Home</a></li>
             <li><a href="../traders_login_page/index.php">Sell a product</a></li>
-            <li><a href="#customer_services">Customer Services</a></li>
+            <li><a href="../about_us/index.php">About us</a></li>
             <li><a href="#contact_us">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">

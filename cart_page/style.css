@@ -596,6 +596,27 @@ input[type = checkbox]{
     }
 }
 /* footer below */
+@keyframes flashmes {
+    from{
+        bottom: 30px;
+    }
+    to{
+        bottom: -30px;
+    }
+}
+.flashmessage{
+    position: relative;
+    animation-name: flashmes;
+    animation-duration: 0.6s;
+    width: 60%;
+    background-color: var(--primary-color);
+    margin: 0 auto;
+    color: white;
+    padding: 0.6em;
+    margin-top: 3em;
+    display: none;
+    text-align: center;
+}
 
 /* footer */
 

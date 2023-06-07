@@ -640,3 +640,15 @@ main{
     display: none;
     text-align: center;
 }
+.flashmessage2{
+    position: relative;
+    animation-name: flashmes;
+    animation-duration: 0.6s;
+    width: 60%;
+    background-color: var(--primary-color);
+    margin: 0 auto;
+    color: white;
+    padding: 0.6em;
+    margin-top: 3em;
+    text-align: center;
+}

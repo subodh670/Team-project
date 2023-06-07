@@ -17,6 +17,9 @@
   <body>
     <?php
     session_start();
+    if(!isset($_GET['id'])){
+      header("location: ../landing_page/index.php");
+    }
     ?>
     <header>
       <div class="logo">
@@ -27,7 +30,7 @@
       <ul>
         <li><a href="../landing_page/index.php">Home</a></li>
         <li><a href="../traders_login_page/index.php">Sale a product</a></li>
-        <li><a href="#customer_services">Customer Services</a></li>
+        <li><a href="../about_page/index.php">About us</a></li>
         <li><a href="../contact_us/index.php">Contact Us</a></li>
       </ul>
       <div class="login_cart_search">
@@ -161,6 +164,7 @@
           return $sum;
 
       }
+      
       $id = $_GET['id'];
       include("../connectionPHP/connect.php");
       $sql1 = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME, SHOP.SHOP_ID, MART_USER.USER_ID FROM PRODUCT,CATEGORY, SHOP, MART_USER WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND PRODUCT.FK_SHOP_ID = SHOP.SHOP_ID AND SHOP.FK_USER_ID = MART_USER.USER_ID AND PRODUCT_ID = $id";
@@ -486,11 +490,11 @@
                     $pid = $row[1];
                     if($pid == $proid){
                       ?>
-                      <?php $afterprice = number_format(((float)$pPrice - ((float)$pPrice*(float)$offer)/100),2);?>
+                      <?php $afterprice = number_format(((float)$pPrice + ((float)$pPrice*(float)$offer)/100),2);?>
 
-                      <p>Price <?php echo "  £".$afterprice ;  ?></p>
+                      <p>Price <?php echo "  £".$pPrice ;  ?></p>
                       <div>
-                        <p><?php echo "£".$pPrice;  ?></p>
+                        <p><?php echo "£".$afterprice;  ?></p>
                       <p>offer: <?php echo $pDiscount."%";  ?></p>
                       <?php
                       $x = true;

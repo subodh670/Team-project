@@ -143,6 +143,7 @@ function gettingProduct(type, items, item1=null){
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             let item = JSON.parse(this.responseText);
+            console.log(item);
             if(item1 == null){
                 item = JSON.parse(this.responseText);
             }
@@ -187,7 +188,7 @@ function gettingProduct(type, items, item1=null){
                             loaderBtn.style.display = 'none';
                         }
                         itemsContainer.innerHTML += `<div class="item">
-                        <img src="../productsImage/${pImage2[i]}" alt="productImage">
+                        <a href='../item_page/?id=${pId[i]}'><img src="../productsImage/${pImage2[i]}" alt="productImage"></a>
                         <div>
                             <h1>${pName[i]}</h1>
                             <p>${pDesc[i].substring(0,60)} ....</p>

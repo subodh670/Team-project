@@ -65,7 +65,7 @@ session_start();
                                             $_SESSION['cid'] = $row[8];
                                             $_SESSION['traderusername'] = $row[0];
                                             $_SESSION['traderpassword'] = $pass;
-                                            $_SESSION['image'] = $row[2];
+                                            $_SESSION['traderimage'] = $row[2];
                                             $_SESSION['firstname'] = $row[3];
                                             $_SESSION['lastname'] = $row[4];
                                             $_SESSION['guest'] = true;

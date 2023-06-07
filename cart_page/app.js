@@ -211,7 +211,7 @@ function showingsavedProduct(){
            let items = JSON.parse(this.responseText);
             // console.log(items);
             let arr = [];
-            console.log(items);
+            // console.log(items);
             items.forEach((item,i)=>{
                 let productName = item[0];
                 let productPrice = item[1];
@@ -296,12 +296,11 @@ function showingsavedProduct(){
             function itemPlus(arr){
                 let inputValue = document.querySelectorAll('.countitem input');
                 let price = document.querySelectorAll(".wish_price_del>p");
-                
+                let flashMessage = document.querySelector(".flashmessage");
                 // console.log(inputValue[i]);
                 // console.log(inputValue[i]);
                 let quant = inputValue;
                 let pricefinal = arr;
-                console.log(quant, pricefinal); 
                 // console.log(price);
                 // console.log(quant);
                 price.forEach((item,i)=>{
@@ -325,17 +324,20 @@ function showingsavedProduct(){
                         price[i].textContent = `£${quant*price1}`;
                         let totalprice = 0;
                         // console.log(Number(price[0].textContent.slice(1)));
-                        for(let j=0; j<inputValue.length; j++){
-                            totalprice += Number(price[j].textContent.slice(1));
-                        }
+                        
                         let totalinput = 0;
                         for(let j=0; j<inputValue.length; j++){
                             totalinput += Number(inputValue[j].value);
                         }
-                        console.log(totalinput);
                         if(totalinput>=20){
+                            price[i].textContent = `£${items[i][1]}`;
                             inputValue[i].value = 0;
-                            alert("Total cart should have not more than 20 items!!");
+                            // alert("Total cart should have not more than 20 items!!");
+                            flashMessage.style.display = 'block';
+                            flashMessage.textContent = "Total cart should have not more than 20 items!!";
+                        }
+                        for(let j=0; j<inputValue.length; j++){
+                            totalprice += Number(price[j].textContent.slice(1));
                         }
                         // console.log(totalprice);
                         totalsummary.textContent = `£${totalprice}`;
@@ -355,9 +357,7 @@ function showingsavedProduct(){
                         price[i].textContent = `£${(quant+1)*price1}`;
                         let totalprice = 0;
                         // console.log(Number(price[0].textContent.slice(1)));
-                        for(let j=0; j<inputValue.length; j++){
-                            totalprice += Number(price[j].textContent.slice(1));
-                        }
+                       
                         let totalinput = 0;
                         for(let j=0; j<inputValue.length; j++){
                             totalinput += Number(inputValue[j].value);
@@ -365,8 +365,16 @@ function showingsavedProduct(){
                         console.log(totalinput);
                         if(totalinput>=20){
                             inputValue[i].value = 0;
-                            alert("Total cart should have not more than 20 items!!");
-                            price[j].textContent = 0;
+                            // price[i].textContent = '£0';
+                            price[i].textContent = `£${items[i][1]}`;
+                            flashMessage.style.display = 'block';
+
+                            // alert("Total cart should have not more than 20 items!!");
+                            flashMessage.textContent = "Total cart should have not more than 20 items!!";
+                            
+                        }
+                        for(let j=0; j<inputValue.length; j++){
+                            totalprice += Number(price[j].textContent.slice(1));
                         }
                         // console.log(totalprice);
                         totalsummary.textContent = `£${totalprice}`;
@@ -404,8 +412,43 @@ function showingsavedProduct(){
                         totalsummary.textContent = `£${totalprice}`;
                     })
                 })
-                
-            }
+                increaseVal.forEach((item,i)=>{
+                    item.addEventListener("click",()=>{
+                        // console.log(inputValue[i]);
+                        let quant = Number(inputValue[i].value);
+                        let stock = Number(items[i][4]);
+                        console.log("hello");
+                        if(quant>stock-1){
+                            inputValue[i].value = 0;
+                            // price[i].textContent = '£0';
+                            price[i].textContent = `£${items[i][1]}`;
+                            flashMessage.style.display = 'block';
+                            // alert("Quantities exceeded the stock!!");
+                            flashMessage.textContent = "Quantities exceeded the stock!!";
+
+                        }
+                    }
+                    )
+                })
+                   
+                inputValue.forEach((item,i)=>{
+                    item.oninput = function(){
+                        // console.log(inputValue[i]);
+                        let quant = Number(inputValue[i].value);
+                        let stock = Number(items[i][4]);
+                        if(quant>stock){
+                            inputValue[i].value = 0;
+                            // price[i].textContent = '£0';
+                            price[i].textContent = `£${items[i][1]}`;
+                            flashMessage.style.display = 'block';
+
+                            // alert("Quantities exceeded the stock!!");
+                            flashMessage.textContent = "Quantities exceeded the stock!!";
+
+                        }
+                    }
+                })
+            }  
             itemPlus(arr);
             // addToCart();
             // addtocart2();
@@ -612,9 +655,55 @@ button.addEventListener("click",()=>{
     window.location.href = "../order_page/index.php";
 })
 
-
-
+const flashmessage = document.querySelector(".flashmessage");
+setTimeout(() => {
+    flashmessage.style.display = 'none';
+}, 5000);
 
 // getcollectionId();
 
 // dayslots();
+
+
+
+// dark mode
+
+
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+// console.log(getCookie('color'));
+if (getCookie('color')==='dark') {
+    document.documentElement.style.setProperty('--primary-color', '#27374D');
+    document.documentElement.style.setProperty('--secondary-color', '#526D82');
+    document.documentElement.style.setProperty('--tertiary-color', '#9DB2BF');
+    document.documentElement.style.setProperty('--black', '#000000');
+    document.documentElement.style.setProperty('--white', '#DDE6ED');
+    document.documentElement.style.setProperty('--selected', '#000000');
+    document.documentElement.style.color = 'white';
+
+} else {
+    document.documentElement.style.setProperty('--primary-color', '#D10000');
+    document.documentElement.style.setProperty('--secondary-color', '#0C6980');
+    document.documentElement.style.setProperty('--tertiary-color', '#228B22');
+    document.documentElement.style.setProperty('--black', '#000000');
+    document.documentElement.style.setProperty('--white', '#ffffff');
+    document.documentElement.style.setProperty('--selected', '#D9D9D9');
+    document.documentElement.style.color = 'black';
+
+
+
+}

@@ -62,6 +62,14 @@
         $username = $row[3];
         $pname = $row[4];
         $pprice = $row[5];
+        $sql = "SELECT STOCK_AVAILABLE FROM PRODUCT WHERE NAME = '$pname'";
+        $cp = oci_parse($conn, $sql);
+        oci_execute($cp);
+        $stock = oci_fetch_array($cp)[0];
+        $diff = $stock - $quant;
+        $sql = "UPDATE PRODUCT SET STOCK_AVAILABLE = '$diff' WHERE NAME = '$pname'";
+        $cp = oci_parse($conn, $sql);
+        oci_execute($cp);
         $htmlContent = '
     <!DOCTYPE html>
     <html>
@@ -156,7 +164,7 @@ $htmlContent .= '<tr>
     // Check if the email was sent successfully
     if ($mailSent) {
         // include("../payment/testpaypal.php");
-        header("location: landing_page/index.php");
+        header("location: ../landing_page/index.php");
     } else {
         echo "Failed to send the invoice.";
     }    

@@ -197,7 +197,7 @@ include("../connectionPHP/inc_session.php");
         <ul>
             <li><a href="../landing_page/index.php">Home</a></li>
             <li><a href="../traders_login_page/index.php">Sale a product</a></li>
-            <li><a href="">Customer Services</a></li>
+            <li><a href="../about_page/index.php">About us</a></li>
             <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">

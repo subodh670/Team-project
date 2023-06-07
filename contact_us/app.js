@@ -15,12 +15,12 @@ search.addEventListener("click",()=>{
     cart.classList.toggle("show-cart");
     search.classList.toggle("show-search");
 })
-faTimes.addEventListener("click",()=>{
-    searchBar.classList.toggle("show-searchbar");
-    login.classList.toggle("show-login");
-    cart.classList.toggle("show-cart");
-    search.classList.toggle("show-search");
-})
+// faTimes.addEventListener("click",()=>{
+//     searchBar.classList.toggle("show-searchbar");
+//     login.classList.toggle("show-login");
+//     cart.classList.toggle("show-cart");
+//     search.classList.toggle("show-search");
+// })
 
 // const input = document.querySelectorAll('.your-message-form form input');
 // input.forEach((item)=>{
@@ -68,3 +68,11 @@ if (getCookie('color')==='dark') {
 
 
 }
+
+const flashmessage = document.querySelectorAll(".flashmessage");
+
+setTimeout(() => {
+  flashmessage[0].style.display = 'none';
+  flashmessage[1].style.display = 'none';
+
+}, 5000);

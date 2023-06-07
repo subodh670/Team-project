@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Questrial&family=Roboto&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter&family=Questrial&family=Roboto&display=swap" rel="stylesheet"> -->
 </head>
 <body>
     <div class="backdrop">
@@ -32,7 +32,7 @@
         <ul>
             <li><a href="">Home</a></li>
             <li><a href="../traders_login_page/index.php">Sell a product</a></li>
-            <li><a href="">Customer Services</a></li>
+            <li><a href="../about_page/index.php">About Us</a></li>
             <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
@@ -111,6 +111,7 @@
         <?php
         $_SESSION['guest'] = 'set';
     }
+    
     else if(!isset($_SESSION['username']) && !isset($_SESSION['password']) && $_SESSION['guest']==false){
         ?>
     <div class="flashlogin">
@@ -131,7 +132,14 @@
         <?php
         $_SESSION['guest'] = false;
     }
-    
+    if(isset($_SESSION['contact']) && $_SESSION['contact']==true){
+        ?>
+        <div class="flashlogin">
+            <p>Message has been sent to the admin of the website!!</p>
+        </div>
+            <?php
+            $_SESSION['contact'] = false;
+    }
 
     ?>
     <section class="contact show-contact">
@@ -495,7 +503,7 @@
                 <h1>CleckHF mart</h1>
                 <p>Categories</p>
                 <p>Products</p>
-                <p>Customers Service</p>
+                <p>About us</p>
                 <p>Contact Us</p>
             </div>
             <div class="footer-item2">

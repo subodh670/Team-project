@@ -175,7 +175,7 @@ $username = $_SESSION['username'];
         oci_execute($arr3);
         $result = oci_fetch_array($arr3);
         $htmlContent .= ' <tr>
-        <td>' .'item'.$result[0].'</td>
+        <td>' .'item '.$result[0].'</td>
         <td>' . $rows[2] . '</td>
         <td>£' . $result[1] . '</td>
         <td>£' . $rows[1] . '</td>

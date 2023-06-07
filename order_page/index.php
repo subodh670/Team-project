@@ -56,7 +56,7 @@ if(isset($_POST['orderbtn'])){
         <ul>
             <li><a href="../landing_page/image1.png">Home</a></li>
             <li><a href="../traders_login_page/index.php">Sale a product</a></li>
-            <li><a href="">Customer Services</a></li>
+            <li><a href="../about_us/index.php">About us</a></li>
             <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
@@ -133,7 +133,7 @@ if(isset($_POST['orderbtn'])){
             
         </div>
     </header>
-    <?php if($error==true) echo "<p class='flashmessage'>Collection slot is not chosen!></p>" ?>  
+    <?php if($error) echo "<p class='flashmessage2'>Collection slot is not chosen!!</p>" ?>  
     <p class="flashmessage"></p>  
     <div class="infoslots">
     <h3>About Collection Slots</h3>

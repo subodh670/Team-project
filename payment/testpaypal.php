@@ -4,23 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Paypal payment</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <?php
-  session_start();
-  include("../connectionPHP/connect.php");
-  ?>
-<!-- <h1>https://www.sandbox.paypal.com/cgi-bin/webscr</h1> -->
-    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST" id="by" name="by">
-  <input type="hidden" name="business" value="sb-xuwu625717748@business.example.com">
-  <input type="hidden" name="cmd" value="_xclick">
-  <input type="hidden" name="amount" value="5.00">
-  <input type="hidden" name="currency_code" value="GBP">
-  <input type="hidden" name="return" value="http://localhost/team%20project-oracle/team-project/payment/paymentsuccessful.php?id=">
-  <input type="hidden" name="item_name" value="Product Name">
-  <?php   
+  // session_start();
+  include("../connectionPHP/connect.php"); 
   $username = $_SESSION['username'];
   $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
   $arr = oci_parse($conn, $sql);
@@ -42,16 +32,15 @@
         $quant += $row[2];
     }
 
-    echo $sum;
-    ?>
-  <input type="hidden" name="quantity" value="<?php echo $sum;  ?>">
-    <input type="hidden" name="amount" value="<?php echo 1; ?>">
-<?php
   ?>
-  <input type="hidden" name="notify_url" value="https://localhost/ipn.php">
-  <input type="hidden" name="cancel_return" value="https://localhost/cancel.php">
-  
-  <button style="visibility: none;" type="submit" value="Buy the product(s)" class='pay'>Buy</button>
+<!-- <h1>https://www.sandbox.paypal.com/cgi-bin/webscr</h1> -->
+    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST" id="by" name="by">
+  <input type="hidden" name="business" value="sb-xuwu625717748@business.example.com">
+  <input type="hidden" name="cmd" value="_xclick">
+  <input type="hidden" name="currency_code" value="GBP">
+  <input type="hidden" name="return" value="http://localhost/team%20project-oracle/team-project/payment/paymentsuccessful.php?id=">
+    <input type="hidden" name="amount" value="<?php echo $sum; ?>">
+  <button style="visibility: none;" type="submit" value="Buy" class='pay'>Buy</button>
 </form>
 <script src="app.js"></script>
 </body>

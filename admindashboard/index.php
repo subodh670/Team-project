@@ -220,7 +220,7 @@ include("../connectionPHP/inc_session_admin.php");
 
 <div id="onelink" class="welcome">
 <div class="reportlink">
-  <a href="#">Admin Report</a>
+  <a href="http://127.0.0.1:8080/apex/f?p=101:LOGIN_DESKTOP:2922733636441:::::">Admin Report</a>
 </div>
 
 
@@ -1184,6 +1184,7 @@ while($rows = oci_fetch_array($arr)){
   $reviewId = $rows[5];
   $reviewDesc = $rows[6];
   $reviewDate = $rows[7];
+  $traderimage = $rows[4];
   $count++;
   ?>
  <div class="items-horizontal">
@@ -1234,6 +1235,7 @@ while($rows = oci_fetch_array($arr)){
   $reviewId = $rows[5];
   $reviewDesc = $rows[6];
   $reviewDate = $rows[7];
+  $traderimage = $rows[4];
   $count++;
   ?>
  <div class="items-horizontal">

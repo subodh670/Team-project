@@ -317,6 +317,7 @@ html{
     border-radius: 8px;
     animation-duration: 0.6s;
     animation-name: animatepanel;
+    margin: 0 auto;
  }
  .hidemodal{
     display: none;
@@ -369,6 +370,13 @@ html{
 }
 .editingpanelpro .dash i{
     font-size: 2rem;
+    color: white;
+}
+.editingpanelpro .cross{
+    font-size: 2.5rem;
+    position: absolute;
+    top: 50px;
+    right: 20px;
     color: white;
 }
 .backdrop{
@@ -1193,6 +1201,39 @@ form .xmark i{
     }
     .addproduct form .collection1 .proDescription textarea{
         width: 220px;
+    }
+    .img--info, .productenabled{
+        flex-direction: column;
+    }
+    .img--info img{
+        width: 60%;
+    }
+    .productsq{
+        flex-direction: column;
+    }
+    .editingpanelpro{
+        position: absolute;
+        top: 90%;
+        height: 210vh;
+        width: 90%;
+        margin: 0 auto;
+        left: 40%;
+    }
+    .editingpanelpro .collect0, .editingpanelpro .collect1, .editingpanelpro .collect2, .editingpanelpro .collect3, .editingpanelpro .collect4{
+        flex-direction: column;
+        gap: 2em;
+    }
+    .editingpanelpro .cross{
+        top: 150px;
+    }
+    .traderimage{
+        width: 90%;
+    }
+    .editprofile{
+        width: 90%;
+    }
+    .updatepass{
+        width: 90%;
     }
 }
 @media(max-width: 576px){

@@ -22,7 +22,7 @@
         </div>
         <ul>
             <li><a href="../landing_page/index.php">Home</a></li>
-            <li><a href="../traders_login_page/index.php">Sale a product</a></li>
+            <li><a href="../traders_login_page/index.php">Sell a product</a></li>
             <li><a href="../about_page/index.php">About us</a></li>
             <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
@@ -107,6 +107,7 @@
         $id_cookie = $_COOKIE['product'];
         $quantity_cookie = $_COOKIE['quantity'];
         ?>
+
         <input type="hidden" class="idcookie" value="<?php echo $id_cookie; ?>">
         <input type="hidden" class="idquant" value="<?php  echo $quantity_cookie;  ?>">
         

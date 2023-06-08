@@ -181,8 +181,11 @@ include("../connectionPHP/inc_session_admin.php");
     </div>
 <div class="container-fluid text-center menu-dash">
   <div class="row">
-    <div class="col-2 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-xl-2">
+    <div class="col-2 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-xl-2 toggle-btn" id='main_col'>
       <!-- menu -->
+      <div class="crossdash">
+        <p>&times;</p>
+      </div>
       <a href="../landing_page/index.php"><img src="../landing_page/image1.png" alt=""></a>
       <ul class="list-group list-group-flush1">
   <li class="list-group-item" data-type="overall"> Admin Dashboard</li>
@@ -196,23 +199,25 @@ include("../connectionPHP/inc_session_admin.php");
   <li class="list-group-item" data-type="profile">Manage Profile</li>
 </ul>
     </div>
-    <div class='col-10 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10' id='overall'>
+    <div class='col-12 showdesc col-xs-6 col-sm-8 col-md-9 col-lg-10 col-xl-10' id='overall'>
         <section class="overall-manage">
     <nav class="navbar navbar-expand-md navbar-light bg-dark">
-  <div class="container-fluid">
+  <div class="container">
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-link="onelink" href="#onelink">Welcome Admin</a>
         </li>
       </ul>
-      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse">
+            <span style="color: white;" class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+          </button>
     </div>
-    <a class="navbar-brand" href="#">Statistics</a>
+    <!-- <a class="navbar-brand" href="#">Statistics</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
-        </button>
+        </button> -->
   </div>    
 </nav>
 <!-- pages -->
@@ -392,9 +397,9 @@ include("../connectionPHP/inc_session_admin.php");
         <!-- section manage shops -->
       <section class="traders-manage">
       <nav class="navbar navbar-expand-md navbar-light bg-dark">
-  <div class="container-fluid">
+  <div class="container">
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" data-link="onelink1" href="#onelink1">Approve Trader</a>
@@ -407,11 +412,10 @@ include("../connectionPHP/inc_session_admin.php");
         </li>
         
       </ul>
-    </div>
-    <a class="navbar-brand" href="#">Dashboard</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
+    </div>    
   </div>
 </nav>
 

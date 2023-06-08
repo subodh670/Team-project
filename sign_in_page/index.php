@@ -36,9 +36,9 @@ session_start();
         </div>
         <ul>
             <li><a href="../landing_page/index.php">Home</a></li>
-            <li><a href="#sale">Sale a product</a></li>
+            <li><a href="../landing_page/index.php">Sell a product</a></li>
             <li><a href="../about_page/index.php">About us</a></li>
-            <li><a href="#contact_us">Contact Us</a></li>
+            <li><a href="../contact_us/index.php">Contact Us</a></li>
         </ul>
         <div class="login_cart_search">
              <div class="login">
@@ -98,10 +98,12 @@ session_start();
                             $quantarr1 = intval($quantarr[$i]) + $outcome[0];
                             // $sql1 = "UPDATE CART SET P_QUANTITY = '$quantarr1' WHERE C_ID = $userid AND PRODUCT_ID = '$id'";
                             // $interSql = "SELECT CART_ID FROM CART "
-                            $sql1 = "UPDATE PRODUCT_CART SET TOTAL_ITEMS = '$quantarr1' WHERE CART_ID ='$cart_id' AND PRODUCT_ID = '$id'";
+                            // $sql1 = "UPDATE PRODUCT_CART SET TOTAL_ITEMS = '$quantarr1' WHERE CART_ID ='$cart_id' AND PRODUCT_ID = '$id'";
+                            // $res = oci_parse($conn, $sql1);
+                            // oci_execute($res);
+                            $sql1 = "INSERT INTO PRODUCT_CART(TOTAL_ITEMS, CART_ID, PRODUCT_ID) VALUES($quantarr1, $cart_id, $id)";
                             $res = oci_parse($conn, $sql1);
                             oci_execute($res);
-                            // echo "hi";
                         }
                         else{
                             $quantarr1 = intval($quantarr[$i]);
@@ -114,7 +116,6 @@ session_start();
                                 $sql2 = "UPDATE PRODUCT_CART SET TOTAL_ITEMS = '$quantarr1' WHERE CART_ID = '$cartid' AND PRODUCT_ID = '$id'";
                                 $arr = oci_parse($conn, $sql2);
                                 oci_execute($arr2);
-    
                             }
                             else{
                                 $sql1 = "INSERT INTO CART(FK_USER_ID) VALUES( '$userid')";

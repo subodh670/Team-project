@@ -1182,3 +1182,150 @@ form .xmark i{
     font-size: 1rem;
     color: white;
 }
+.crossdash{
+    display: none;
+}
+
+/* responsiveness */
+@keyframes dashanimate {
+    from {
+        bottom: 1000vh;
+    }
+    to{
+        bottom: 0vh
+    }
+}
+@media(max-width: 768px){
+    .crossdash{
+        display: block;
+        font-size: 3.2rem;
+        width: 92%;
+        text-align: right;
+        cursor: pointer;
+        height: 10px;
+    }
+    .toggle-btn{
+        display: none;
+    }
+    #onelink{
+        padding: 0.2em;
+    }
+    .navbar-collapse button span{
+        font-size: 1.5rem;
+    }
+    #overall{
+        width: 100% !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0px !important;
+
+    }
+    .row > *{
+        padding: 0px !important;
+    }
+    .container-fluid{
+        width: 100% !important;
+    }
+    .col-2{
+        width: 100% !important;
+        /* display: none; */
+        height: 100vh !important;
+        animation-name: dashanimate;
+        animation-duration: 0.25s;
+    }
+    /* .menu-dash{
+        height: 80vh !important;
+    } */
+    .overall-manage{
+        margin: auto !important;
+        width: 100% !important;
+    }
+    .col-md-9{
+        margin: auto !important;
+        width: 90% !important; 
+    }
+    .stats{
+        width: 100% !important;
+    }
+    .row{
+        margin: auto !important;
+        width: 100% !important; 
+    }
+    .menu-dash .row .col-2{
+        position: fixed !important;
+        width: 100% !important;
+        z-index: 50 !important;
+        height: 100vh !important;
+    }
+    .menu-dash .col-2 img{
+        width: 30% !important;
+    }
+    .list-group-flush1 li{
+        margin-bottom: 2em !important;
+    }
+    #shops{
+        width: 100% !important;
+    }
+    .addshop .shopnew{
+        width: 95%;
+    }
+    .shopDetail, .shoptitle{
+        width: 95%;
+        flex-wrap: wrap;
+    }
+    .addproduct form{
+        flex-direction: column;
+        width: 100%;
+    }
+    .addproduct form div{
+        width: 100%;
+    }
+    .addproduct form .collection1,.addproduct form .collection2,.addproduct form .collection3,.addproduct form .collection4,.addproduct form .collection5{
+        width: 100%;
+        flex-direction: column !important;
+        gap: 2em;
+    }
+    .addproduct form .collection1 .proDescription textarea{
+        width: 220px;
+    }
+    .img--info, .productenabled{
+        flex-direction: column;
+    }
+    .img--info img{
+        width: 60%;
+    }
+    .productsq{
+        flex-direction: column;
+    }
+    .editingpanelpro{
+        position: absolute;
+        top: 90%;
+        height: 210vh;
+        width: 90%;
+        margin: 0 auto;
+        left: 40%;
+    }
+    .editingpanelpro .collect0, .editingpanelpro .collect1, .editingpanelpro .collect2, .editingpanelpro .collect3, .editingpanelpro .collect4{
+        flex-direction: column;
+        gap: 2em;
+    }
+    .editingpanelpro .cross{
+        top: 150px;
+    }
+    .traderimage{
+        width: 90%;
+    }
+    .editprofile{
+        width: 90%;
+    }
+    .updatepass{
+        width: 90%;
+    }
+}
+@media(max-width: 576px){
+    .col-sm-8{
+        width: 100% !important;
+    }
+
+}

@@ -9,7 +9,7 @@
 </head>
 <body>
   <?php
-  // session_start();
+  session_start();
   include("../connectionPHP/connect.php"); 
   $username = $_SESSION['username'];
   $sql = "SELECT USER_ID FROM MART_USER WHERE USERNAME = '$username'";
@@ -31,17 +31,27 @@
         $sum += $row[1];
         $quant += $row[2];
     }
+    $_SESSION['paymentmoney'] = $sum;
 
   ?>
 <!-- <h1>https://www.sandbox.paypal.com/cgi-bin/webscr</h1> -->
-    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST" id="by" name="by">
+    <!-- <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST" id="by" name="by">
   <input type="hidden" name="business" value="sb-xuwu625717748@business.example.com">
   <input type="hidden" name="cmd" value="_xclick">
   <input type="hidden" name="currency_code" value="GBP">
   <input type="hidden" name="return" value="http://localhost/team%20project-oracle/team-project/payment/paymentsuccessful.php?id=">
-    <input type="hidden" name="amount" value="<?php echo $sum; ?>">
+    <input type="hidden" name="amount" value="">
   <button style="visibility: none;" type="submit" value="Buy" class='pay'>Buy</button>
-</form>
+</form> -->
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST" id="by" name="by">
+        <input type="hidden" name="business" value="sb-xuwu625717748@business.example.com">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="amount" value="<?php echo $_SESSION['paymentmoney']; ?>">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="hidden" name="return" value="http://localhost/team%20project-oracle/team-project/payment/paymentsuccessful.php?id=">
+        <input type="submit" value="Redirecting to paypal server" style="visibility:none; border-width: 0px" class="pay">
+
+    </form>
 <script src="app.js"></script>
 </body>
 </html>

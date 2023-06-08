@@ -457,6 +457,7 @@ function showingsavedProduct(){
             
             // preventTyping();
             trashCart();
+            trashCookie();
             // selectboxMain();
             // addingToOrders();
             // orderCost();
@@ -472,20 +473,47 @@ function showingsavedProduct(){
                 const proidset = document.querySelectorAll(".getProid");
                 const username = document.querySelector(".usernameFind")?.value;
                 const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
-                trashIcon.forEach((trash,i)=>{
-                    trash.addEventListener("click",()=>{
-                        let xml = new XMLHttpRequest();
-                        xml.onreadystatechange = function(){
-                            if(this.readyState == 4 && this.status == 200){
-                                location.reload(); 
-                                // console.log(this.responseText);
+                if(document.querySelector(".usernameFind") != null){
+                    trashIcon.forEach((trash,i)=>{
+                        trash.addEventListener("click",()=>{
+                            let xml = new XMLHttpRequest();
+                            xml.onreadystatechange = function(){
+                                if(this.readyState == 4 && this.status == 200){
+                                    location.reload(); 
+                                    // console.log(this.responseText);
+                                }
                             }
-                        }
-                        xml.open("POST", `deleteCartItem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
-                        xml.send();
-                        
+                            xml.open("POST", `deleteCartItem.php?cname=${username}&pid=${proidset[i].value}&quant=${items[i][4]}&saved=${items[i][8]}&pName=${items[i][0]}`, true);
+                            xml.send();
+                            
+                        })
                     })
-                })
+                }
+                
+                 
+            }
+            function trashCookie(){
+                const proidset = document.querySelectorAll(".getProid");
+                const username = document.querySelector(".usernameFind");
+                const trashIcon = document.querySelectorAll(".wish_price_del .fa-trash-can");
+                let cookieid = document.querySelector('.idcookie')?.value;
+                let quantcookie = document.querySelector(".idquant")?.value;
+                if(username === null && cookieid != null && quantcookie != null){
+                    trashIcon.forEach((trash,i)=>{
+                        trash.addEventListener("click",()=>{
+                            let xml = new XMLHttpRequest();
+                            xml.onreadystatechange = function(){
+                                if(this.readyState == 4 && this.status == 200){
+                                    location.reload(); 
+                                    // console.log(this.responseText);
+                                }
+                            }
+                            xml.open("POST", `deleteCookieItem.php?pid=${proidset[i].value}`, true);
+                            xml.send();
+                            
+                        })
+                    })
+                }
                  
             }
            

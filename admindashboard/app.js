@@ -244,7 +244,28 @@ if (getCookie('color')==='dark') {
     document.documentElement.style.setProperty('--white', '#ffffff');
     document.documentElement.style.setProperty('--selected', '#D9D9D9');
     document.documentElement.style.color = 'black';
-
-
-
 }
+
+
+function toggledash(){
+    const buttonDash = document.querySelectorAll('.navbar-toggler span');
+    const dash = document.querySelector('.row .col-2');
+    const crossDash = document.querySelector(".crossdash");
+    const liItems = document.querySelectorAll(".row .col-2 li");
+
+    console.log(buttonDash, dash);
+    buttonDash.forEach((btn)=>{
+        btn.addEventListener("click",()=>{
+            dash.classList.toggle('toggle-btn');
+        })
+    })
+    crossDash.addEventListener("click",()=>{
+        dash.classList.add("toggle-btn");
+    })
+    liItems.forEach((item)=>{
+        item.addEventListener("click",()=>{
+            dash.classList.add('toggle-btn');
+        })
+    })
+}
+toggledash();

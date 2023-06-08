@@ -20,7 +20,7 @@
             </a>
         </div>
         <ul>
-            <li><a href="#home">Home</a></li>
+            <li><a href="../landing_page/index.php">Home</a></li>
             <li><a href="../traders_login_page/index.php">Sell a product</a></li>
             <li><a href="../about_us/index.php">About us</a></li>
             <li><a href="#contact_us">Contact Us</a></li>
@@ -103,13 +103,8 @@
             </div>
             <hr>
             <h1>Shops</h1>
-            <form class="radio-select" method="POST" action="">
-            <?php
-            $cat = $_GET['cat'];
-            ?>
-            <input type="hidden" class="catnamehidden" value="<?php echo $cat; ?>">
-            <?php
-            include("../connectionPHP/connect.php");
+            <form class="radio-select">
+                <?php
         $sql = "SELECT * FROM SHOP";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
@@ -117,6 +112,7 @@
             $S_ID = $row[0];
             // $S_Cat = $row[1];
             $S_Name = $row[1];
+            // $Trader_ID = $row[3];
             ?>
                 <div>
                     <input type="radio" id="label1" value="<?php echo $S_Name; ?>" name="brand">
@@ -127,7 +123,13 @@
             <?php
         }
                 ?>
-                <button name='radio-submit'>Submit</button>
+                
+            <!-- <h1>Expiry date</h1>
+                <p>From</p>
+                <input type="date" class="datefrom">
+                <p>To</p>
+                <input type="date" class="dateto"> -->
+                <button type="button" name='radiosubmit'>Submit</button>
             </form>
         </div>
         <div class="addfilter">
@@ -136,9 +138,11 @@
                     <div class="pricefilter">
                         <div class="pricerange">
                             <label for="pricerange">Price Range</label>
-                            <input type="text" placeholder="min">
-                            <input type="text" placeholder="max">
+                            <input type="number" placeholder="min" class="minrange">
+                            <input type="number" placeholder="max" class="maxrange">
                             <button class="applyrange">Apply</button>
+
+                            
                         </div>
                         <div class="view-range">
                             <label for="" class="view">View</label>
@@ -150,30 +154,27 @@
                         <label for="sortby">SortBy</label>
                         <select name="sortby" id="sortby">
                             <option value="1" selected>Popularity</option>
-                            <option value="1">Price: low to high</option>
-                            <option value="1">Price: high to low</option>
-                            <option value="1">Newest first</option>
+                            <option value="2">Price: low to high</option>
+                            <option value="3">Price: high to low</option>
+                            <option value="4">Newest first</option>
                         </select>
                         <button class="apply">Apply</button>
-
                     </div>
             </div>
 
-
+        <input type="hidden" class="catname" value="<?php echo $_GET['cat']; ?>">
         <div class="items">
-            <div class='main-item-sale' id="search-me">
-                <h1>Flash Sale</h1>
+            <div class="main-item-sale" id='search-me'>
+                <h1>Flash Sale </h1>
                 <div class="item-search" >
                     <input type="text" name="search" class="search-item" placeholder="search anything">
                     <!-- <i class="fa fa-times" aria-hidden="true"></i> -->
                     <button class="search-result"><i class="fa fa-search"></i></button>
                  </div>
-
             </div>
             <div class="items-container">
-                   <?php 
-                   include("../connectionPHP/connect.php");     
-                   $cat = $_GET['cat'];
+                <?php
+                $cat = $_GET['cat'];
         $sql = "SELECT PRODUCT_ID, PRODUCT.NAME, PRODUCT.DESCRIPTION, PRODUCT.PRICE, PRODUCT.STOCK_AVAILABLE, PRODUCT.ALLERGY_INFORMATION, PRODUCT.IMAGE1, PRODUCT.IMAGE2, PRODUCT.IMAGE3, CATEGORY.CATEGORY_NAME FROM PRODUCT,CATEGORY WHERE PRODUCT.FK_CATEGORY_ID = CATEGORY.CATEGORY_ID AND CATEGORY.CATEGORY_NAME = '$cat' AND ROWNUM <= 9";
         $array = oci_parse($conn, $sql);
         oci_execute($array);
@@ -190,23 +191,31 @@
             $pImage2 = $row[7];
             $pImage3 = $row[8];
             ?>
-            
+            <div class="item">
+                    <img src="<?php echo "../productsImage/".$pImage2; ?>" alt="productImage">
+                    <div>
+                        <h1><?php echo $pName; ?></h1>
+                        <p><?php echo substr($pDesc,0,60)."..."; ?></p>
+                        <div class="btn_rate">
+                            <div class="btn"><a href="<?php echo "../item_page/index.php?id=$pId"; ?>">View More</a></div>
+                            <p class="price"><?php echo "£".$pPrice; ?></p>
+                        </div>
+                    </div>
+                </div>
             <?php
             
         }
-        ?>
-        <?php
+
+
 
 ?>
-
-<!--  
-                <div class="item">
+                <!-- <div class="item"> 
                     <img src="https://images.unsplash.com/photo-1577401239170-897942555fb3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1828&q=80" alt="">
                     <div>
                         <h1>Noteworthy flagship phone</h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a></div>
+                            <div class="btn"><a href="../item_page/index.html">View More</a></div>
                             <p class="price">£10</p>
 
                         </div>
@@ -218,7 +227,7 @@
                         <h1>Noteworthy flagship phone</h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a></div>
+                            <div class="btn"><a href="../item_page/index.html">View More</a></div>
                             <p class="price">£10</p>
 
                         </div>
@@ -230,20 +239,7 @@
                         <h1>Noteworthy flagship phone</h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a></div>
-                            <p class="price">£10</p>
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <img src="https://images.unsplash.com/photo-1562770584-eaf50b017307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1902&q=80" alt="">
-                    <div>
-                        <h1>Noteworthy flagship phone</h1>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
-                        <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a></div>
+                            <div class="btn"><a href="../item_page/index.html">View More</a></div>
                             <p class="price">£10</p>
 
 
@@ -256,7 +252,7 @@
                         <h1>Noteworthy flagship phone</h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a></div>
+                            <div class="btn"><a href="../item_page/index.html">View More</a></div>
                             <p class="price">£10</p>
 
 
@@ -269,7 +265,20 @@
                         <h1>Noteworthy flagship phone</h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a></div>
+                            <div class="btn"><a href="../item_page/index.html">View More</a></div>
+                            <p class="price">£10</p>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <img src="https://images.unsplash.com/photo-1562770584-eaf50b017307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1902&q=80" alt="">
+                    <div>
+                        <h1>Noteworthy flagship phone</h1>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
+                        <div class="btn_rate">
+                            <div class="btn"><a href="../item_page/index.html">View More</a></div>
                             <p class="price">£10</p>
 
                         </div>
@@ -281,7 +290,7 @@
                         <h1>Noteworthy flagship phone</h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a></div>
+                            <div class="btn"><a href="../item_page/index.html">View More</a></div>
                             <p class="price">£10</p>
 
                         </div>
@@ -293,7 +302,7 @@
                         <h1>Noteworthy flagship phone</h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a>e</div>
+                            <div class="btn"><a href="../item_page/index.html">View More</a>e</div>
                             <p class="price">£10</p>
 
                         </div>
@@ -305,14 +314,14 @@
                         <h1>Noteworthy flagship phone</h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, aperiam!</p>
                         <div class="btn_rate">
-                            <div class="btn"><a href="../item_page/index.php">View More</a></div>
+                            <div class="btn"><a href="../item_page/index.html">View More</a></div>
                             <p class="price">£10</p>
 
                         </div>
                     </div>
                 </div>
-                
--->
+                -->
+ 
             </div>
             <div class="loader">
                 <h1 style="border: 1px solid black; padding: 0.3em 0.8em; background-color: var(--tertiary-color); color: white; cursor: pointer;">See More</h1>
@@ -328,7 +337,7 @@
                 <h1>CleckHF mart</h1>
                 <p>Categories</p>
                 <p>Products</p>
-                <p>Customers Service</p>
+                <p>About us</p>
                 <p>Contact Us</p>
             </div>
             <div class="footer-item2">

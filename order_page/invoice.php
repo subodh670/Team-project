@@ -227,7 +227,7 @@ $username = $_SESSION['username'];
     // Check if the email was sent successfully
     if ($mailSent) {
         $_SESSION['payment'] = 'true';
-        include("../payment/testpaypal.php");
+        header("location: ../payment/testpaypal.php");
     } else {
         echo "Failed to send the invoice.";
     }    
